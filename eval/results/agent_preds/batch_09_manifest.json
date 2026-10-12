@@ -1,0 +1,82 @@
+[
+ {
+  "barcode": "8906018982104",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906018982104_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906018982104_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906018982104_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8906004620751",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906004620751_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906004620751_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906004620751_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8908016793089",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8908016793089_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8908016793089_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8908016793089_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8906021128735",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906021128735_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906021128735_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906021128735_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8906090572217",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906090572217_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906090572217_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906090572217_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8906120109918",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906120109918_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906120109918_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8906120109918_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "4908409918048",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\4908409918048_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\4908409918048_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\4908409918048_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8900740227137",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8900740227137_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8900740227137_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8900740227137_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "26020",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\26020_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\26020_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\26020_nutrition.jpg"
+  }
+ },
+ {
+  "barcode": "8908001588560",
+  "images": {
+   "front": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8908001588560_front.jpg",
+   "ingredients": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8908001588560_ingredients.jpg",
+   "nutrition": "C:\\Users\\OM RANA\\Downloads\\New folder\\label-decoder\\eval\\data\\images\\8908001588560_nutrition.jpg"
+  }
+ }
+]

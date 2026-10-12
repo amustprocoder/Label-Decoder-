@@ -1,0 +1,111 @@
+2385 India products with completed nutrition + ingredients on OFF
+  1 8904156707320 maiyas | Maiyas Moong Dal | sanity=ok
+  8904124108098: rate limited, sleeping 65s
+  2 5400141138863 Boni | Mélange de bonbons | sanity=ok
+  3 8901928014006 Bisk Farm | Marie biscuits | sanity=ok
+  4 89002940 Parachute | Coconut oil | sanity=ok
+  5 5909227010074 Dr. Oetker |  | sanity=ok
+  6 8901764082054 smart water | smart water | sanity=['sugars > carbohydrate', 'dropped total_sugars_g=2 > carbohydrate']
+  7 8904004400212 Haldiram's | Soya Chips | sanity=ok
+  8 8901552023450 Ashoka | Chana Pulao | sanity=ok
+  9 8901764032400 The Coca-Cola Company, कोका कोला क | Sprite Lemon Lime flv Coke Brand 2ltr | sanity=ok
+ 10 8906084413021 mom | mom 3 cheese pasta | sanity=ok
+ 11 8901030807190 Horlicks | Horlicks Classic Malt | sanity=ok
+ 12 8904071702349  | Mix Farsan | sanity=ok
+ 13 8904004400731 Haldiram's | Aloo Bhujia Sev | sanity=ok
+  8901233033570: rate limited, sleeping 65s
+ 14 8908013479092 The Whole Truth | double cocoa protein bar | sanity=ok
+ 15 8908016029263 Crax | natkhat | sanity=ok
+ 16 8901764032905 Coca cola, Sprite | Sprite | sanity=ok
+ 17 7622201150303 Cadbury | Shots | sanity=ok
+ 18 8901414000827 Bikano | Navratan mixture | sanity=ok
+ 19 6294017124031 Nestlé | KitKat Chunky Caramel | sanity=ok
+ 20 8901071706834 Hershey's | HERSHEY'S SYRUP 623g | sanity=ok
+ 21 8904132992313  | Campa Cola | sanity=ok
+ 22 8906070320135 Haldiram | Khatta Meetha | sanity=ok
+  8903363011435: rate limited, sleeping 65s
+ 23 8903363011435 Dmart | Premia nuts and seeds mix | sanity=ok
+ 24 8901042971155 MTR | Idli Karam Podi | sanity=ok
+ 25 8908016793799 Master Chow | Garlic Chilli Crisp | sanity=ok
+ 26 8901014003181 Nissin, Top Ramen | top ramn | sanity=ok
+ 27 8901207014642 Dabur, Dabur Hommade | Tomato Puree | sanity=ok
+ 28 8901058005233 KitKat, Nestle nutrition | Kitkat mini chocolate coated wafer | sanity=ok
+ 29 8901491001854 Lay's | PEPSICO. | sanity=ok
+ 30 8904083302100 Milky Mist | Fruit Yogurt Blueberry | sanity=ok
+ 31 8906059636936 Epigamia | Epigamia Everyday Yogurt Mango | sanity=ok
+ 32 8901725118846 Aashirvaad | Aashirvaad Vermicilli | sanity=ok
+ 33 8901058002683 Maggi | Spicy Garlic 2 Minute Noodles | sanity=ok
+ 34 8906013032187 WAIWAI | WAI WAI | sanity=ok
+ 35 8901088205221 Saffola | Oodles Yummy masala ring noodles | sanity=ok
+ 36 8801073142978 Samyang | 3x spicy noddles | sanity=ok
+  8902080013845: rate limited, sleeping 65s
+ 37 8902080013845 Tropicana | Tropicana CRANBERRY | sanity=ok
+ 38 8901719125478 Parle | Parle-G gold 75g | sanity=ok
+ 39 8906036675248 Nandini | Double Toned Milk | sanity=ok
+ 40 8901030532719 Kissan | kissan fresh Tamato | sanity=ok
+ 41 8901058006292 Maggi, Nestlé | 2 - Minute Noodles | sanity=ok
+ 42 8906032019282 Patanjali | Rolled Oats | sanity=ok
+ 43 8906010500016 Balaji Wafers | Simply Salted | sanity=ok
+ 44 8906135090713 apis | Honey | sanity=ok
+ 45 8901725013882 Sunfeast Farmlite | Super Millets Cookies | sanity=ok
+ 46 8886451008619 Abbott | Similac Plus | sanity=ok
+ 47 8901063019027 Britannia | Little Hearts Classic | sanity=ok
+ 48 8906080603938 Paper Boat | Swing+ Slurpy Mango | sanity=ok
+ 49 8906140202217 Nature's Choice | Arabian  DATES | sanity=ok
+ 50 8906019770328 Nutraj | Walnut Kernels | sanity=ok
+ 51 8906140521103 Mercely's Ice Cream | Jackfruit | sanity=ok
+ 52 8901725005214 Yippee | Atta Noodles | sanity=ok
+ 53 8908014814076 Mr Bakewell | Premium Burger Buns | sanity=ok
+ 54 8906007286978 Aadhar | Refined Sunflower Oil | sanity=ok
+ 55 8901063033399 Britannia | Treat Vanilla Creme | sanity=ok
+ 56 8902710100150 Bagrry’s | White Oats | sanity=ok
+ 57 8906059638329 Epigamia | Mishti Doi | sanity=ok
+ 58 8906009079288 Unibic | Kesar Cashew Badam Cookies | sanity=ok
+ 59 8906007285018 Fortune | Fortune Besan | sanity=ok
+ 60 8901063093287 Britannia | Good Day Cashew Cookies | sanity=ok
+ 61 8906009075068 Unibic | Atta Marie Thinz | sanity=ok
+ 62 8906006854178 Baskin Robbins | Bavarian Chocolate Mega Saver Pack | sanity=ok
+ 63 8901648026167 Mother Dairy | Classic Dahi | sanity=ok
+ 64 8901648021629 Mother Dairy | Vanilla flavoured Medium Fat Ice Cream | sanity=ok
+ 65 8906142772763 R U Nutz | Cashew nuts | sanity=ok
+ 66 8908011491546 ProV | Raisins | sanity=ok
+ 67 8906024480380 Dodla | Toned Milk | sanity=['ingredient text is raw OCR, not a list']
+ 68 8906005506979 bikaji | potato chips | sanity=ok
+  8901648021537: rate limited, sleeping 65s
+ 69 8901648021537 Mother Diary | Classic Curd | sanity=ok
+ 70 8901719106538 Parle | Hide & Seek Cashew Butter | sanity=ok
+ 71 8901491983259 Lay's | Wafer Style Sundried Chilli Flavour | sanity=ok
+ 72 8901725000899 Aashirvaad | Multi -Millet Mix | sanity=ok
+ 73 8904083525585 Organic peanut butter Creamy | 24 Mantra Organic | sanity=ok
+ 74 8906007702263 Salsalito | Wrap tortilla | sanity=ok
+ 75 4906426980222 4700BC | instant popcorn | sanity=ok
+ 76 8901030837616 Cornetto | Chokissimo Choco Brownie | sanity=ok
+ 77 8901719119040 Parle | Parle Mazelo Candy | sanity=ok
+ 78 8901648923039 Mother Dairy | Super T Milk | sanity=ok
+ 79 8908018963206 BABU, Laxminarayan | Lite Chiwda | sanity=ok
+ 80 8908016363008 what's up | what's up eye health zeaxanthin & lutein gummies | sanity=ok
+ 81 8906018982104 Saloni | Saloni Kacchi Ghani Mustard Oil | sanity=ok
+ 82 8906004620751 Dhara Life | Refined Ricebran Oil | sanity=ok
+ 83 8908016793089 Master Chow | Master chow | sanity=ok
+ 84 8906021128735 Aachi | Mango Ginger Pickle | sanity=ok
+ 85 8906090572217 Too Yumm | Too yumm | sanity=ok
+ 86 8906120109918 Farmley | Farmley Date Bites | sanity=ok
+ 87 4908409918048 O'Ziva | Protein & Herbs For Men | sanity=ok
+ 88 8900740227137 One Science | ISO GOLD WHEY PROTEIN ISOLATE | sanity=ok
+  8906099250000: rate limited, sleeping 65s
+ 89 26020 Truly Good Foods | TGF Khatta Meetha | sanity=ok
+ 90 8908001588560 Asal | Wheat Chapati | sanity=ok
+ 91 8906029605368 Ammamma's easy2cook | Parota | sanity=ok
+ 92 8901648001119 Mother Diary | White Bread | sanity=ok
+ 93 8904043553085 Modern | Wow Pav | sanity=ok
+ 94 8908002105087 Bakes Fresh | Milk White Bread | sanity=ok
+ 95 8908014814021 Mr Bakewell | premium brown bread | sanity=ok
+ 96 8901063338623 Britannia | Multi Grain Bread | sanity=ok
+ 97 8906017774014 Ashok | Thandaai Masala Powder | sanity=ok
+ 98 8906080604546 Paper Boat |  | sanity=ok
+ 99 8902080001170 Pepsico | Mirinda | sanity=ok
+100 8901262202046 Amul | Amul Lassi | sanity=ok
+
+Wrote 100 products to C:\Users\OM RANA\Downloads\New folder\label-decoder\eval\data\testset.jsonl (98 pass OFF sanity, 2 need hand-check).
+Next: open eval/manual_labels.csv, fill the per-100 g truth for the hand-check rows from the photos.
+Seeded C:\Users\OM RANA\Downloads\New folder\label-decoder\eval\manual_labels.csv with OFF values. Verify each row against the photos and set checked_by_hand=1.

@@ -1,0 +1,5 @@
+streamlit>=1.32
+requests>=2.31
+pillow>=10.0
+pytest>=8.0
+anthropic>=0.40      # only for the Claude provider (ANTHROPIC_API_KEY)

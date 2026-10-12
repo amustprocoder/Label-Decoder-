@@ -1,0 +1,1517 @@
+{
+  "rules_layer": {
+    "products": 100,
+    "nondeterministic_outputs": 0,
+    "products_with_sugar_under_2plus_names": 21,
+    "share_with_sugar_under_2plus_names_pct": 21.0,
+    "median_tsp_per_serve": 0.7,
+    "flag_counts": {
+      "SAT_FAT_HIGH": 26,
+      "SUGAR_SPLIT": 21,
+      "SERVING_TINY": 19,
+      "SODIUM_HIGH": 10,
+      "WHO_LIMIT_HALF": 6,
+      "TRANS_FAT": 3,
+      "WHO_LIMIT_BLOWN": 2,
+      "PER100_VS_SERVE": 1,
+      "NAS_HIGH_INTRINSIC": 1,
+      "CHOLESTEROL_FREE_PLANT": 1,
+      "NAS_SUBSTITUTE": 1
+    },
+    "severity_counts": {
+      "high": 25,
+      "low": 26,
+      "medium": 40
+    },
+    "claim_verdicts": {
+      "unverifiable": 6,
+      "legal but misleading": 1
+    },
+    "top_15_by_sugar": [
+      {
+        "barcode": "8901719119040",
+        "name": "Parle Mazelo Candy",
+        "brand": "Parle",
+        "sugar_pct": 79.7,
+        "tsp_per_serve": 0.78903,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY"
+        ],
+        "share_line": "Parle Mazelo Candy: 79.7% sugar by weight; 0.8 tsp sugar per 3.96 g serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "7622201150303",
+        "name": "Shots",
+        "brand": "Cadbury",
+        "sugar_pct": 71.9,
+        "tsp_per_serve": 3.2355,
+        "n_sugar_names": 3,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Shots: 71.9 g sugar per 100 ml; 3.2 tsp sugar per 18 ml serve; sugar under 3 names, combined rank #1."
+      },
+      {
+        "barcode": "8908016363008",
+        "name": "what's up eye health zeaxanthin & lutein gummies",
+        "brand": "what's up",
+        "sugar_pct": 66.53,
+        "tsp_per_serve": 0.5821375000000001,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY"
+        ],
+        "share_line": "what's up eye health zeaxanthin & lutein gummies: 66.53% sugar by weight; 0.6 tsp sugar per 3.5 g serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "8906140202217",
+        "name": "Arabian  DATES",
+        "brand": "Nature's Choice",
+        "sugar_pct": 65.0,
+        "tsp_per_serve": 4.875,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Arabian  DATES: 65% sugar by weight; 4.9 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8901071706834",
+        "name": "HERSHEY'S SYRUP 623g",
+        "brand": "Hershey's",
+        "sugar_pct": 63.7,
+        "tsp_per_serve": 4.7775,
+        "n_sugar_names": 4,
+        "flags": [
+          "SUGAR_SPLIT",
+          "WHO_LIMIT_HALF"
+        ],
+        "share_line": "HERSHEY'S SYRUP 623g: 63.7% sugar by weight; 4.8 tsp sugar per 30 g serve; sugar under 4 names, combined rank #1."
+      },
+      {
+        "barcode": "8906017774014",
+        "name": "Thandaai Masala Powder",
+        "brand": "Ashok",
+        "sugar_pct": 59.79,
+        "tsp_per_serve": 4.48425,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_HALF"
+        ],
+        "share_line": "Thandaai Masala Powder: 59.79% sugar by weight; 4.5 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "6294017124031",
+        "name": "KitKat Chunky Caramel",
+        "brand": "Nestlé",
+        "sugar_pct": 54.6,
+        "tsp_per_serve": 5.7330000000000005,
+        "n_sugar_names": 5,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "KitKat Chunky Caramel: 54.6 g sugar per 100 ml; 5.7 tsp sugar per 42 ml serve; sugar under 5 names, combined rank #1."
+      },
+      {
+        "barcode": "5400141138863",
+        "name": "Mélange de bonbons",
+        "brand": "Boni",
+        "sugar_pct": 51.8,
+        "tsp_per_serve": 3.885,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Mélange de bonbons: 51.8% sugar by weight; 3.9 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8908011491546",
+        "name": "Raisins",
+        "brand": "ProV",
+        "sugar_pct": 47.8,
+        "tsp_per_serve": 3.585,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Raisins: 47.8% sugar by weight; 3.6 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8901030807190",
+        "name": "Horlicks Classic Malt",
+        "brand": "Horlicks",
+        "sugar_pct": 46.0,
+        "tsp_per_serve": 3.45,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Horlicks Classic Malt: 46% sugar by weight; 3.5 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8886451008619",
+        "name": "Similac Plus",
+        "brand": "Abbott",
+        "sugar_pct": 41.0,
+        "tsp_per_serve": 3.075,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Similac Plus: 41 g sugar per 100 ml; 3.1 tsp sugar per 30 ml serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "8901063033399",
+        "name": "Treat Vanilla Creme",
+        "brand": "Britannia",
+        "sugar_pct": 38.4,
+        "tsp_per_serve": 2.88,
+        "n_sugar_names": 4,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Treat Vanilla Creme: 38.4% sugar by weight; 2.9 tsp sugar per 30 g serve; sugar under 4 names, combined rank #2."
+      },
+      {
+        "barcode": "8901058005233",
+        "name": "Kitkat mini chocolate coated wafer",
+        "brand": "KitKat, Nestle nutrition",
+        "sugar_pct": 35.1,
+        "tsp_per_serve": 1.0442250000000002,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Kitkat mini chocolate coated wafer: 35.1% sugar by weight; 1.0 tsp sugar per 11.9 g serve."
+      },
+      {
+        "barcode": "8906120109918",
+        "name": "Farmley Date Bites",
+        "brand": "Farmley",
+        "sugar_pct": 33.7,
+        "tsp_per_serve": 1.5165,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Farmley Date Bites: 33.7% sugar by weight; 1.5 tsp sugar per 18 g serve."
+      },
+      {
+        "barcode": "8906090572217",
+        "name": "Too yumm",
+        "brand": "Too Yumm",
+        "sugar_pct": 32.3529411764706,
+        "tsp_per_serve": 1.3750000000000007,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Too yumm: 32.3529% sugar by weight; 1.4 tsp sugar per 17 g serve; sugar under 2 names, combined rank #2."
+      }
+    ],
+    "all_decoded": [
+      {
+        "barcode": "8904156707320",
+        "name": "Maiyas Moong Dal",
+        "brand": "maiyas",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Maiyas Moong Dal: 0% sugar by weight; 0.0 tsp sugar per 25 g serve."
+      },
+      {
+        "barcode": "5400141138863",
+        "name": "Mélange de bonbons",
+        "brand": "Boni",
+        "sugar_pct": 51.8,
+        "tsp_per_serve": 3.885,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Mélange de bonbons: 51.8% sugar by weight; 3.9 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8901928014006",
+        "name": "Marie biscuits",
+        "brand": "Bisk Farm",
+        "sugar_pct": 18.73,
+        "tsp_per_serve": 1.40475,
+        "n_sugar_names": 3,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Marie biscuits: 18.73% sugar by weight; 1.4 tsp sugar per 30 g serve; sugar under 3 names, combined rank #2."
+      },
+      {
+        "barcode": "89002940",
+        "name": "Coconut oil",
+        "brand": "Parachute",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Coconut oil: 0 g sugar per 100 ml; 0.0 tsp sugar per 100 ml serve."
+      },
+      {
+        "barcode": "5909227010074",
+        "name": "",
+        "brand": "Dr. Oetker",
+        "sugar_pct": 5.7,
+        "tsp_per_serve": 0.4275,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "This product: 5.7% sugar by weight; 0.4 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8901764082054",
+        "name": "smart water",
+        "brand": "smart water",
+        "sugar_pct": null,
+        "tsp_per_serve": null,
+        "n_sugar_names": 0,
+        "flags": [
+          "SODIUM_HIGH"
+        ],
+        "share_line": "smart water: not enough label data to decode."
+      },
+      {
+        "barcode": "8904004400212",
+        "name": "Soya Chips",
+        "brand": "Haldiram's",
+        "sugar_pct": 3.76,
+        "tsp_per_serve": 0.235,
+        "n_sugar_names": 1,
+        "flags": [
+          "PER100_VS_SERVE",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Soya Chips: 3.76% sugar by weight; 0.2 tsp sugar per 25 g serve; 'rich in vegetable protein' only holds per 100 g."
+      },
+      {
+        "barcode": "8901552023450",
+        "name": "Chana Pulao",
+        "brand": "Ashoka",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Chana Pulao: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901764032400",
+        "name": "Sprite Lemon Lime flv Coke Brand 2ltr",
+        "brand": "The Coca-Cola Company, कोका कोला क",
+        "sugar_pct": 11.7,
+        "tsp_per_serve": 0.8775,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "SODIUM_HIGH"
+        ],
+        "share_line": "Sprite Lemon Lime flv Coke Brand 2ltr: 11.7 g sugar per 100 ml; 0.9 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906084413021",
+        "name": "mom 3 cheese pasta",
+        "brand": "mom",
+        "sugar_pct": 4.0,
+        "tsp_per_serve": 0.3,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "mom 3 cheese pasta: 4 g sugar per 100 ml; 0.3 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901030807190",
+        "name": "Horlicks Classic Malt",
+        "brand": "Horlicks",
+        "sugar_pct": 46.0,
+        "tsp_per_serve": 3.45,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Horlicks Classic Malt: 46% sugar by weight; 3.5 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8904071702349",
+        "name": "Mix Farsan",
+        "brand": "",
+        "sugar_pct": 3.3,
+        "tsp_per_serve": 0.5775,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Mix Farsan: 3.3% sugar by weight; 0.6 tsp sugar per 70 g serve."
+      },
+      {
+        "barcode": "8904004400731",
+        "name": "Aloo Bhujia Sev",
+        "brand": "Haldiram's",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Aloo Bhujia Sev: 0% sugar by weight; 0.0 tsp sugar per 20 g serve."
+      },
+      {
+        "barcode": "8908013479092",
+        "name": "double cocoa protein bar",
+        "brand": "The Whole Truth",
+        "sugar_pct": 20.0,
+        "tsp_per_serve": 2.6,
+        "n_sugar_names": 0,
+        "flags": [
+          "NAS_HIGH_INTRINSIC"
+        ],
+        "share_line": "double cocoa protein bar: 20% sugar by weight; 2.6 tsp sugar per 52 g serve."
+      },
+      {
+        "barcode": "8908016029263",
+        "name": "natkhat",
+        "brand": "Crax",
+        "sugar_pct": 2.0,
+        "tsp_per_serve": 0.1,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "natkhat: 2% sugar by weight; 0.1 tsp sugar per 20 g serve."
+      },
+      {
+        "barcode": "8901764032905",
+        "name": "Sprite",
+        "brand": "Coca cola, Sprite",
+        "sugar_pct": 9.8,
+        "tsp_per_serve": 0.055125,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "Sprite: 9.8 g sugar per 100 ml; 0.1 tsp sugar per 2.25 ml serve."
+      },
+      {
+        "barcode": "7622201150303",
+        "name": "Shots",
+        "brand": "Cadbury",
+        "sugar_pct": 71.9,
+        "tsp_per_serve": 3.2355,
+        "n_sugar_names": 3,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Shots: 71.9 g sugar per 100 ml; 3.2 tsp sugar per 18 ml serve; sugar under 3 names, combined rank #1."
+      },
+      {
+        "barcode": "8901414000827",
+        "name": "Navratan mixture",
+        "brand": "Bikano",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Navratan mixture: 0% sugar by weight; 0.0 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "6294017124031",
+        "name": "KitKat Chunky Caramel",
+        "brand": "Nestlé",
+        "sugar_pct": 54.6,
+        "tsp_per_serve": 5.7330000000000005,
+        "n_sugar_names": 5,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "KitKat Chunky Caramel: 54.6 g sugar per 100 ml; 5.7 tsp sugar per 42 ml serve; sugar under 5 names, combined rank #1."
+      },
+      {
+        "barcode": "8901071706834",
+        "name": "HERSHEY'S SYRUP 623g",
+        "brand": "Hershey's",
+        "sugar_pct": 63.7,
+        "tsp_per_serve": 4.7775,
+        "n_sugar_names": 4,
+        "flags": [
+          "SUGAR_SPLIT",
+          "WHO_LIMIT_HALF"
+        ],
+        "share_line": "HERSHEY'S SYRUP 623g: 63.7% sugar by weight; 4.8 tsp sugar per 30 g serve; sugar under 4 names, combined rank #1."
+      },
+      {
+        "barcode": "8904132992313",
+        "name": "Campa Cola",
+        "brand": "",
+        "sugar_pct": 10.6,
+        "tsp_per_serve": 0.795,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "Campa Cola: 10.6 g sugar per 100 ml; 0.8 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906070320135",
+        "name": "Khatta Meetha",
+        "brand": "Haldiram",
+        "sugar_pct": 3.2,
+        "tsp_per_serve": 0.24,
+        "n_sugar_names": 1,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Khatta Meetha: 3.2% sugar by weight; 0.2 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8903363011435",
+        "name": "Premia nuts and seeds mix",
+        "brand": "Dmart",
+        "sugar_pct": 24.05,
+        "tsp_per_serve": 6.0125,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Premia nuts and seeds mix: 24.05% sugar by weight; 6.0 tsp sugar per 100 g serve."
+      },
+      {
+        "barcode": "8901042971155",
+        "name": "Idli Karam Podi",
+        "brand": "MTR",
+        "sugar_pct": 13.7,
+        "tsp_per_serve": 1.0275,
+        "n_sugar_names": 1,
+        "flags": [
+          "SODIUM_HIGH"
+        ],
+        "share_line": "Idli Karam Podi: 13.7% sugar by weight; 1.0 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8908016793799",
+        "name": "Garlic Chilli Crisp",
+        "brand": "Master Chow",
+        "sugar_pct": 12.5,
+        "tsp_per_serve": 0.25,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "Garlic Chilli Crisp: 12.5% sugar by weight; 0.2 tsp sugar per 8 g serve."
+      },
+      {
+        "barcode": "8901014003181",
+        "name": "top ramn",
+        "brand": "Nissin, Top Ramen",
+        "sugar_pct": 2.94,
+        "tsp_per_serve": 0.5145,
+        "n_sugar_names": 1,
+        "flags": [
+          "SODIUM_HIGH"
+        ],
+        "share_line": "top ramn: 2.94 g sugar per 100 ml; 0.5 tsp sugar per 70 ml serve."
+      },
+      {
+        "barcode": "8901207014642",
+        "name": "Tomato Puree",
+        "brand": "Dabur, Dabur Hommade",
+        "sugar_pct": 4.6,
+        "tsp_per_serve": 0.345,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Tomato Puree: 4.6 g sugar per 100 ml; 0.3 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901058005233",
+        "name": "Kitkat mini chocolate coated wafer",
+        "brand": "KitKat, Nestle nutrition",
+        "sugar_pct": 35.1,
+        "tsp_per_serve": 1.0442250000000002,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Kitkat mini chocolate coated wafer: 35.1% sugar by weight; 1.0 tsp sugar per 11.9 g serve."
+      },
+      {
+        "barcode": "8901491001854",
+        "name": "PEPSICO.",
+        "brand": "Lay's",
+        "sugar_pct": 2.2,
+        "tsp_per_serve": 0.165,
+        "n_sugar_names": 1,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "PEPSICO.: 2.2 g sugar per 100 ml; 0.2 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8904083302100",
+        "name": "Fruit Yogurt Blueberry",
+        "brand": "Milky Mist",
+        "sugar_pct": 15.3,
+        "tsp_per_serve": 3.825,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Fruit Yogurt Blueberry: 15.3 g sugar per 100 ml; 3.8 tsp sugar per 100 ml serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8906059636936",
+        "name": "Epigamia Everyday Yogurt Mango",
+        "brand": "Epigamia",
+        "sugar_pct": 17.3333333333333,
+        "tsp_per_serve": 3.249999999999994,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "Epigamia Everyday Yogurt Mango: 17.3333 g sugar per 100 ml; 3.2 tsp sugar per 75 ml serve."
+      },
+      {
+        "barcode": "8901725118846",
+        "name": "Aashirvaad Vermicilli",
+        "brand": "Aashirvaad",
+        "sugar_pct": 1.8,
+        "tsp_per_serve": 0.135,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Aashirvaad Vermicilli: 1.8 g sugar per 100 ml; 0.1 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901058002683",
+        "name": "Spicy Garlic 2 Minute Noodles",
+        "brand": "Maggi",
+        "sugar_pct": 1.9,
+        "tsp_per_serve": 0.2945,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "SODIUM_HIGH",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Spicy Garlic 2 Minute Noodles: 1.9 g sugar per 100 ml; 0.3 tsp sugar per 62 ml serve."
+      },
+      {
+        "barcode": "8906013032187",
+        "name": "WAI WAI",
+        "brand": "WAIWAI",
+        "sugar_pct": 1.5,
+        "tsp_per_serve": 0.2625,
+        "n_sugar_names": 5,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "WAI WAI: 1.5 g sugar per 100 ml; 0.3 tsp sugar per 70 ml serve; sugar under 5 names, combined rank #6."
+      },
+      {
+        "barcode": "8901088205221",
+        "name": "Oodles Yummy masala ring noodles",
+        "brand": "Saffola",
+        "sugar_pct": 7.73,
+        "tsp_per_serve": 1.024225,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "SODIUM_HIGH"
+        ],
+        "share_line": "Oodles Yummy masala ring noodles: 7.73 g sugar per 100 ml; 1.0 tsp sugar per 53 ml serve."
+      },
+      {
+        "barcode": "8801073142978",
+        "name": "3x spicy noddles",
+        "brand": "Samyang",
+        "sugar_pct": 7.9,
+        "tsp_per_serve": 2.765,
+        "n_sugar_names": 1,
+        "flags": [
+          "SODIUM_HIGH"
+        ],
+        "share_line": "3x spicy noddles: 7.9 g sugar per 100 ml; 2.8 tsp sugar per 140 ml serve."
+      },
+      {
+        "barcode": "8902080013845",
+        "name": "Tropicana CRANBERRY",
+        "brand": "Tropicana",
+        "sugar_pct": 10.5,
+        "tsp_per_serve": 5.25,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_HALF"
+        ],
+        "share_line": "Tropicana CRANBERRY: 10.5 g sugar per 100 ml; 5.2 tsp sugar per 200 ml serve."
+      },
+      {
+        "barcode": "8901719125478",
+        "name": "Parle-G gold 75g",
+        "brand": "Parle",
+        "sugar_pct": 25.5,
+        "tsp_per_serve": 1.9125,
+        "n_sugar_names": 4,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Parle-G gold 75g: 25.5% sugar by weight; 1.9 tsp sugar per 30 g serve; sugar under 4 names, combined rank #2."
+      },
+      {
+        "barcode": "8906036675248",
+        "name": "Double Toned Milk",
+        "brand": "Nandini",
+        "sugar_pct": 5.1,
+        "tsp_per_serve": 2.55,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Double Toned Milk: 5.1 g sugar per 100 ml; 2.5 tsp sugar per 200 ml serve."
+      },
+      {
+        "barcode": "8901030532719",
+        "name": "kissan fresh Tamato",
+        "brand": "Kissan",
+        "sugar_pct": 29.3333333333333,
+        "tsp_per_serve": 1.0999999999999988,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "kissan fresh Tamato: 29.3333 g sugar per 100 ml; 1.1 tsp sugar per 15 ml serve."
+      },
+      {
+        "barcode": "8901058006292",
+        "name": "2 - Minute Noodles",
+        "brand": "Maggi, Nestlé",
+        "sugar_pct": 1.8,
+        "tsp_per_serve": 0.315,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "SODIUM_HIGH"
+        ],
+        "share_line": "2 - Minute Noodles: 1.8 g sugar per 100 ml; 0.3 tsp sugar per 70 ml serve."
+      },
+      {
+        "barcode": "8906032019282",
+        "name": "Rolled Oats",
+        "brand": "Patanjali",
+        "sugar_pct": 0.9,
+        "tsp_per_serve": 0.0675,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Rolled Oats: 0.9 g sugar per 100 ml; 0.1 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906010500016",
+        "name": "Simply Salted",
+        "brand": "Balaji Wafers",
+        "sugar_pct": 0.8,
+        "tsp_per_serve": 0.06,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Simply Salted: 0.8% sugar by weight; 0.1 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8906135090713",
+        "name": "Honey",
+        "brand": "apis",
+        "sugar_pct": 0.9,
+        "tsp_per_serve": 0.0675,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Honey: 0.9% sugar by weight; 0.1 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8901725013882",
+        "name": "Super Millets Cookies",
+        "brand": "Sunfeast Farmlite",
+        "sugar_pct": 21.0,
+        "tsp_per_serve": 1.575,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Super Millets Cookies: 21% sugar by weight; 1.6 tsp sugar per 30 g serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8886451008619",
+        "name": "Similac Plus",
+        "brand": "Abbott",
+        "sugar_pct": 41.0,
+        "tsp_per_serve": 3.075,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Similac Plus: 41 g sugar per 100 ml; 3.1 tsp sugar per 30 ml serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "8901063019027",
+        "name": "Little Hearts Classic",
+        "brand": "Britannia",
+        "sugar_pct": 24.4,
+        "tsp_per_serve": 0.9455,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Little Hearts Classic: 24.4% sugar by weight; 0.9 tsp sugar per 15.5 g serve."
+      },
+      {
+        "barcode": "8906080603938",
+        "name": "Swing+ Slurpy Mango",
+        "brand": "Paper Boat",
+        "sugar_pct": 15.5,
+        "tsp_per_serve": 9.6875,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_BLOWN"
+        ],
+        "share_line": "Swing+ Slurpy Mango: 15.5 g sugar per 100 ml; 9.7 tsp sugar per 250 ml serve."
+      },
+      {
+        "barcode": "8906140202217",
+        "name": "Arabian  DATES",
+        "brand": "Nature's Choice",
+        "sugar_pct": 65.0,
+        "tsp_per_serve": 4.875,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Arabian  DATES: 65% sugar by weight; 4.9 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8906019770328",
+        "name": "Walnut Kernels",
+        "brand": "Nutraj",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "CHOLESTEROL_FREE_PLANT"
+        ],
+        "share_line": "Walnut Kernels: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906140521103",
+        "name": "Jackfruit",
+        "brand": "Mercely's Ice Cream",
+        "sugar_pct": 21.0,
+        "tsp_per_serve": 3.445575,
+        "n_sugar_names": 1,
+        "flags": [
+          "SERVING_TINY",
+          "TRANS_FAT",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Jackfruit: 21 g sugar per 100 ml; 3.4 tsp sugar per 65.63 ml serve."
+      },
+      {
+        "barcode": "8901725005214",
+        "name": "Atta Noodles",
+        "brand": "Yippee",
+        "sugar_pct": 3.2,
+        "tsp_per_serve": 0.56,
+        "n_sugar_names": 0,
+        "flags": [
+          "SODIUM_HIGH"
+        ],
+        "share_line": "Atta Noodles: 3.2 g sugar per 100 ml; 0.6 tsp sugar per 70 ml serve."
+      },
+      {
+        "barcode": "8908014814076",
+        "name": "Premium Burger Buns",
+        "brand": "Mr Bakewell",
+        "sugar_pct": 6.67,
+        "tsp_per_serve": 0.50025,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Premium Burger Buns: 6.67 g sugar per 100 ml; 0.5 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906007286978",
+        "name": "Refined Sunflower Oil",
+        "brand": "Aadhar",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "TRANS_FAT"
+        ],
+        "share_line": "Refined Sunflower Oil: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901063033399",
+        "name": "Treat Vanilla Creme",
+        "brand": "Britannia",
+        "sugar_pct": 38.4,
+        "tsp_per_serve": 2.88,
+        "n_sugar_names": 4,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Treat Vanilla Creme: 38.4% sugar by weight; 2.9 tsp sugar per 30 g serve; sugar under 4 names, combined rank #2."
+      },
+      {
+        "barcode": "8902710100150",
+        "name": "White Oats",
+        "brand": "Bagrry’s",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "White Oats: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906059638329",
+        "name": "Mishti Doi",
+        "brand": "Epigamia",
+        "sugar_pct": 17.5,
+        "tsp_per_serve": 3.5,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY",
+          "TRANS_FAT",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Mishti Doi: 17.5 g sugar per 100 ml; 3.5 tsp sugar per 80 ml serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "8906009079288",
+        "name": "Kesar Cashew Badam Cookies",
+        "brand": "Unibic",
+        "sugar_pct": 26.0,
+        "tsp_per_serve": 1.625,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Kesar Cashew Badam Cookies: 26% sugar by weight; 1.6 tsp sugar per 25 g serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8906007285018",
+        "name": "Fortune Besan",
+        "brand": "Fortune",
+        "sugar_pct": 1.8,
+        "tsp_per_serve": 0.135,
+        "n_sugar_names": 0,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "Fortune Besan: 1.8 g sugar per 100 ml; 0.1 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901063093287",
+        "name": "Good Day Cashew Cookies",
+        "brand": "Britannia",
+        "sugar_pct": 22.0,
+        "tsp_per_serve": 1.65,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Good Day Cashew Cookies: 22% sugar by weight; 1.6 tsp sugar per 30 g serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8906009075068",
+        "name": "Atta Marie Thinz",
+        "brand": "Unibic",
+        "sugar_pct": 20.0,
+        "tsp_per_serve": 1.5,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Atta Marie Thinz: 20% sugar by weight; 1.5 tsp sugar per 30 g serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8906006854178",
+        "name": "Bavarian Chocolate Mega Saver Pack",
+        "brand": "Baskin Robbins",
+        "sugar_pct": 20.5,
+        "tsp_per_serve": 5.125,
+        "n_sugar_names": 3,
+        "flags": [
+          "SUGAR_SPLIT",
+          "WHO_LIMIT_HALF",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Bavarian Chocolate Mega Saver Pack: 20.5% sugar by weight; 5.1 tsp sugar per 100 g serve; sugar under 3 names, combined rank #2."
+      },
+      {
+        "barcode": "8901648026167",
+        "name": "Classic Dahi",
+        "brand": "Mother Dairy",
+        "sugar_pct": 5.0,
+        "tsp_per_serve": 1.25,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Classic Dahi: 5 g sugar per 100 ml; 1.2 tsp sugar per 100 ml serve."
+      },
+      {
+        "barcode": "8901648021629",
+        "name": "Vanilla flavoured Medium Fat Ice Cream",
+        "brand": "Mother Dairy",
+        "sugar_pct": 21.5,
+        "tsp_per_serve": 5.375,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_HALF",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Vanilla flavoured Medium Fat Ice Cream: 21.5% sugar by weight; 5.4 tsp sugar per 100 g serve."
+      },
+      {
+        "barcode": "8906142772763",
+        "name": "Cashew nuts",
+        "brand": "R U Nutz",
+        "sugar_pct": 5.91,
+        "tsp_per_serve": 0.44325000000000003,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Cashew nuts: 5.91 g sugar per 100 ml; 0.4 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8908011491546",
+        "name": "Raisins",
+        "brand": "ProV",
+        "sugar_pct": 47.8,
+        "tsp_per_serve": 3.585,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Raisins: 47.8% sugar by weight; 3.6 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8906024480380",
+        "name": "Toned Milk",
+        "brand": "Dodla",
+        "sugar_pct": 4.8,
+        "tsp_per_serve": 2.4,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Toned Milk: 4.8 g sugar per 100 ml; 2.4 tsp sugar per 200 ml serve."
+      },
+      {
+        "barcode": "8906005506979",
+        "name": "potato chips",
+        "brand": "bikaji",
+        "sugar_pct": 1.0,
+        "tsp_per_serve": 0.075,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "potato chips: 1 g sugar per 100 ml; 0.1 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8901648021537",
+        "name": "Classic Curd",
+        "brand": "Mother Diary",
+        "sugar_pct": 5.0,
+        "tsp_per_serve": 1.25,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Classic Curd: 5 g sugar per 100 ml; 1.2 tsp sugar per 100 ml serve."
+      },
+      {
+        "barcode": "8901719106538",
+        "name": "Hide & Seek Cashew Butter",
+        "brand": "Parle",
+        "sugar_pct": 21.0,
+        "tsp_per_serve": 1.575,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Hide & Seek Cashew Butter: 21% sugar by weight; 1.6 tsp sugar per 30 g serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8901491983259",
+        "name": "Wafer Style Sundried Chilli Flavour",
+        "brand": "Lay's",
+        "sugar_pct": 1.0,
+        "tsp_per_serve": 0.075,
+        "n_sugar_names": 1,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Wafer Style Sundried Chilli Flavour: 1% sugar by weight; 0.1 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8901725000899",
+        "name": "Multi -Millet Mix",
+        "brand": "Aashirvaad",
+        "sugar_pct": 4.1,
+        "tsp_per_serve": 0.205,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Multi -Millet Mix: 4.1% sugar by weight; 0.2 tsp sugar per 20 g serve."
+      },
+      {
+        "barcode": "8904083525585",
+        "name": "24 Mantra Organic",
+        "brand": "Organic peanut butter Creamy",
+        "sugar_pct": 4.5,
+        "tsp_per_serve": 0.3375,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "24 Mantra Organic: 4.5 g sugar per 100 ml; 0.3 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906007702263",
+        "name": "Wrap tortilla",
+        "brand": "Salsalito",
+        "sugar_pct": 4.16,
+        "tsp_per_serve": 0.52,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Wrap tortilla: 4.16 g sugar per 100 ml; 0.5 tsp sugar per 50 ml serve."
+      },
+      {
+        "barcode": "4906426980222",
+        "name": "instant popcorn",
+        "brand": "4700BC",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "instant popcorn: 0% sugar by weight; 0.0 tsp sugar per 28 g serve."
+      },
+      {
+        "barcode": "8901030837616",
+        "name": "Chokissimo Choco Brownie",
+        "brand": "Cornetto",
+        "sugar_pct": 28.75,
+        "tsp_per_serve": 5.175,
+        "n_sugar_names": 10,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Chokissimo Choco Brownie: 28.75% sugar by weight; 5.2 tsp sugar per 72 g serve; sugar under 10 names, combined rank #2."
+      },
+      {
+        "barcode": "8901719119040",
+        "name": "Parle Mazelo Candy",
+        "brand": "Parle",
+        "sugar_pct": 79.7,
+        "tsp_per_serve": 0.78903,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY"
+        ],
+        "share_line": "Parle Mazelo Candy: 79.7% sugar by weight; 0.8 tsp sugar per 3.96 g serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "8901648923039",
+        "name": "Super T Milk",
+        "brand": "Mother Dairy",
+        "sugar_pct": 4.8,
+        "tsp_per_serve": 2.4,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Super T Milk: 4.8 g sugar per 100 ml; 2.4 tsp sugar per 200 ml serve."
+      },
+      {
+        "barcode": "8908018963206",
+        "name": "Lite Chiwda",
+        "brand": "BABU, Laxminarayan",
+        "sugar_pct": 2.2,
+        "tsp_per_serve": 0.165,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Lite Chiwda: 2.2% sugar by weight; 0.2 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8908016363008",
+        "name": "what's up eye health zeaxanthin & lutein gummies",
+        "brand": "what's up",
+        "sugar_pct": 66.53,
+        "tsp_per_serve": 0.5821375000000001,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT",
+          "SERVING_TINY"
+        ],
+        "share_line": "what's up eye health zeaxanthin & lutein gummies: 66.53% sugar by weight; 0.6 tsp sugar per 3.5 g serve; sugar under 2 names, combined rank #1."
+      },
+      {
+        "barcode": "8906018982104",
+        "name": "Saloni Kacchi Ghani Mustard Oil",
+        "brand": "Saloni",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Saloni Kacchi Ghani Mustard Oil: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906004620751",
+        "name": "Refined Ricebran Oil",
+        "brand": "Dhara Life",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SAT_FAT_HIGH"
+        ],
+        "share_line": "Refined Ricebran Oil: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8908016793089",
+        "name": "Master chow",
+        "brand": "Master Chow",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "Master chow: 0 g sugar per 100 ml; 0.0 tsp sugar per 100 ml serve."
+      },
+      {
+        "barcode": "8906021128735",
+        "name": "Mango Ginger Pickle",
+        "brand": "Aachi",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SODIUM_HIGH"
+        ],
+        "share_line": "Mango Ginger Pickle: 0 g sugar per 100 ml; 0.0 tsp sugar per 30 ml serve."
+      },
+      {
+        "barcode": "8906090572217",
+        "name": "Too yumm",
+        "brand": "Too Yumm",
+        "sugar_pct": 32.3529411764706,
+        "tsp_per_serve": 1.3750000000000007,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "Too yumm: 32.3529% sugar by weight; 1.4 tsp sugar per 17 g serve; sugar under 2 names, combined rank #2."
+      },
+      {
+        "barcode": "8906120109918",
+        "name": "Farmley Date Bites",
+        "brand": "Farmley",
+        "sugar_pct": 33.7,
+        "tsp_per_serve": 1.5165,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Farmley Date Bites: 33.7% sugar by weight; 1.5 tsp sugar per 18 g serve."
+      },
+      {
+        "barcode": "4908409918048",
+        "name": "Protein & Herbs For Men",
+        "brand": "O'Ziva",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 1,
+        "flags": [
+          "NAS_SUBSTITUTE"
+        ],
+        "share_line": "Protein & Herbs For Men: 0% sugar by weight; 0.0 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8900740227137",
+        "name": "ISO GOLD WHEY PROTEIN ISOLATE",
+        "brand": "One Science",
+        "sugar_pct": 1.33333333333333,
+        "tsp_per_serve": 0.09999999999999976,
+        "n_sugar_names": 0,
+        "flags": [],
+        "share_line": "ISO GOLD WHEY PROTEIN ISOLATE: 1.33333% sugar by weight; 0.1 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "26020",
+        "name": "TGF Khatta Meetha",
+        "brand": "Truly Good Foods",
+        "sugar_pct": 17.0,
+        "tsp_per_serve": 0.85,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "TGF Khatta Meetha: 17% sugar by weight; 0.8 tsp sugar per 20 g serve."
+      },
+      {
+        "barcode": "8908001588560",
+        "name": "Wheat Chapati",
+        "brand": "Asal",
+        "sugar_pct": 0.0,
+        "tsp_per_serve": 0.0,
+        "n_sugar_names": 0,
+        "flags": [
+          "SERVING_TINY"
+        ],
+        "share_line": "Wheat Chapati: 0 g sugar per 100 ml; 0.0 tsp sugar per 33 ml serve."
+      },
+      {
+        "barcode": "8906029605368",
+        "name": "Parota",
+        "brand": "Ammamma's easy2cook",
+        "sugar_pct": 1.3,
+        "tsp_per_serve": 0.1625,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Parota: 1.3 g sugar per 100 ml; 0.2 tsp sugar per 50 ml serve."
+      },
+      {
+        "barcode": "8901648001119",
+        "name": "White Bread",
+        "brand": "Mother Diary",
+        "sugar_pct": 3.5,
+        "tsp_per_serve": 0.4375,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "White Bread: 3.5 g sugar per 100 ml; 0.4 tsp sugar per 50 ml serve."
+      },
+      {
+        "barcode": "8904043553085",
+        "name": "Wow Pav",
+        "brand": "Modern",
+        "sugar_pct": 2.8,
+        "tsp_per_serve": 0.35,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Wow Pav: 2.8 g sugar per 100 ml; 0.3 tsp sugar per 50 ml serve."
+      },
+      {
+        "barcode": "8908002105087",
+        "name": "Milk White Bread",
+        "brand": "Bakes Fresh",
+        "sugar_pct": 5.6,
+        "tsp_per_serve": 0.7,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Milk White Bread: 5.6 g sugar per 100 ml; 0.7 tsp sugar per 50 ml serve."
+      },
+      {
+        "barcode": "8908014814021",
+        "name": "premium brown bread",
+        "brand": "Mr Bakewell",
+        "sugar_pct": 6.75,
+        "tsp_per_serve": 0.84375,
+        "n_sugar_names": 2,
+        "flags": [
+          "SUGAR_SPLIT"
+        ],
+        "share_line": "premium brown bread: 6.75 g sugar per 100 ml; 0.8 tsp sugar per 50 ml serve; sugar under 2 names, combined rank #4."
+      },
+      {
+        "barcode": "8901063338623",
+        "name": "Multi Grain Bread",
+        "brand": "Britannia",
+        "sugar_pct": 1.5,
+        "tsp_per_serve": 0.375,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "Multi Grain Bread: 1.5 g sugar per 100 ml; 0.4 tsp sugar per 100 ml serve."
+      },
+      {
+        "barcode": "8906017774014",
+        "name": "Thandaai Masala Powder",
+        "brand": "Ashok",
+        "sugar_pct": 59.79,
+        "tsp_per_serve": 4.48425,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_HALF"
+        ],
+        "share_line": "Thandaai Masala Powder: 59.79% sugar by weight; 4.5 tsp sugar per 30 g serve."
+      },
+      {
+        "barcode": "8906080604546",
+        "name": "",
+        "brand": "Paper Boat",
+        "sugar_pct": 10.8,
+        "tsp_per_serve": 4.590000000000001,
+        "n_sugar_names": 1,
+        "flags": [],
+        "share_line": "This product: 10.8 g sugar per 100 ml; 4.6 tsp sugar per 170 ml serve."
+      },
+      {
+        "barcode": "8902080001170",
+        "name": "Mirinda",
+        "brand": "Pepsico",
+        "sugar_pct": 13.8,
+        "tsp_per_serve": 8.625,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_BLOWN"
+        ],
+        "share_line": "Mirinda: 13.8 g sugar per 100 ml; 8.6 tsp sugar per 250 ml serve."
+      },
+      {
+        "barcode": "8901262202046",
+        "name": "Amul Lassi",
+        "brand": "Amul",
+        "sugar_pct": 22.5,
+        "tsp_per_serve": 5.625,
+        "n_sugar_names": 1,
+        "flags": [
+          "WHO_LIMIT_HALF"
+        ],
+        "share_line": "Amul Lassi: 22.5 g sugar per 100 ml; 5.6 tsp sugar per 100 ml serve."
+      }
+    ]
+  },
+  "extraction": {
+    "products_scored": 98,
+    "extraction_errors": 0,
+    "field_accuracy_overall_pct": 87.3,
+    "field_accuracy_by_field_pct": {
+      "energy_kcal": 91.8,
+      "protein_g": 89.4,
+      "carbohydrate_g": 93.8,
+      "total_sugars_g": 88.8,
+      "dietary_fibre_g": 65.3,
+      "total_fat_g": 91.5,
+      "saturated_fat_g": 87.5,
+      "sodium_mg": 78.0
+    },
+    "field_accuracy_by_condition_pct": {
+      "untagged": {
+        "pct": 87.3,
+        "n_fields": 700
+      }
+    },
+    "field_accuracy_by_image_resolution_pct": {
+      "400-800px": {
+        "pct": 87.3,
+        "n_fields": 700
+      }
+    },
+    "field_accuracy_by_legibility_pct": {
+      "partial": {
+        "pct": 82.2,
+        "n_fields": 286
+      },
+      "poor": {
+        "pct": 65.8,
+        "n_fields": 73
+      },
+      "good": {
+        "pct": 96.2,
+        "n_fields": 341
+      }
+    },
+    "field_accuracy_by_language_pct": {
+      "en": {
+        "pct": 86.2,
+        "n_fields": 616
+      },
+      "multilingual": {
+        "pct": 95.2,
+        "n_fields": 84
+      }
+    },
+    "serving_size_accuracy_pct": 68.8,
+    "sugar_alias_recall_pct": 91.0,
+    "share_with_any_claim_captured_pct": 81.6,
+    "worst_10_products": [
+      {
+        "barcode": "8901552023450",
+        "name": "Chana Pulao",
+        "fields_correct": 0,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "8901725000899",
+        "name": "Multi -Millet Mix",
+        "fields_correct": 0,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "poor",
+        "language": "en"
+      },
+      {
+        "barcode": "4906426980222",
+        "name": "instant popcorn",
+        "fields_correct": 0,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "poor",
+        "language": "en"
+      },
+      {
+        "barcode": "8904043553085",
+        "name": "Wow Pav",
+        "fields_correct": 0,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "8901262202046",
+        "name": "Amul Lassi",
+        "fields_correct": 0,
+        "fields_scored": 6,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "8908001588560",
+        "name": "Wheat Chapati",
+        "fields_correct": 2,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "8908002105087",
+        "name": "Milk White Bread",
+        "fields_correct": 4,
+        "fields_scored": 7,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "89002940",
+        "name": "Coconut oil",
+        "fields_correct": 5,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "8908014814076",
+        "name": "Premium Burger Buns",
+        "fields_correct": 5,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "partial",
+        "language": "en"
+      },
+      {
+        "barcode": "8901030837616",
+        "name": "Chokissimo Choco Brownie",
+        "fields_correct": 5,
+        "fields_scored": 8,
+        "condition": "untagged",
+        "legibility": "poor",
+        "language": "en"
+      }
+    ]
+  }
+}
