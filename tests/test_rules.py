@@ -23,7 +23,7 @@ def test_split_handles_nested_brackets_and_percent():
                               "Emulsifier (INS 322)), Invert syrup, Salt")
     names = [i["name"] for i in items]
     assert names[0] == "Refined wheat flour"
-    assert {"name": "Maida", "percent": None, "nested": True} in items
+    assert {"name": "Maida", "percent": None, "nested": True, "parent": "Refined wheat flour"} in items
     choco = next(i for i in items if i["name"].startswith("Choco"))
     assert choco["percent"] == 8.0
     assert any(i["name"] == "Sugar" and i.get("nested") for i in items)      # the sugar inside choco chips
@@ -181,3 +181,17 @@ def test_same_input_same_output():
     label = dict(BASE, per_100={"total_sugars_g": 24, "protein_g": 8}, ingredients_text="Wheat flour, Sugar, Honey",
                  front_of_pack_claims=["Protein", "Healthy"])
     assert decode_label(label) == decode_label(label)
+
+
+def test_crowd_liquid_tag_ignored_for_solid_foods():
+    noodles = {"product_name": "2 - Minute Noodles", "category": "pot noodles", "is_liquid": True,
+               "per_100": {"total_sugars_g": 1.8}, "ingredients_text": "Maida, Palm oil", "front_of_pack_claims": []}
+    lassi = {"product_name": "Amul Lassi", "category": "yogurt drinks", "is_liquid": True,
+             "per_100": {"total_sugars_g": 22.5}, "ingredients_text": "Milk solids, water, sugar", "front_of_pack_claims": []}
+    assert decode_label(noodles)["product"]["is_liquid"] is False
+    assert decode_label(lassi)["product"]["is_liquid"] is True
+
+
+def test_flavour_and_colour_are_not_sugar():
+    hits = find_sugars(split_ingredients("Sugar, Cocoa solids, Caramel colour (150d), Flavours (Caramel and Vanilla)"))
+    assert [h.canonical for h in hits] == ["sugar (sucrose)"]

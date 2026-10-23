@@ -3,9 +3,9 @@ Indian Label Decoder - Streamlit app.
 
     streamlit run app.py
 
-Three ways in: photo(s) of the pack, pasted label text, or a barcode (Open Food Facts).
-Photo and text need a model key (ANTHROPIC_API_KEY or GEMINI_API_KEY); barcode and the
-built-in examples work offline because the rules layer is pure Python.
+Ways in: a popular pack, a barcode (Open Food Facts), photo(s) of the pack, or pasted label
+text. Photo and text need a model key (ANTHROPIC_API_KEY or GEMINI_API_KEY); everything else
+works offline because the rules layer is pure Python. Presentation lives in src/ui.py.
 """
 
 from __future__ import annotations
@@ -19,144 +19,215 @@ import streamlit as st
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
+from src import ui  # noqa: E402
 from src.llm import provider  # noqa: E402
 from src.off_api import drop_implausible, fetch_product, to_label  # noqa: E402
 from src.rules.decoder import decode_label  # noqa: E402
 
-st.set_page_config(page_title="Indian Label Decoder", page_icon=":mag:", layout="wide")
-st.title("Indian Label Decoder")
-st.caption("Legally correct labels, practically useless. Paste the pack, get the sugar in teaspoons, "
-           "the claim maths per serve, and the FSSAI rule each trick hides behind.")
-
+GITHUB = "https://github.com/amustprocoder/Label-Decoder-"
 SAMPLES = ROOT / "eval" / "data" / "testset.jsonl"
+# Picked to show each kind of trick: health-drink sugar, sugar under many names, a "high protein"
+# claim, a drink that blows the daily limit, salt and saturated fat.
+FEATURED = ["7622201150303", "8901030807190", "8906080603938", "8901719125478",
+            "8904004400212", "8901058006292", "8906059638329", "6294017124031"]
+
+st.set_page_config(page_title="Indian Label Decoder", page_icon="🔍", layout="wide")
+st.markdown(ui.CSS, unsafe_allow_html=True)
 
 
 @st.cache_data(show_spinner=False)
-def load_samples() -> list[dict]:
+def load_samples() -> dict[str, dict]:
+    """barcode -> {"label": ..., "img": front photo URL} for the 100-product test set."""
     if not SAMPLES.exists():
-        return []
-    rows = [json.loads(l) for l in SAMPLES.open(encoding="utf-8")]
-    return [r["label"] for r in rows if r.get("label", {}).get("per_100", {}).get("total_sugars_g") is not None][:60]
+        return {}
+    out = {}
+    for line in SAMPLES.open(encoding="utf-8"):
+        r = json.loads(line)
+        out[r["barcode"]] = {"label": r["label"], "img": (r.get("image_urls") or {}).get("front")}
+    return out
 
 
-def sev_icon(s: str) -> str:
-    return {"high": "\U0001F534", "medium": "\U0001F7E0", "low": "\U0001F7E1"}[s]   # red / orange / yellow circle
+@st.cache_data(show_spinner=False)
+def all_sugar_values() -> list[float]:
+    return [float(v) for s in load_samples().values()
+            if (v := (s["label"].get("per_100") or {}).get("total_sugars_g")) is not None]
 
 
-def render(label: dict, result: dict) -> None:
-    p = result["product"]
-    unit = "ml" if p["is_liquid"] else "g"
-    st.subheader(f"{p.get('brand') or ''} {p.get('name') or 'Unnamed product'}".strip())
-    st.markdown(f"**{result['share_line']}**")
+def render(label: dict, result: dict, img: str | None = None, key: str = "x") -> None:
+    per100 = label.get("per_100") or {}
+    liquid = result["product"]["is_liquid"]
+    lights = ui._lights(per100, liquid)
+    st.html(ui.top_card(label, result, img, lights))
+    st.html(ui.sugar_cards(result))
+    st.html(ui.rank_card(result, all_sugar_values()) + ui.lights_card(lights, liquid))
+    # claim verdicts already have their own card; keep the flag list for everything else
+    flags = [f for f in result["flags"] if not (result["claims"] and f["code"] in ("PER100_VS_SERVE", "CLAIM_FAILS"))]
+    st.html(ui.claims_card(result["claims"], result["serving"]["g"], "ml" if liquid else "g") + ui.flags_card(flags))
+    st.html(ui.order_card(label, result) + ui.sugar_names_card(label, result) + ui.honest_card(result))
+    c1, c2 = st.columns([1, 3], vertical_alignment="center")
+    c1.download_button("⬇ Share card (PNG)", data=ui.share_image(label, result, lights),
+                       file_name=f"label-decoder-{(label.get('barcode') or 'pack')}.png", mime="image/png",
+                       key=f"dl_{key}_{label.get('barcode')}", use_container_width=True)
+    c2.caption("Get this as a picture. Send it on WhatsApp or post it.")
+    with st.expander("🔬 Nerd corner: the raw numbers"):
+        st.caption("First the label as the rules saw it, then everything the decoder worked out.")
+        st.json({k: v for k, v in label.items() if k != "images"}, expanded=False)
+        st.json(result, expanded=False)
 
-    s = result["sugar"]
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Sugar by weight", f"{s['total_sugars_per_100']:g}%" if s["total_sugars_per_100"] is not None else "n/a")
-    c2.metric(f"Per {s['serving_g']:g} {unit} serve", f"{s['teaspoons_total_per_serve']:.1f} tsp" if s["teaspoons_total_per_serve"] is not None else "n/a",
-              help=s["serving_source"])
-    c3.metric("Added sugar / serve", f"{s['teaspoons_added_per_serve']:.1f} tsp" if s["teaspoons_added_per_serve"] is not None else "unknown",
-              help=s["added_sugar_method"])
-    c4.metric("Share of WHO 25 g/day", f"{s['pct_of_who_25g_per_serve']:.0f}%" if s["pct_of_who_25g_per_serve"] is not None else "n/a")
 
-    if result["flags"]:
-        st.markdown("### Where the pack misleads")
-        for f in result["flags"]:
-            with st.expander(f"{sev_icon(f['severity'])} {f['title']}", expanded=f["severity"] == "high"):
-                st.write(f["detail"])
-                st.caption(f"Rule: {f['rule_ref']}")
+st.html(ui.navbar(GITHUB))
+st.html(ui.hero())
+st.html(ui.about())
+samples = load_samples()
+st.html(ui.marquee([
+    ("Horlicks", "is almost half sugar. 3.5 spoons in one scoop."),
+    ("Cadbury Shots", "72% sugar, hidden under 2 names."),
+    ("1 in 5 packs", "cut sugar into pieces so it never looks like #1."),
+    ("Soya Chips", "say “rich in protein”. One serve = 7% of your day."),
+    ("Paper Boat", "1 bottle = more sugar than a whole day should have."),
+    ("Maggi", "1 pack = a third of a day's salt."),
+]))
+
+tab_pop, tab_barcode, tab_photo, tab_text, tab_cmp, tab_all = st.tabs(
+    ["The usual suspects", "Scan a barcode", "Snap the pack", "Paste the fine print", "Face-off", "The full lineup"])
+
+with tab_pop:
+    st.html(ui.intro("suspects"))
+    feat = [b for b in FEATURED if b in samples]
+    if not feat:
+        st.html('<div class="ld-empty">Run <code>python eval/build_testset.py</code> once to load the sample packs.</div>')
     else:
-        st.success("No mislead patterns found on this label.")
-
-    if result["claims"]:
-        st.markdown("### Claim vs. maths")
-        rows = []
-        for c in result["claims"]:
-            rows.append({"Claim on pack": c["claim_text"], "Read as": c["claim_type"], "Verdict": c["verdict"],
-                         f"Actual / 100 {unit}": c["actual_per_100"], "Threshold": c["threshold"],
-                         "Per serve": None if c["per_serving_value"] is None else round(c["per_serving_value"], 1),
-                         "% RDA per serve": None if c["per_serving_pct_rda"] is None else round(c["per_serving_pct_rda"]),
-                         "Legal test": c["legal_test"]})
-        st.dataframe(rows, use_container_width=True, hide_index=True)
-
-    cs = result["consolidated_sugar"]
-    if result["sugar_lines"]:
-        st.markdown("### Sugar, under all its names")
-        st.write(cs["note"].capitalize() + ".")
-        st.dataframe([{"#": h["position"], "On the label": h["ingredient_line"][:80], "Actually": h["canonical"], "Tier": h["tier"],
-                       "%": h["percent"]} for h in result["sugar_lines"]], use_container_width=True, hide_index=True)
-
-    with st.expander("Honest label (plain text to copy)"):
-        st.write(result["honest_label"])
-    with st.expander("Raw decoded JSON"):
-        st.json(result)
-    with st.expander("Structured label the decoder saw"):
-        st.json({k: v for k, v in label.items() if k != "images"})
-
-
-tab_photo, tab_text, tab_barcode, tab_examples = st.tabs(["Photo", "Paste text", "Barcode", "Examples"])
-
-with tab_photo:
-    prov = provider()
-    if prov is None:
-        st.warning("No model key found. Set ANTHROPIC_API_KEY or GEMINI_API_KEY to use photo and text input. "
-                   "Barcode and Examples work without one.")
-    files = st.file_uploader("Front, ingredients and nutrition panel (1 to 4 photos of the same pack)",
-                             type=["jpg", "jpeg", "png", "webp"], accept_multiple_files=True)
-    if files and st.button("Decode photos", disabled=prov is None):
-        from src.extract import extract_from_images
-        with st.spinner(f"Reading the label with {prov}..."):
-            try:
-                label = extract_from_images([f.getvalue() for f in files[:4]])
-            except Exception as e:  # surface the provider error, do not guess
-                st.error(f"Extraction failed: {e}")
-                label = None
-        if label:
-            if label.get("legibility") == "poor":
-                st.warning(f"Label hard to read: {label.get('notes')}")
-            render(label, decode_label(label))
-
-with tab_text:
-    prov = provider()
-    txt = st.text_area("Paste everything on the pack: claims, ingredient list, nutrition table, serving size",
-                       height=220, placeholder="No added sugar. High protein.\nIngredients: Oats (40%), Dates, ...\n"
-                                               "Nutrition per 100 g: Energy 420 kcal, Protein 12 g, Total sugars 22 g ...\nServing size 40 g")
-    if txt and st.button("Decode text", disabled=prov is None):
-        from src.extract import extract_from_text
-        with st.spinner(f"Structuring the text with {prov}..."):
-            try:
-                label = extract_from_text(txt)
-            except Exception as e:
-                st.error(f"Extraction failed: {e}")
-                label = None
-        if label:
-            render(label, decode_label(label))
+        pick = st.session_state.setdefault("pick", feat[0])
+        decoded = {c: decode_label(samples[c]["label"]) for c in feat}
+        sugar = {c: (samples[c]["label"].get("per_100") or {}).get("total_sugars_g") for c in feat}
+        ribbons = {}
+        with_sugar = [c for c in feat if sugar[c] is not None]
+        if with_sugar:
+            ribbons[max(with_sugar, key=lambda c: sugar[c])] = "MOST SUGAR"
+            ribbons.setdefault(min(with_sugar, key=lambda c: sugar[c]), "LEAST SUGAR")
+        ribbons.setdefault(max(feat, key=lambda c: decoded[c]["severity_score"]), "BIGGEST TRICK")
+        for row in range(0, len(feat), 4):
+            cols = st.columns(4)
+            for col, code in zip(cols, feat[row:row + 4]):
+                s = samples[code]
+                lab = s["label"]
+                with col.container(border=True):
+                    st.html(ui.product_card(lab.get("brand"), lab.get("product_name"), s["img"], sugar[code],
+                                            decoded[code]["product"]["is_liquid"],
+                                            selected=(code == pick), ribbon=ribbons.get(code)))
+                    if st.button("Showing ↓" if code == pick else "Check this pack",
+                                 key=f"pick_{code}", use_container_width=True,
+                                 type="primary" if code == pick else "secondary"):
+                        st.session_state.pick = code
+                        st.rerun()
+        s = samples[st.session_state.pick]
+        render(s["label"], decode_label(s["label"]), s["img"], key="pop")
 
 with tab_barcode:
-    code = st.text_input("Barcode (EAN-13 under the bars, usually starts with 890 for India)")
-    if code and st.button("Look up"):
+    st.html(ui.intro("barcode"))
+    c1, c2 = st.columns([4, 1], vertical_alignment="bottom")
+    code = c1.text_input("Type the 13 digits printed under the black bars (Indian packs start with 890)",
+                         placeholder="e.g. 8901063139329  (Britannia Bourbon)")
+    go = c2.button("Check it", type="primary", use_container_width=True)
+    if code and go:
         with st.spinner("Fetching from Open Food Facts..."):
             prod = fetch_product(code.strip())
         if not prod:
-            st.error("Not on Open Food Facts. Use a photo instead.")
+            st.error("We do not know this barcode yet. Try snapping a photo of the pack instead.")
         else:
             label = to_label(prod)
             imgs = label.get("images") or {}
+            dropped = drop_implausible(label)
+            if dropped:
+                st.info("Someone typed impossible numbers into the database. We ignored these: " + ", ".join(dropped))
+            render(label, decode_label(label), imgs.get("front"), key="bc")
+            st.caption("These numbers come from Open Food Facts, which anyone can edit. Check them against the photos below.")
             cols = st.columns(3)
             for col, kind in zip(cols, ("front", "ingredients", "nutrition")):
                 if imgs.get(kind):
-                    col.image(imgs[kind], caption=kind, use_container_width=True)
-            dropped = drop_implausible(label)
-            if dropped:
-                st.warning("Ignored impossible Open Food Facts values (crowd-entry errors): " + ", ".join(dropped))
-            st.caption("Open Food Facts is crowd-sourced; numbers can be off. Check against the photos.")
-            render(label, decode_label(label))
+                    col.image(imgs[kind], caption=kind.capitalize(), use_container_width=True)
 
-with tab_examples:
-    samples = load_samples()
-    if not samples:
-        st.info("Run `python eval/build_testset.py` once to pull 100 Indian products from Open Food Facts for this tab.")
+with tab_photo:
+    st.html(ui.intro("photo"))
+    prov = provider()
+    if prov is None:
+        st.html(ui.no_key_card())
     else:
-        names = [f"{s.get('brand') or ''} {s.get('product_name') or s.get('barcode')}".strip() for s in samples]
-        pick = st.selectbox("Pick a product", range(len(samples)), format_func=lambda i: names[i])
-        label = samples[pick]
-        render(label, decode_label(label))
+        files = st.file_uploader("Upload 1 to 4 photos of one pack: the front, the ingredients, the nutrition table",
+                                 type=["jpg", "jpeg", "png", "webp"], accept_multiple_files=True)
+        if files and st.button("Decode photos", type="primary"):
+            from src.extract import extract_from_images
+            with st.spinner("Reading the label..."):
+                try:
+                    label = extract_from_images([f.getvalue() for f in files[:4]])
+                except Exception as e:  # surface the provider error, do not guess
+                    st.error(f"Could not read the photos: {e}")
+                    label = None
+            if label:
+                if label.get("legibility") == "poor":
+                    st.warning(f"Label hard to read, so some numbers may be off: {label.get('notes')}")
+                render(label, decode_label(label), key="ph")
+
+with tab_text:
+    st.html(ui.intro("paste"))
+    prov = provider()
+    if prov is None:
+        st.html(ui.no_key_card())
+    else:
+        txt = st.text_area("Paste what is written on the pack: claims, ingredients, nutrition table, serve size",
+                           height=200, placeholder="No added sugar. High protein.\nIngredients: Oats (40%), Dates, ...\n"
+                                                   "Nutrition per 100 g: Energy 420 kcal, Protein 12 g, Total sugars 22 g ...\n"
+                                                   "Serving size 40 g")
+        if txt and st.button("Decode text", type="primary"):
+            from src.extract import extract_from_text
+            with st.spinner("Reading the text..."):
+                try:
+                    label = extract_from_text(txt)
+                except Exception as e:
+                    st.error(f"Could not read the text: {e}")
+                    label = None
+            if label:
+                render(label, decode_label(label), key="tx")
+
+with tab_cmp:
+    st.html(ui.intro("faceoff"))
+    if not samples:
+        st.html('<div class="ld-empty">Run <code>python eval/build_testset.py</code> once to load the 100 products.</div>')
+    else:
+        def _nm(c: str) -> str:
+            return ui.full_name(samples[c]["label"].get("brand"), samples[c]["label"].get("product_name"))
+        codes = sorted(samples, key=lambda c: _nm(c).lower())
+        c1, c2 = st.columns(2)
+        a = c1.selectbox("Pack A", codes, format_func=_nm, index=codes.index("8901030807190") if "8901030807190" in codes else 0)
+        b = c2.selectbox("Pack B", codes, format_func=_nm, index=codes.index("8902710100150") if "8902710100150" in codes else 1)
+        res = {}
+        for code in (a, b):
+            lab = samples[code]["label"]
+            r = decode_label(lab)
+            res[code] = (lab, r, ui._lights(lab.get("per_100") or {}, r["product"]["is_liquid"]))
+        tsp = {c: res[c][1]["sugar"]["teaspoons_total_per_serve"] for c in (a, b)}
+        win = None
+        if tsp[a] is not None and tsp[b] is not None and tsp[a] != tsp[b]:
+            win = a if tsp[a] < tsp[b] else b
+        for col, code in ((c1, a), (c2, b)):
+            lab, r, lights = res[code]
+            col.html(ui.compare_card(lab, r, samples[code]["img"], lights, winner=(code == win)))
+        if win and tsp[a] and tsp[b]:
+            lo, hi = sorted((tsp[a], tsp[b]))
+            st.html(f'<div class="ld-card" style="text-align:center;font-size:17px">🏅 <b>{ui.esc(_nm(win))}</b> wins: '
+                    f'<b>{hi / lo:.1f}× less sugar</b> per serve.</div>' if lo > 0 else "")
+
+with tab_all:
+    st.html(ui.intro("lineup"))
+    if not samples:
+        st.html('<div class="ld-empty">Run <code>python eval/build_testset.py</code> once to load the 100 products.</div>')
+    else:
+        def _name(c: str) -> str:
+            b, n = ui.display_name(samples[c]["label"].get("brand"), samples[c]["label"].get("product_name"))
+            return f"{n} · {b}" if b else n
+        codes = sorted(samples, key=lambda c: _name(c).lower())
+        sel = st.selectbox("Pick any of the 100 packs we checked", codes, format_func=_name,
+                           index=codes.index(FEATURED[0]) if FEATURED[0] in codes else 0)
+        render(samples[sel]["label"], decode_label(samples[sel]["label"]), samples[sel]["img"], key="all")
+
+st.html(ui.footer(GITHUB))

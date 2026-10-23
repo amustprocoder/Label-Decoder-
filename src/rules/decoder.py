@@ -64,8 +64,13 @@ def decode_label(label: dict) -> dict:
     is_liquid = bool(label.get("is_liquid"))
     cat_text = f"{label.get('category') or ''} {label.get('product_name') or ''}".lower()
     if is_liquid and re.search(r"powder|malt|horlicks|bournvita|boost|chocolate|candy|candies|bar\b|dates?|raisin|dried|"
-                               r"biscuit|cookie|mix\b|cereal|granola|gummies|syrup", cat_text):
+                               r"biscuit|cookie|mix\b|cereal|granola|gummies|syrup|balls?\b", cat_text):
         is_liquid = False                     # a malt powder or a chocolate tagged "beverage" by a crowd database
+    if is_liquid and not re.search(r"beverage|drink|juice|\bmilk\b|water|soda|cola|sprite|mirinda|lassi|buttermilk|chaas|"
+                                   r"\btea\b|coffee|nectar|squash|shake|smoothie|\boils?\b", cat_text):
+        is_liquid = False                     # crowd data marks noodles, bread and oats "per 100 ml"; nothing says liquid
+    if is_liquid and re.search(r"bread|\bbuns?\b|\bpav\b|noodle|pasta|\boats\b|chips|wafer|\bcurd\b|\bdahi\b", cat_text):
+        is_liquid = False                     # "milk bread", "milk chocolate wafer": solids that mention milk
     unit = "ml" if is_liquid else "g"
     serving_g, serving_src = pick_serving(label)
     ingredients = label.get("ingredients") or []
@@ -372,7 +377,7 @@ def _split_top_level(text: str) -> list[str]:
     return [p.strip(" .\n\t") for p in pieces if p.strip(" .\n\t")]
 
 
-def _emit(piece: str, items: list[dict], nested: bool) -> None:
+def _emit(piece: str, items: list[dict], nested: bool, parent: str | None = None) -> None:
     """Emit one ingredient (name + declared %) then recurse into its bracketed sub-ingredients."""
     # split "name (sub, sub (subsub)) 8%" into name / bracket content
     name_part, inner_parts = "", []
@@ -407,9 +412,10 @@ def _emit(piece: str, items: list[dict], nested: bool) -> None:
         row = {"name": name, "percent": pct}
         if nested:
             row["nested"] = True
+            row["parent"] = parent
         items.append(row)
     for ip in inner_parts:
         if re.fullmatch(r"\s*\d+(?:\.\d+)?\s*%\s*", ip):
             continue
         for sub in _split_top_level(ip):
-            _emit(sub, items, nested=True)
+            _emit(sub, items, nested=True, parent=name or parent)

@@ -88,7 +88,8 @@ Current run (`eval/results/report.md`, 2 Oct 2026, rules layer on 100 OFF India 
 |---|---|
 | Decoded twice, outputs differed | 0 |
 | Products with sugar under 2+ names | 21 of 100 |
-| Flags raised | SAT_FAT_HIGH 26, SERVING_TINY 22, SUGAR_SPLIT 21, SODIUM_HIGH 11, WHO_LIMIT_HALF 6, WHO_LIMIT_BLOWN 3, TRANS_FAT 3 |
+| Flags raised | SAT_FAT_HIGH 26, SUGAR_SPLIT 21, SODIUM_HIGH 10, SERVING_TINY 7, WHO_LIMIT_HALF 6, TRANS_FAT 3, WHO_LIMIT_BLOWN 2 |
+| Liquid/solid fix (23 Oct) | Open Food Facts marked 56 of 100 packs "per 100 ml", including noodles, bread and oats. The decoder now treats a pack as liquid only when its name or category says drink, milk, juice, water or oil (16 left). SERVING_TINY fell from 19 to 7 as a result. |
 | Extraction field accuracy (vision model vs Open Food Facts reference, 98 products, 8 numeric fields, tolerance max(0.5, 10%)) | **87.3%** |
 | By the model's own legibility verdict | good 96.2% (49 products), partial 82.2%, poor 65.8% |
 | Weakest fields | dietary fibre 65.3%, sodium 78.0% (salt/sodium conversions, "<1 g" bounds, cropped last rows) |

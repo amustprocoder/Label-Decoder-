@@ -146,6 +146,9 @@ def find_sugars(ingredients: list[dict]) -> list[SugarHit]:
         if not ing.get("nested"):
             pos += 1                      # nested sub-ingredients inherit their parent's rank
         name = ing.get("name") or ""
+        tint_or_taste = re.compile(r"flavou?r|colou?r", flags=re.IGNORECASE)
+        if tint_or_taste.search(ing.get("parent") or "") or (len(name.split()) <= 3 and tint_or_taste.search(name)):
+            continue                      # "Flavours (caramel, vanilla)", "caramel colour": a taste or a tint, not a sugar
         res = classify_ingredient(name)
         if res:
             canon, tier = res
