@@ -11,8 +11,6 @@ each **front-of-pack claim survives per-serving maths**, which **ingredients are
 under different names**, and which **FSSAI rule** the pack is technically following while
 misleading you.
 
-![home](docs/app.png)
-
 ![a decoded pack](docs/result.png)
 
 ![the big picture: 100 packs](docs/dashboard.png)
