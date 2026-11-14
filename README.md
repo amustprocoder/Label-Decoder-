@@ -1,5 +1,7 @@
 # Indian Label Decoder
 
+**Live demo: https://labeldecoder-omrana.netlify.app** (opens instantly, 100 Indian packs decoded)
+
 Indian nutrition labels are legally correct and practically useless. "No added sugar" sits on a
 pack sweetened with fruit concentrate. "High protein" is true per 100 g while the serve is 30 g.
 Sugar is listed under three names so none of them tops the ingredient list.
@@ -9,7 +11,11 @@ each **front-of-pack claim survives per-serving maths**, which **ingredients are
 under different names**, and which **FSSAI rule** the pack is technically following while
 misleading you.
 
-![app](docs/app.png)
+![home](docs/app.png)
+
+![a decoded pack](docs/result.png)
+
+![the big picture: 100 packs](docs/dashboard.png)
 
 ## How it works
 
@@ -22,12 +28,12 @@ barcode ──> Open Food Facts ────────────────
                                              ├─ sugar_aliases.py   60+ names for sugar, 3 tiers
                                              ├─ fssai_claims.py    Schedule I thresholds, Reg 4/5/6/8
                                              ├─ serving.py         per-100 ↔ per-serve, tsp, RDA, WHO
-                                             └─ decoder.py         18 mislead patterns, honest label
+                                             └─ decoder.py         26 mislead patterns, honest label
 ```
 
 The model never judges. It transcribes the pack into JSON; every verdict comes from the rules
 layer, so the same label always gives the same answer and every rule is unit-tested
-(`pytest`, 21 tests). That split is what makes the accuracy numbers below meaningful: extraction
+(`pytest`, 23 tests). That split is what makes the accuracy numbers below meaningful: extraction
 errors and rule errors are measured separately.
 
 ### What the rules layer knows
@@ -47,8 +53,8 @@ errors and rule errors are measured separately.
   sugar + fruit concentrate), `NAS_HIGH_INTRINSIC`, `SUGAR_FREE_POLYOL`, `PER100_VS_SERVE`,
   `HALO_OVER_SUGAR`, `IMMUNITY_CLAIM`, `NATURAL_WITH_ADDITIVES`, `REAL_FRUIT_TRACE`,
   `MULTIGRAIN_MAIDA`, `BAKED_STILL_FATTY`, `CHOLESTEROL_FREE_PLANT`, `NO_MSG_GLUTAMATE`,
-  `AS_PREPARED`, `SERVING_TINY`, `WHO_LIMIT_BLOWN`, `SODIUM_HIGH`, `TRANS_FAT`. Each carries the
-  regulation it leans on.
+  `AS_PREPARED`, `SERVING_TINY`, `WHO_LIMIT_BLOWN`, `SODIUM_HIGH`, `TRANS_FAT` and eight more
+  (26 in all). Each carries the regulation it leans on.
 
 Thresholds follow the FSS (Advertising and Claims) Regulations 2018 and the FSS (Labelling and
 Display) Regulations 2020 as published; amendments happen, so re-verify before quoting publicly.
@@ -57,12 +63,30 @@ Display) Regulations 2020 as published; amendments happen, so re-verify before q
 
 ```bash
 pip install -r requirements.txt
-streamlit run app.py          # or double-click RUN.bat
+streamlit run app.py          # the photo app
+python build_static.py        # the website, written to site/
 ```
+
+On Windows, double-click `RUN.bat`: 1 opens the website (`site/index.html`, the same file that is deployed), 2 starts the photo app.
 
 Photo and text input need a model key: `ANTHROPIC_API_KEY` (Claude, default model
 `claude-opus-5-5`, server-side refusal fallback on) or `GEMINI_API_KEY` (free tier,
-`gemini-2.5-flash`). Barcode lookup and the Examples tab work with no key.
+`gemini-3.8-flash`). Barcode lookup and the 100 built-in packs work with no key.
+
+Gemini needs one adjustment that Claude does not: asked to copy the ingredient list word for word, every Gemini model blocked its own answer (`finishReason: RECITATION`), so the Gemini path asks for the ingredients only as separate items, which is what the rules read anyway. It also walks a short list of models, because the newest one is often busy on the free tier.
+
+Two deployments: the **Streamlit app** (photo, pasted text, any barcode; needs a key, sleeps when
+idle) and a **static site** for instant loading. `python build_static.py` decodes all 100 packs
+once with the same rules and the same HTML builders (`src/ui.py`), writes `site/`
+(one `index.html` plus 100 share cards), and that folder goes to Netlify as is.
+
+Every result opens with the verdict, **3 things to know** (sugar in spoons, the catch, fat and salt) and the spoons, then the full breakdown below in the same scroll. The plain-words lines are written in English and Hindi, and the static site has a switch for it.
+
+The static site adds two things the numbers make possible. **The big picture** is a dashboard counted
+from the 100 decoded packs (verdict split, traffic lights, the ten sweetest packs, the most common
+tricks). **Watch the AI read** replays recorded photo readings from the accuracy test field by field
+against the database, including one pack where the AI and the database disagree and the photo shows
+the database is the one that is wrong.
 
 ## Evaluation
 
@@ -114,7 +138,9 @@ distribution is not.
 ## Layout
 
 ```
-app.py                 Streamlit UI (photo / text / barcode / examples)
+app.py                 Streamlit app (packs / barcode / photo / text / face-off)
+build_static.py        builds the static Netlify site from the same rules and UI code
+src/ui.py              all HTML and CSS: verdict card, spoons, budget ring, traffic lights, share card
 src/extract.py         vision transcription -> label JSON (schema-constrained)
 src/llm.py             provider switch: Claude SDK or Gemini REST
 src/off_api.py         Open Food Facts client + sanity checks
@@ -122,5 +148,5 @@ src/rules/             the food-science layer (see above)
 eval/build_testset.py  pulls the OFF India test set with photos
 eval/run_eval.py       two-layer evaluation, writes eval/results/
 eval/manual_labels.csv hand-verified truth for the photos (fill in)
-tests/test_rules.py    21 rule tests
+tests/test_rules.py    23 rule tests
 ```

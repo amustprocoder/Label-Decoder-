@@ -6,7 +6,9 @@ rules layer, which is what keeps verdicts reproducible and testable.
 
 from __future__ import annotations
 
-from .llm import text_json, vision_json
+import copy
+
+from .llm import provider, text_json, vision_json
 
 NUTRIENT_KEYS = ["energy_kcal", "protein_g", "carbohydrate_g", "total_sugars_g", "added_sugars_g",
                  "dietary_fibre_g", "total_fat_g", "saturated_fat_g", "trans_fat_g", "cholesterol_mg",
@@ -70,12 +72,56 @@ PROMPT_IMAGE = ("Transcribe this label (one or more photos of the same pack: fro
 PROMPT_TEXT = "Here is label text pasted by a user. Structure it as JSON. Text:\n\n"
 
 
+# Gemini blocks its own answer (finishReason RECITATION) when asked to copy an ingredient list word for word:
+# published labels look like "existing text" to its filter. Tested on real pack photos: with the verbatim
+# `ingredients_text` field every model refused, without it every model answered and the numbers matched.
+# So Gemini is asked for the ingredients only as separate items, which is what the rules layer reads anyway.
+GEMINI_SYSTEM = (
+    "You read Indian packaged-food labels and fill in a structured form. Use only numbers printed on the pack; never "
+    "guess or 'correct' them. If the nutrition table is per serving only, fill per_serving_declared and compute per_100 "
+    "only when the serving size is printed (say so in notes). If the pack prints salt, fill salt_g and leave sodium_mg "
+    "null. Convert kJ to kcal only if kcal is absent (divide by 4.184). List each ingredient as its own item in label "
+    "order, bracketed sub-ingredients as separate items with nested=true right after their parent, with % values when "
+    "printed. List every marketing phrase on the front (healthy, natural, immunity, energy, real fruit, multigrain, "
+    "baked, no maida, protein...). Use null when a value is not printed."
+)
+
+
+def _gemini_schema() -> dict:
+    s = copy.deepcopy(LABEL_SCHEMA)
+    s["properties"].pop("ingredients_text")
+    s["required"] = [k for k in s["required"] if k != "ingredients_text"]
+    return s
+
+
+def _ask() -> tuple[dict, str]:
+    return (_gemini_schema(), GEMINI_SYSTEM) if provider() == "gemini" else (LABEL_SCHEMA, SYSTEM)
+
+
 def extract_from_images(images: list) -> dict:
-    return _clean(vision_json(images, PROMPT_IMAGE, LABEL_SCHEMA, system=SYSTEM))
+    schema, system = _ask()
+    return _clean(vision_json(images, PROMPT_IMAGE, schema, system=system))
 
 
 def extract_from_text(text: str) -> dict:
-    return _clean(text_json(PROMPT_TEXT + text, LABEL_SCHEMA, system=SYSTEM))
+    schema, system = _ask()
+    return _clean(text_json(PROMPT_TEXT + text, schema, system=system))
+
+
+def _join_ingredients(items: list) -> str:
+    """Rebuild a readable ingredient line from the item list: 'Wheat flour (68%), Sugar, Syrup (Sugar, Citric acid)'."""
+    groups: list[tuple[str, list[str]]] = []          # (ingredient, its bracketed sub-ingredients)
+    for it in items:
+        name = (it.get("name") or "").strip()
+        if not name:
+            continue
+        if _f(it.get("percent")) is not None:
+            name += f" {_f(it['percent']):g}%"
+        if it.get("nested") and groups:
+            groups[-1][1].append(name)
+        else:
+            groups.append((name, []))
+    return ", ".join(parent + (f" ({', '.join(subs)})" if subs else "") for parent, subs in groups)
 
 
 def _clean(d: dict) -> dict:
@@ -93,6 +139,8 @@ def _clean(d: dict) -> dict:
     d["per_100"] = per100
     d["per_serving_declared"] = serve
     d["serving_size_g"] = s
+    if not d.get("ingredients_text") and d["ingredients"]:
+        d["ingredients_text"] = _join_ingredients(d["ingredients"])
     return d
 
 

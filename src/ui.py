@@ -19,16 +19,15 @@ FSA_DRINK = {"sugar": (2.5, 11.25), "fat": (1.5, 8.75), "satfat": (0.75, 2.5), "
 
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&family=Caveat:wght@600;700&display=swap');
 :root{
-  --ink:#1c1917; --muted:#57534e; --faint:#a8a29e; --line:#e7e5e4; --card:#ffffff; --bg:#faf7f2;
+  --ink:#1c1917; --muted:#57534e; --faint:#a8a29e; --line:#e7e5e4; --card:#ffffff; --bg:#f4f6f9;
   --red:#dc2626; --red-bg:#fef2f2; --amber:#d97706; --amber-bg:#fffbeb; --green:#16a34a; --green-bg:#f0fdf4;
-  --brand:#ea580c; --brand-bg:#fff7ed; --sugar:#fde68a;
+  --brand:#4338ca; --brand-bg:#eef2ff; --sugar:#fde68a;
 }
 html, body, .stApp, .stApp p, .stApp label, .stApp summary, button, input, textarea { font-family:'Inter',system-ui,sans-serif !important; }
 [data-testid="stIconMaterial"] { font-family:'Material Symbols Rounded' !important; }
-.stApp { background:var(--bg);
-  background-image:radial-gradient(circle at 12% 0%, #ffedd5 0, transparent 38%), radial-gradient(circle at 95% 10%, #fef3c7 0, transparent 30%); }
+.stApp { background-color:var(--bg); }
 .block-container { max-width:1080px; padding-top:0.6rem; padding-bottom:3rem; }
 #MainMenu, footer, [data-testid="stToolbar"], [data-testid="stDecoration"] { display:none !important; }
 header[data-testid="stHeader"] { background:transparent; height:0; }
@@ -36,10 +35,10 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 
 /* top bar */
 .ld-nav { position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:12px;
-  background:rgba(250,247,242,.85); backdrop-filter:blur(10px); border:1px solid var(--line); border-radius:14px;
+  background:#ffffff; border:1px solid var(--line); border-radius:14px;
   padding:10px 16px; margin:4px 0 16px; box-shadow:0 6px 20px rgba(28,25,23,.05); }
 .ld-nav .logo { display:flex; align-items:center; gap:10px; font-family:'Outfit',sans-serif; font-weight:800; font-size:18px; color:var(--ink); }
-.ld-nav .logo i { font-style:normal; display:grid; place-items:center; width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,#f97316,#f59e0b); color:#fff; font-size:18px; box-shadow:0 4px 10px rgba(249,115,22,.35); }
+.ld-nav .logo i { font-style:normal; display:grid; place-items:center; width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,#334155,#0f172a); color:#fff; font-size:18px; box-shadow:0 4px 10px rgba(67,56,202,.35); }
 .ld-nav .links { display:flex; gap:8px; align-items:center; }
 .ld-nav a { text-decoration:none; font-weight:600; font-size:13.5px; color:var(--muted); padding:7px 12px; border-radius:999px; border:1px solid transparent; }
 .ld-nav a:hover { background:#fff; border-color:var(--line); color:var(--ink); }
@@ -50,38 +49,36 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .stTabs [data-baseweb="tab-list"] { gap:6px; border-bottom:none; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:999px; padding:5px; width:fit-content; max-width:100%; }
 .stTabs [data-baseweb="tab"] { padding:8px 16px; border-radius:999px; font-weight:600; color:var(--muted); transition:all .15s; }
 .stTabs [data-baseweb="tab"]:hover { background:#fafaf9; color:var(--ink); }
-.stTabs [aria-selected="true"] { color:#fff !important; background:linear-gradient(135deg,#f97316,#ea580c); box-shadow:0 4px 12px rgba(234,88,12,.3); }
+.stTabs [aria-selected="true"] { color:#fff !important; background:linear-gradient(135deg,#334155,#0f172a); box-shadow:0 4px 12px rgba(15,23,42,.3); }
 .stTabs [data-baseweb="tab-highlight"], .stTabs [data-baseweb="tab-border"] { display:none; }
 .stTabs [data-baseweb="tab-panel"] { padding-top:18px; }
 
 /* streamlit widgets */
 .stButton button, .stDownloadButton button { border-radius:999px; font-weight:700; border:1px solid var(--line); transition:all .15s; }
-.stButton button:hover, .stDownloadButton button:hover { transform:translateY(-1px); border-color:#fdba74; color:var(--brand); }
-.stButton button[kind="primary"], .stDownloadButton button[kind="primary"] { background:linear-gradient(135deg,#f97316,#ea580c); border:none; color:#fff; box-shadow:0 6px 16px rgba(234,88,12,.3); }
-.stButton button[kind="primary"]:hover { color:#fff; box-shadow:0 8px 20px rgba(234,88,12,.4); }
+.stButton button:hover, .stDownloadButton button:hover { transform:translateY(-1px); border-color:#a5b4fc; color:var(--brand); }
+.stButton button[kind="primary"], .stDownloadButton button[kind="primary"] { background:linear-gradient(135deg,#334155,#0f172a); border:none; color:#fff; box-shadow:0 6px 16px rgba(15,23,42,.3); }
+.stButton button[kind="primary"]:hover { color:#fff; box-shadow:0 8px 20px rgba(15,23,42,.4); }
 .stTextInput input, .stTextArea textarea { border-radius:14px !important; border:1.5px solid var(--line) !important; background:#fff !important; font-size:15px; padding:12px 14px; }
-.stTextInput input:focus, .stTextArea textarea:focus { border-color:var(--brand) !important; box-shadow:0 0 0 4px rgba(249,115,22,.15) !important; }
+.stTextInput input:focus, .stTextArea textarea:focus { border-color:var(--brand) !important; box-shadow:0 0 0 4px rgba(67,56,202,.15) !important; }
 [data-baseweb="select"] > div { border-radius:14px !important; border:1.5px solid var(--line) !important; background:#fff !important; }
-[data-testid="stFileUploader"] section { border:2px dashed #fdba74; border-radius:18px; background:#fff; }
+[data-testid="stFileUploader"] section { border:2px dashed #a5b4fc; border-radius:18px; background:#fff; }
 [data-testid="stExpander"] { border:1px solid var(--line); border-radius:14px; background:#fff; }
 [data-testid="stVerticalBlockBorderWrapper"]:has(> div > [data-testid="stVerticalBlock"] .ld-pcard) {
   background:var(--card); border-radius:18px !important; border:1px solid var(--line) !important; }
-[data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard.on) { border-color:#fb923c !important; box-shadow:0 0 0 4px rgba(249,115,22,.15), 0 12px 28px rgba(234,88,12,.12) !important; }
+[data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard.on) { border-color:#818cf8 !important; box-shadow:0 0 0 4px rgba(67,56,202,.15), 0 12px 28px rgba(15,23,42,.12) !important; }
 .ld-ribbon { position:absolute; top:10px; left:-6px; background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; font-size:11px; font-weight:800; letter-spacing:.04em; padding:4px 10px; border-radius:0 999px 999px 0; box-shadow:0 3px 8px rgba(220,38,38,.3); }
 .ld-ribbon.gold { background:linear-gradient(135deg,#d97706,#f59e0b); box-shadow:0 3px 8px rgba(217,119,6,.3); }
 .ld-ribbon.green { background:linear-gradient(135deg,#15803d,#22c55e); box-shadow:0 3px 8px rgba(21,128,61,.3); }
 
 /* hero */
-.ld-hero { position:relative; overflow:hidden; background:linear-gradient(135deg,#fff7ed 0%,#fffbeb 55%,#f0fdf4 100%); border:1px solid #fed7aa;
-  border-radius:24px; padding:34px 34px 28px; margin-bottom:18px; box-shadow:0 20px 50px rgba(234,88,12,.08); }
-.ld-hero::before { content:"🍪 🥤 🍫 🍬 🧃 🍩"; position:absolute; right:-10px; top:-18px; font-size:64px; letter-spacing:18px; opacity:.13; transform:rotate(-8deg); pointer-events:none; }
-.ld-hero::after { content:""; position:absolute; width:320px; height:320px; right:-120px; bottom:-160px; border-radius:50%; background:radial-gradient(circle,#fed7aa 0,transparent 70%); opacity:.7; pointer-events:none; }
+.ld-hero { position:relative; overflow:hidden; background:#ffffff; border:1px solid var(--line);
+  border-radius:24px; padding:34px 34px 28px; margin-bottom:18px; box-shadow:0 1px 0 rgba(28,25,23,.04), 0 14px 34px rgba(28,25,23,.06); }
 .ld-hero > * { position:relative; z-index:1; }
-.ld-hero h1 em { background:linear-gradient(90deg,#ea580c,#f59e0b); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.ld-hero h1 em { color:var(--red); }
 .ld-badge { display:inline-block; font-size:12px; font-weight:700; letter-spacing:.04em; text-transform:uppercase;
-  color:var(--brand); background:#fff; border:1px solid #fed7aa; border-radius:999px; padding:4px 12px; }
+  color:var(--brand); background:#fff; border:1px solid #c7d2fe; border-radius:999px; padding:4px 12px; }
 .ld-hero h1 { font-size:44px; line-height:1.08; font-weight:800; color:var(--ink); margin:14px 0 10px; letter-spacing:-.02em; padding:0; }
-.ld-hero h1 em { font-style:normal; color:var(--brand); }
+.ld-hero h1 em { font-style:normal; color:var(--red); }
 .ld-hero p.sub { font-size:17px; color:var(--muted); max-width:680px; margin:0 0 14px; }
 .ld-steps { display:flex; align-items:stretch; gap:10px; margin:0 0 20px; }
 .ld-step { flex:1; background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px 16px; }
@@ -93,7 +90,7 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-about { margin-top:0; }
 .ld-ab-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:4px; }
 .ld-ab { background:#fafaf9; border:1px solid var(--line); border-radius:14px; padding:14px 16px; }
-.ld-ab .ic { font-size:24px; line-height:1; margin-bottom:8px; }
+.ld-ab .ic { font-size:26px; line-height:1; margin-bottom:8px; }
 .ld-ab b { display:block; font-size:15px; color:var(--ink); margin-bottom:4px; font-family:'Outfit',sans-serif; }
 .ld-ab ul { margin:0; padding-left:18px; }
 .ld-ab li { font-size:13.5px; line-height:1.5; color:var(--muted); margin:3px 0; }
@@ -109,7 +106,7 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-cube.over { background:#fecaca; border-color:var(--red); box-shadow:inset -5px -5px 0 #fca5a5, 0 2px 0 #fca5a5; }
 .ld-vs { display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:center; margin:14px 0 4px; }
 .ld-vs .box { border-radius:14px; padding:14px; text-align:center; }
-.ld-vs .box.a { background:#f5f5f4; } .ld-vs .box.b { background:var(--brand-bg); border:1px solid #fed7aa; }
+.ld-vs .box.a { background:#f5f5f4; } .ld-vs .box.b { background:var(--brand-bg); border:1px solid #c7d2fe; }
 .ld-vs .box small { display:block; font-size:12px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); }
 .ld-vs .box b { display:block; font-size:26px; color:var(--ink); margin:4px 0; }
 .ld-vs .box span { font-size:13px; color:var(--muted); }
@@ -119,16 +116,122 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-stat span { font-size:13px; color:var(--muted); }
 
 /* marquee of findings under the hero */
-.ld-marq { overflow:hidden; white-space:nowrap; border-top:1px solid #fed7aa; border-bottom:1px solid #fed7aa; background:#fff; margin:-6px 0 18px; border-radius:12px; }
+.ld-marq { overflow:hidden; white-space:nowrap; border-top:1px solid #c7d2fe; border-bottom:1px solid #c7d2fe; background:#fff; margin:-6px 0 18px; border-radius:12px; }
 .ld-marq div { display:inline-block; padding:10px 0; animation:ld-scroll 45s linear infinite; }
 .ld-marq span { display:inline-block; margin:0 22px; font-size:14px; font-weight:600; color:var(--muted); }
 .ld-marq span b { color:var(--ink); } .ld-marq span i { font-style:normal; color:var(--brand); margin-right:6px; }
 @keyframes ld-scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }
 
+.ld-ab-grid.two { grid-template-columns:repeat(2,1fr); }
+/* language toggle: English by default, Hindi when <body class="lang-hi"> (never "hi": that would hide the body itself) */
+.hi { display:none; } body.lang-hi .hi { display:inline; } body.lang-hi .en { display:none; }
+.ld-lang { font:700 13px 'Inter',sans-serif; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:999px; padding:6px 12px; cursor:pointer; }
+.ld-lang:hover { border-color:var(--brand); color:var(--brand); }
+/* short hero */
+.ld-ctas { display:flex; flex-wrap:wrap; gap:10px; margin:4px 0 16px; }
+.ld-cta { display:inline-block; text-decoration:none; font:800 16px 'Inter',sans-serif; color:#fff; background:linear-gradient(135deg,#334155,#0f172a);
+  border-radius:999px; padding:13px 26px; box-shadow:0 8px 20px rgba(15,23,42,.32); transition:transform .15s; }
+.ld-cta:hover { transform:translateY(-2px); }
+.ld-cta.ghost { background:#fff; color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+.ld-proof { font-size:14px; color:var(--muted); }
+.ld-proof b { color:var(--ink); }
+/* 3 things to know */
+.ld-3 { display:grid; gap:10px; margin-top:6px; }
+.ld-3 > div { display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:center; background:#fafaf9; border:1px solid var(--line); border-radius:14px; padding:12px 14px; font-size:16px; color:var(--muted); }
+.ld-3 > div > i { font-style:normal; display:grid; place-items:center; width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#334155,#0f172a); color:#fff; font:800 16px 'Outfit',sans-serif; }
+.ld-3 b { color:var(--ink); }
+/* icons: one stroke set, drawn as CSS masks so they take the text colour (see ICONS) */
+.ld-ic { display:inline-block; width:1.15em; height:1.15em; vertical-align:-.2em; font-style:normal; background:currentColor;
+  -webkit-mask:var(--m) center / contain no-repeat; mask:var(--m) center / contain no-repeat; }
+.ld-h2 .ld-ic { color:var(--brand); margin-right:4px; }
+.ld-ab .ic .ld-ic { color:var(--brand); }
+.ld-bigic { font-size:44px; line-height:1; color:var(--brand); }
+/* hero: the same pack, front and back */
+.ld-hero-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:26px; align-items:center; }
+.ld-hero-grid h1 { font-size:38px; }
+.ld-pack { position:relative; height:286px; }
+.ld-face { position:absolute; width:186px; height:236px; border-radius:18px; padding:16px 14px; box-sizing:border-box; box-shadow:0 18px 40px rgba(15,23,42,.2); }
+.ld-face .tag { position:absolute; top:-11px; left:14px; font:800 10px 'Inter',sans-serif; letter-spacing:.09em; background:var(--ink); color:#fff; border-radius:999px; padding:3px 10px; }
+.ld-face.front { left:0; top:18px; transform:rotate(-6deg); background:linear-gradient(160deg,#22c55e,#15803d); color:#fff; }
+.ld-face.front .br { font:800 10px 'Inter',sans-serif; letter-spacing:.14em; opacity:.85; }
+.ld-face.front .hl { font:900 30px 'Outfit',sans-serif; line-height:1; margin:10px 0 12px; }
+.ld-face.front .ck { display:block; font:700 12px 'Inter',sans-serif; background:rgba(255,255,255,.2); border-radius:999px; padding:5px 10px; margin:6px 0; width:fit-content; }
+.ld-face.front .sun { position:absolute; right:-18px; bottom:-18px; width:86px; height:86px; border-radius:50%; background:rgba(255,255,255,.16); }
+.ld-face.back { right:0; top:30px; transform:rotate(5deg); background:#fff; border:1px solid var(--line); color:var(--muted); }
+.ld-face.back .h { font:800 10px 'Inter',sans-serif; letter-spacing:.12em; color:var(--faint); margin-bottom:6px; }
+.ld-face.back .t { font-size:12px; line-height:1.75; }
+.ld-face.back mark { background:var(--sugar); color:#78350f; font-weight:700; border-radius:4px; padding:0 3px; animation:ld-glow 3.6s ease-in-out infinite; }
+.ld-face.back mark:nth-of-type(2){animation-delay:.3s} .ld-face.back mark:nth-of-type(3){animation-delay:.6s} .ld-face.back mark:nth-of-type(4){animation-delay:.9s}
+@keyframes ld-glow { 0%,70%,100% { box-shadow:none; } 35% { box-shadow:0 0 0 3px rgba(245,158,11,.35); } }
+.ld-face.back .cb { display:flex; gap:5px; margin:12px 0 6px; }
+.ld-face.back .cb i { width:20px; height:20px; border-radius:5px; background:#f1f5f9; border:2px solid #94a3b8; box-shadow:inset -3px -3px 0 #cbd5e1; animation:ld-drop 3.6s ease-in-out infinite; }
+.ld-face.back .cb i:nth-child(2){animation-delay:.12s} .ld-face.back .cb i:nth-child(3){animation-delay:.24s} .ld-face.back .cb i:nth-child(4){animation-delay:.36s} .ld-face.back .cb i:nth-child(5){animation-delay:.48s}
+@keyframes ld-drop { 0%,8% { transform:translateY(-14px) scale(.4); opacity:0; } 22%,100% { transform:none; opacity:1; } }
+.ld-face.back .eq { font:800 14px 'Outfit',sans-serif; color:var(--red); }
+.ld-pack-cap { position:absolute; left:0; right:0; bottom:0; text-align:center; font:700 13px 'Inter',sans-serif; color:var(--muted); }
+/* result: full-width verdict banner */
+.ld-card.ld-vcard { padding:0; overflow:hidden; }
+.ld-vcard .ld-top { padding:20px 24px 22px; }
+.ld-vban { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:16px 24px; color:#fff; }
+.ld-vban.red { background:linear-gradient(135deg,#dc2626,#b91c1c); } .ld-vban.amber { background:linear-gradient(135deg,#d97706,#b45309); }
+.ld-vban.green { background:linear-gradient(135deg,#16a34a,#15803d); }
+.ld-vban .v { display:flex; align-items:center; gap:10px; font:900 30px 'Outfit',sans-serif; line-height:1; }
+.ld-vban .s { font-size:14.5px; font-weight:600; opacity:.95; text-align:right; }
+.ld-vban .s b { font:900 34px 'Outfit',sans-serif; line-height:1; margin-right:6px; vertical-align:-3px; }
+@media (prefers-reduced-motion: reduce) { .ld-face.back mark, .ld-face.back .cb i { animation:none; } }
+
+/* dashboard lead */
+.ld-lead { background:linear-gradient(135deg,#fef2f2,#ffffff); border:1px solid #fecaca; border-radius:18px; padding:20px 24px; margin:0 0 14px; }
+.ld-lead .big { font:800 30px 'Outfit',sans-serif; color:var(--ink); line-height:1.2; }
+.ld-lead .big em { font-style:normal; color:var(--red); }
+.ld-lead .sm { font-size:15.5px; color:var(--muted); margin-top:6px; }
+
+/* dashboard */
+.ld-kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:6px 0 14px; }
+.ld-kpi { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px; animation:ld-in .4s ease both; }
+.ld-kpi b { display:block; font-family:'Outfit',sans-serif; font-size:38px; line-height:1; color:var(--ink); }
+.ld-kpi b small { font-size:17px; color:var(--faint); font-weight:700; }
+.ld-kpi span { display:block; font-size:13.5px; color:var(--muted); margin-top:6px; line-height:1.35; }
+.ld-kpi.red b { color:var(--red); } .ld-kpi.amber b { color:var(--amber); }
+.ld-donut-wrap { display:flex; align-items:center; gap:22px; }
+.ld-donut { width:150px; height:150px; flex:none; border-radius:50%; display:grid; place-items:center; }
+.ld-donut::before { content:attr(data-v); width:98px; height:98px; border-radius:50%; background:var(--card); display:grid; place-items:center;
+  font-family:'Outfit',sans-serif; font-size:30px; font-weight:800; color:var(--ink); }
+.ld-legend div { font-size:14.5px; color:var(--muted); margin:7px 0; }
+.ld-legend i { display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:8px; vertical-align:-1px; }
+.ld-legend b { color:var(--ink); }
+.ld-stackrow { display:grid; grid-template-columns:104px 1fr; gap:10px; align-items:center; margin:11px 0; font-size:14px; color:var(--muted); }
+.ld-stack { display:flex; height:22px; border-radius:999px; overflow:hidden; background:#f5f5f4; }
+.ld-stack i { display:block; height:100%; font-style:normal; font-size:11px; font-weight:800; color:#fff; text-align:center; line-height:22px; }
+.ld-hrow { display:grid; grid-template-columns:minmax(120px,38%) 1fr 54px; gap:10px; align-items:center; margin:8px 0; font-size:13.5px; color:var(--muted); }
+.ld-hrow .n { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--ink); font-weight:600; }
+.ld-hrow .t { height:14px; background:#f5f5f4; border-radius:999px; overflow:hidden; }
+.ld-hrow .t i { display:block; height:100%; border-radius:999px; animation:ld-grow .7s ease-out both; transform-origin:left; }
+.ld-hrow .v { text-align:right; font-weight:800; color:var(--ink); }
+/* AI replay */
+.ld-photos { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:8px 0 4px; }
+.ld-photos figure { margin:0; background:#fafaf9; border:1px solid var(--line); border-radius:12px; padding:8px; text-align:center; }
+.ld-photos img { width:100%; height:150px; object-fit:contain; border-radius:8px; background:#fff; }
+.ld-photos figcaption { font-size:12px; font-weight:700; color:var(--faint); margin-top:6px; text-transform:uppercase; letter-spacing:.05em; }
+.ld-read { width:100%; border-collapse:collapse; font-size:14.5px; margin-top:6px; }
+.ld-read th { text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); padding:6px 10px; border-bottom:1px solid var(--line); }
+.ld-read td { padding:8px 10px; border-bottom:1px solid #f5f5f4; color:var(--muted); }
+.ld-read td:first-child { color:var(--ink); font-weight:600; }
+.ld-read td.ai { font-weight:800; color:var(--ink); }
+.ld-read tr.bad td { background:var(--red-bg); } .ld-read .ok { color:var(--green); font-weight:800; } .ld-read .no { color:var(--red); font-weight:800; }
+.ld-flow { display:flex; align-items:center; gap:10px; margin:18px 0 10px; font-family:'Outfit',sans-serif; font-weight:800; font-size:17px; color:var(--ink); }
+.ld-flow:first-child { margin-top:0; }
+.ld-flow span { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#334155,#0f172a); color:#fff; font-size:15px; }
+.ld-chips { display:flex; flex-wrap:wrap; gap:8px; margin:4px 0 14px; }
+.ld-chips button { font:600 14px 'Inter',sans-serif; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:999px; padding:8px 14px; cursor:pointer; }
+.ld-chips button.on { border-color:var(--brand); background:var(--brand-bg); color:var(--brand); }
+.ld-chips button i { font-style:normal; font-size:12px; font-weight:800; margin-left:6px; padding:1px 7px; border-radius:999px; background:var(--green-bg); color:var(--green); }
+.ld-chips button i.miss { background:var(--red-bg); color:var(--red); }
+
 /* per-tab intro strip */
 .ld-intro { display:grid; grid-template-columns:150px 1fr; gap:18px; align-items:center; background:#fff; border:1px solid var(--line);
   border-radius:18px; padding:16px 20px; margin:0 0 16px; animation:ld-in .35s ease both; }
-.ld-intro .art { display:flex; align-items:center; justify-content:center; height:96px; background:linear-gradient(135deg,#fff7ed,#fffbeb); border-radius:14px; }
+.ld-intro .art { display:flex; align-items:center; justify-content:center; height:96px; background:#eef1f5; border-radius:14px; }
 .ld-intro .t { font-family:'Outfit',sans-serif; font-size:22px; font-weight:800; color:var(--ink); }
 .ld-intro .l { font-size:15.5px; color:var(--muted); margin:3px 0 8px; }
 .ld-intro .tip { font-size:13.5px; color:var(--muted); background:#fafaf9; border-radius:10px; padding:7px 10px; display:inline-block; }
@@ -140,7 +243,7 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-barcode .bars { width:110px; height:46px; margin:0 auto; background:repeating-linear-gradient(90deg,#1c1917 0 2px,transparent 2px 4px,#1c1917 4px 7px,transparent 7px 9px,#1c1917 9px 10px,transparent 10px 13px); }
 .ld-barcode .num { font-family:monospace; font-size:12px; letter-spacing:2px; color:var(--ink); margin-top:4px; }
 .ld-frames { display:flex; gap:6px; }
-.ld-frames div { width:38px; height:54px; border:2px dashed #fb923c; border-radius:6px; font-size:8px; font-weight:700; color:var(--brand); display:flex; align-items:flex-end; justify-content:center; padding-bottom:3px; background:#fff; }
+.ld-frames div { width:38px; height:54px; border:2px dashed #818cf8; border-radius:6px; font-size:8px; font-weight:700; color:var(--brand); display:flex; align-items:flex-end; justify-content:center; padding-bottom:3px; background:#fff; }
 .ld-typed { font-family:monospace; font-size:10.5px; line-height:1.5; color:var(--muted); background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px 10px; text-align:left; }
 .ld-vsbadge { display:flex; align-items:center; gap:8px; }
 .ld-vsbadge span { width:38px; height:38px; border-radius:50%; background:#fff; border:2px solid var(--line); display:grid; place-items:center; font-weight:800; color:var(--ink); }
@@ -150,10 +253,10 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 [data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard) { transition:transform .18s ease, box-shadow .18s ease; }
 [data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard):hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(28,25,23,.08); }
 .ld-pcard { text-align:center; position:relative; }
-.ld-pcard .img { height:112px; display:flex; align-items:center; justify-content:center; background:#fff; border-radius:10px; }
+.ld-pcard .img { height:128px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; border-radius:14px; padding:10px; box-sizing:border-box; overflow:hidden; }
 .ld-pcard img { transition:transform .25s ease; }
 [data-testid="stVerticalBlockBorderWrapper"]:hover .ld-pcard img { transform:scale(1.07); }
-.ld-pcard img { max-height:108px; max-width:100%; object-fit:contain; }
+.ld-pcard img { max-height:100%; max-width:100%; object-fit:contain; border-radius:8px; box-shadow:0 4px 10px rgba(15,23,42,.12); }
 .ld-pcard .nm { font-weight:700; font-size:14px; color:var(--ink); margin-top:8px; line-height:1.25; min-height:36px; }
 .ld-chip { display:inline-block; font-size:12px; font-weight:700; border-radius:999px; padding:2px 10px; margin-top:6px; }
 .ld-chip.red { background:var(--red-bg); color:var(--red); } .ld-chip.amber { background:var(--amber-bg); color:var(--amber); }
@@ -185,8 +288,8 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 
 /* compare */
 .ld-cmp { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px; text-align:center; height:100%; }
-.ld-cmp .img { height:130px; display:flex; align-items:center; justify-content:center; }
-.ld-cmp .img img { max-height:120px; max-width:90%; object-fit:contain; }
+.ld-cmp .img { height:140px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; border-radius:14px; padding:10px; box-sizing:border-box; }
+.ld-cmp .img img { max-height:100%; max-width:100%; object-fit:contain; border-radius:8px; box-shadow:0 4px 10px rgba(15,23,42,.12); }
 .ld-cmp .nm { font-size:20px; font-weight:800; color:var(--ink); margin:8px 0 6px; }
 .ld-cmp .big { font-size:34px; font-weight:800; color:var(--ink); margin-top:10px; line-height:1; }
 .ld-cmp .big small { font-size:14px; color:var(--muted); font-weight:600; }
@@ -199,8 +302,8 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-h2 { font-size:20px; font-weight:800; color:var(--ink); margin:0 0 4px; }
 .ld-h2-sub { font-size:14px; color:var(--muted); margin:0 0 16px; }
 .ld-top { display:grid; grid-template-columns:180px 1fr; gap:24px; align-items:center; }
-.ld-top .img { background:#fff; border:1px solid var(--line); border-radius:14px; height:180px; display:flex; align-items:center; justify-content:center; }
-.ld-top .img img { max-height:calc(100% - 12px); max-width:calc(100% - 12px); object-fit:contain; }
+.ld-top .img { background:#f1f5f9; border-radius:16px; height:180px; display:flex; align-items:center; justify-content:center; padding:12px; box-sizing:border-box; }
+.ld-top .img img { max-height:100%; max-width:100%; object-fit:contain; border-radius:10px; box-shadow:0 6px 14px rgba(15,23,42,.14); }
 .ld-top .img .ph { font-size:56px; }
 .ld-brand { font-size:13px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--faint); }
 .ld-name { font-size:30px; font-weight:800; color:var(--ink); line-height:1.15; margin:2px 0 12px; letter-spacing:-.01em; }
@@ -215,8 +318,8 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-grid2 { display:grid; grid-template-columns:1.15fr 1fr; gap:14px; }
 .ld-grid2 > .ld-card { margin:0; }
 .ld-cubes { display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 12px; }
-.ld-cube { width:34px; height:34px; border-radius:8px; background:#fffbeb; border:2px solid #f59e0b;
-  box-shadow:inset -5px -5px 0 #fde68a, 0 2px 0 #fcd34d; position:relative; overflow:hidden; animation:ld-pop .4s cubic-bezier(.3,1.5,.6,1) both; }
+.ld-cube { width:34px; height:34px; border-radius:8px; background:#f1f5f9; border:2px solid #94a3b8;
+  box-shadow:inset -5px -5px 0 #cbd5e1, 0 2px 0 #cbd5e1; position:relative; overflow:hidden; animation:ld-pop .4s cubic-bezier(.3,1.5,.6,1) both; }
 .ld-cube:nth-child(2){animation-delay:.05s} .ld-cube:nth-child(3){animation-delay:.1s} .ld-cube:nth-child(4){animation-delay:.15s}
 .ld-cube:nth-child(5){animation-delay:.2s} .ld-cube:nth-child(6){animation-delay:.25s} .ld-cube:nth-child(7){animation-delay:.3s}
 .ld-cube:nth-child(8){animation-delay:.35s} .ld-cube:nth-child(9){animation-delay:.4s} .ld-cube:nth-child(n+10){animation-delay:.45s}
@@ -271,16 +374,24 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-ing { font-size:14.5px; line-height:1.85; color:var(--muted); background:#fafaf9; border-radius:12px; padding:14px 16px; }
 .ld-ing mark { background:var(--sugar); color:#78350f; font-weight:700; border-radius:4px; padding:1px 4px; }
 
-.ld-honest { font-size:15.5px; line-height:1.6; color:var(--ink); background:var(--brand-bg); border:1px dashed #fdba74; border-radius:14px; padding:16px 18px; }
+.ld-honest { font-size:15.5px; line-height:1.6; color:var(--ink); background:var(--brand-bg); border:1px dashed #a5b4fc; border-radius:14px; padding:16px 18px; }
 .ld-footer { text-align:center; color:var(--faint); font-size:13.5px; margin-top:36px; padding-top:18px; border-top:1px solid var(--line); }
 .ld-footer a { color:var(--brand); text-decoration:none; font-weight:600; }
 .ld-empty { background:#fff; border:1px dashed var(--line); border-radius:16px; padding:22px; color:var(--muted); text-align:center; }
 
 @media (max-width: 720px) {
   .ld-hero { padding:24px 18px 20px; } .ld-hero h1 { font-size:31px; }
+  .ld-hero-grid h1 { font-size:31px; }
+  .ld-hero-grid { grid-template-columns:1fr; gap:10px; } .ld-pack { height:262px; max-width:330px; margin:0 auto; width:100%; }
+  .ld-face { width:164px; height:214px; } .ld-face.front .hl { font-size:26px; }
+  .ld-vban { padding:14px 16px; } .ld-vban .v { font-size:24px; } .ld-vban .s { text-align:left; } .ld-vban .s b { font-size:28px; }
+  .ld-vcard .ld-top { padding:16px; }
   .ld-steps { flex-direction:column; } .ld-arrow { transform:rotate(90deg); text-align:center; }
   .ld-ab-grid { grid-template-columns:1fr; } .ld-pts { grid-template-columns:1fr; }
   .ld-intro { grid-template-columns:1fr; } .ld-intro .art { height:80px; }
+  .ld-lead .big { font-size:23px; } .ld-3 > div { font-size:15px; } .ld-ab-grid.two { grid-template-columns:1fr; }
+  .ld-kpis { grid-template-columns:repeat(2,1fr); } .ld-donut-wrap { flex-direction:column; align-items:flex-start; }
+  .ld-photos img { height:96px; } .ld-hrow { grid-template-columns:minmax(96px,40%) 1fr 46px; }
   .ld-vs { grid-template-columns:1fr; } .ld-vs .mid { text-align:center; }
   .ld-stats, .ld-lights { grid-template-columns:repeat(2,1fr); }
   .ld-top { grid-template-columns:1fr; } .ld-top .img { height:150px; }
@@ -289,6 +400,91 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 }
 </style>
 """
+
+
+# One icon set instead of emoji (which change shape on every phone). 24x24, stroke only.
+# Drawn as CSS masks, not inline <svg>: Streamlit's st.html strips <svg>, and a mask takes the text colour.
+ICONS = {
+    "spoon": "<ellipse cx='12' cy='7.5' rx='4' ry='4.5'/><path d='M12 12v9'/>",
+    "calendar": "<rect x='3' y='5' width='18' height='16' rx='2'/><path d='M3 10h18M8 3v4M16 3v4'/>",
+    "bars": "<path d='M4 21h16M6 21V11M12 21V4M18 21v-7'/>",
+    "lights": "<rect x='8' y='2' width='8' height='20' rx='3'/><circle cx='12' cy='7' r='1'/><circle cx='12' cy='12' r='1'/><circle cx='12' cy='17' r='1'/>",
+    "chat": "<path d='M4 5h16v11H10l-6 4z'/>",
+    "wand": "<path d='M4 20L15 9M18 3v4M16 5h4M20 12v2M19 13h2M9 3v2M8 4h2'/>",
+    "list": "<path d='M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01'/>",
+    "eye": "<path d='M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z'/><circle cx='12' cy='12' r='3'/>",
+    "check": "<circle cx='12' cy='12' r='9'/><path d='M8 12l3 3 5-6'/>",
+    "cross": "<circle cx='12' cy='12' r='9'/><path d='M9 9l6 6M15 9l-6 6'/>",
+    "alert": "<path d='M12 3l10 18H2z'/><path d='M12 10v5M12 18h.01'/>",
+    "question": "<circle cx='12' cy='12' r='9'/><path d='M9.5 9.5a2.5 2.5 0 115 0c0 2-2.5 2-2.5 4M12 17h.01'/>",
+    "target": "<circle cx='12' cy='12' r='9'/><circle cx='12' cy='12' r='5'/><circle cx='12' cy='12' r='1'/>",
+    "phone": "<rect x='7' y='2' width='10' height='20' rx='2'/><path d='M11 18h2'/>",
+    "book": "<path d='M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z'/><path d='M5 17a3 3 0 013-3h11'/>",
+    "gear": "<circle cx='12' cy='12' r='3'/><path d='M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1'/>",
+    "user": "<circle cx='12' cy='8' r='4'/><path d='M4 21c0-4 4-6 8-6s8 2 8 6'/>",
+    "search": "<circle cx='11' cy='11' r='7'/><path d='M21 21l-4.5-4.5'/>",
+    "download": "<path d='M12 3v12M7 11l5 5 5-5M4 21h16'/>",
+    "medal": "<circle cx='12' cy='9' r='6'/><path d='M9 14l-2 7 5-3 5 3-2-7'/>",
+    "package": "<path d='M3 8l9-5 9 5v8l-9 5-9-5z'/><path d='M3 8l9 5 9-5M12 13v8'/>",
+}
+
+
+def _icon_css() -> str:
+    rules = []
+    for name, body in ICONS.items():
+        svg = ("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' "
+               f"stroke-linecap='round' stroke-linejoin='round'>{body}</svg>")
+        rules.append(f'.ld-ic-{name} {{ --m:url("data:image/svg+xml,{svg.replace("<", "%3C").replace(">", "%3E")}"); }}')
+    return "\n".join(rules)
+
+
+CSS = CSS.replace("</style>", _icon_css() + "\n</style>")
+
+# The page background is drawn, not generated. Three quiet layers:
+#   paper   - a warm off-white with a little grain and a very light dot grid (a designer's notebook, not a tech grid)
+#   sketches - pen doodles of the things this project is about (barcode, spoon, sugar cube, pack, magnifier, per cent),
+#              placed as a column in each page margin. They never sit behind content and never get cut by a card,
+#              which is what made the earlier all-over pattern read as wallpaper.
+# All of it is CSS, so it costs no requests.
+_DOODLES = """
+<g transform='translate(42 40) rotate(-8)'><path d='M0 0v46M7 1v44M12 0v46M21 2v43M26 0v46M30 1v45M39 0v46M46 2v43M51 0v46M60 1v44'/><path d='M-4 54c20 3 46-2 68 1'/></g>
+<g transform='translate(78 250) rotate(22)'><path d='M0 0c-10 2-15 14-12 26c3 11 13 15 21 11c9-5 12-18 7-28c-3-6-9-10-16-9z'/><path d='M4 38c1 22-1 46 2 70'/></g>
+<g transform='translate(46 520) rotate(-6)'><path d='M0 14l26-13l27 12l-1 30l-27 14l-26-13z'/><path d='M0 14l26 13l27-14M26 27l-1 30'/></g>
+<g transform='translate(44 770) rotate(6)'><path d='M2 10c18-3 38-2 56 0l2 78c-20 3-40 3-60 0z'/><path d='M2 10l6-8l7 8l7-8l7 8l7-8l7 8l7-8l8 8'/><path d='M14 38h34M14 50h26M14 62h30'/></g>
+<g transform='translate(40 1030) rotate(-12)'><path d='M22 0c13-1 24 9 24 22c0 13-10 24-23 24c-13 0-23-10-23-23c0-12 9-22 22-23z'/><path d='M40 40l22 24'/></g>
+<g transform='translate(58 1262) rotate(10)'><path d='M4 0c5-1 9 3 9 8c0 5-4 8-9 8c-5 0-8-4-8-8c0-4 3-8 8-8zM30 26c5-1 9 3 9 8c0 5-4 8-9 8c-5 0-8-4-8-8c0-4 3-8 8-8zM34-2l-32 46'/></g>
+"""
+
+
+def _paper_css() -> str:
+    enc = lambda svg: svg.replace("\n", "").replace("%", "%25").replace("<", "%3C").replace(">", "%3E").replace("#", "%23")
+    sketches = enc("<svg xmlns='http://www.w3.org/2000/svg' width='150' height='1400' viewBox='0 0 150 1400' fill='none' "
+                   "stroke='#0f172a' stroke-opacity='.08' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'>"
+                   + _DOODLES + "</svg>")
+    grain = enc("<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'>"
+                "<feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/>"
+                "<feColorMatrix values='0 0 0 0 .06  0 0 0 0 .09  0 0 0 0 .16  0 0 0 .04 0'/></filter>"
+                "<rect width='100%' height='100%' filter='url(#n)'/></svg>")
+    fade = "linear-gradient(transparent, #000 90px, #000 calc(100% - 90px), transparent)"
+    return (
+        '.stApp { background-image:radial-gradient(circle, rgba(15,23,42,.04) 1px, transparent 1.4px), '
+        'url("data:image/svg+xml,' + grain + '"); background-size:24px 24px, 220px 220px; }\n'
+        # margin sketches: only where a real margin exists, starting below the handwritten notes
+        '.ld-page { --sk:clamp(56px, calc((100vw - 1170px) / 2), 150px); }\n'
+        '.ld-page::before, .ld-page::after { content:""; display:none; position:absolute; top:760px; bottom:140px; width:var(--sk); '
+        'pointer-events:none; background:url("data:image/svg+xml,' + sketches + '") repeat-y center top / var(--sk) auto; '
+        f'-webkit-mask-image:{fade}; mask-image:{fade}; }}\n'
+        '.ld-page::before { left:calc(-12px - var(--sk)); } .ld-page::after { right:calc(-12px - var(--sk)); transform:scaleX(-1); background-position:center 560px; }\n'
+        '@media (min-width: 1260px) { .ld-page::before, .ld-page::after { display:block; } }'
+    )
+
+
+CSS = CSS.replace("</style>", _paper_css() + "\n</style>")
+
+
+def icon(name: str) -> str:
+    """An icon from ICONS, sized and coloured by the text around it."""
+    return f'<em class="ld-ic ld-ic-{name}"></em>'
 
 
 def esc(s) -> str:
@@ -303,13 +499,61 @@ def fmt(v, digits: int = 1) -> str:
 
 def _tidy(s: str) -> str:
     s = re.sub(r"\s+", " ", (s or "").strip())
-    return s.title() if s and (s.islower() or s.isupper()) else s
+    return re.sub(r"(?<=[A-Za-z])['’]S\b", "'s", s.title()) if s and (s.islower() or s.isupper()) else s
+
+
+# Hand-cleaned names for packs whose crowd-database name is wrong, misspelt or unreadable:
+# (raw brand, raw name) -> (brand, product, full name)
+NICE = {
+    ("Britannia", "Good Day Cashew Cookies"): ("Britannia", "Good Day Cashew", "Britannia Good Day Cashew"),
+    ("Paper Boat", "Swing+ Slurpy Mango"): ("Paper Boat", "Swing Mango Drink", "Paper Boat Swing Mango"),
+    ("Parle", "Parle-G gold 75g"): ("Parle", "Parle-G Gold", "Parle-G Gold"),
+    ("Maggi, Nestlé", "2 - Minute Noodles"): ("Maggi", "2-Minute Noodles", "Maggi 2-Minute Noodles"),
+    ("Maggi", "Spicy Garlic 2 Minute Noodles"): ("Maggi", "Spicy Garlic Noodles", "Maggi Spicy Garlic Noodles"),
+    ("Nestlé", "KitKat Chunky Caramel"): ("KitKat", "Chunky Caramel", "KitKat Chunky Caramel"),
+    ("KitKat, Nestle nutrition", "Kitkat mini chocolate coated wafer"): ("KitKat", "Mini", "KitKat Mini"),
+    ("Pepsico", "Mirinda"): ("PepsiCo", "Mirinda", "Mirinda"),
+    ("Coca cola, Sprite", "Sprite"): ("Coca-Cola", "Sprite", "Sprite"),
+    ("The Coca-Cola Company, कोका कोला क", "Sprite Lemon Lime flv Coke Brand 2ltr"): ("Coca-Cola", "Sprite Lemon-Lime (2 L)", "Sprite Lemon-Lime (2 L)"),
+    ("Lay's", "PEPSICO."): ("Lay's", "Potato Chips", "Lay's Potato Chips"),
+    ("WAIWAI", "WAI WAI"): ("Wai Wai", "Instant Noodles", "Wai Wai Noodles"),
+    ("Nissin, Top Ramen", "top ramn"): ("Nissin", "Top Ramen Noodles", "Top Ramen Noodles"),
+    ("Samyang", "3x spicy noddles"): ("Samyang", "3x Spicy Noodles", "Samyang 3x Spicy Noodles"),
+    ("Kissan", "kissan fresh Tamato"): ("Kissan", "Fresh Tomato Ketchup", "Kissan Fresh Tomato Ketchup"),
+    ("what's up", "what's up eye health zeaxanthin & lutein gummies"): ("What's Up", "Eye Health Gummies", "What's Up Eye Health Gummies"),
+    ("Organic peanut butter Creamy", "24 Mantra Organic"): ("24 Mantra Organic", "Peanut Butter (Creamy)", "24 Mantra Peanut Butter"),
+    ("Mother Diary", "Classic Curd"): ("Mother Dairy", "Classic Curd", "Mother Dairy Classic Curd"),
+    ("Mother Diary", "White Bread"): ("Mother Dairy", "White Bread", "Mother Dairy White Bread"),
+    ("Boni", "Mélange de bonbons"): ("Boni", "Mixed Candies", "Boni Mixed Candies"),
+    ("Saffola", "Oodles Yummy masala ring noodles"): ("Saffola", "Oodles Ring Noodles", "Saffola Oodles"),
+    ("Aashirvaad", "Aashirvaad Vermicilli"): ("Aashirvaad", "Vermicelli", "Aashirvaad Vermicelli"),
+    ("Aashirvaad", "Multi -Millet Mix"): ("Aashirvaad", "Multi-Millet Mix", "Aashirvaad Multi-Millet Mix"),
+    ("One Science", "ISO GOLD WHEY PROTEIN ISOLATE"): ("One Science", "ISO Gold Whey Protein", "One Science ISO Gold Whey"),
+    ("BABU, Laxminarayan", "Lite Chiwda"): ("Laxminarayan", "Lite Chiwda", "Laxminarayan Lite Chiwda"),
+    ("MTR", "Idli Karam Podi"): ("MTR", "Idli Karam Podi", "MTR Idli Karam Podi"),
+    ("4700BC", "instant popcorn"): ("4700BC", "Instant Popcorn", "4700BC Instant Popcorn"),
+}
+_SMALL = {"and", "of", "the", "with", "for", "in", "de", "flv"}
+
+
+def _smart(s: str) -> str:
+    """Capitalise stray lowercase words and calm SHOUTED ones; short acronyms (MTR, TGF) stay."""
+    out = []
+    for i, w in enumerate(s.split()):
+        if w.islower() and (w not in _SMALL or i == 0):
+            w = w[:1].upper() + w[1:]
+        elif w.isupper() and w.isalpha() and len(w) > 4:
+            w = w.capitalize()
+        out.append(w)
+    return " ".join(out)
 
 
 def display_name(brand: str | None, name: str | None) -> tuple[str, str]:
     """(brand, product name) with crowd-database noise removed: duplicate brand, pack size, ALL CAPS, lowercase."""
-    b = _tidy((brand or "").split(",")[0])
-    n = _tidy(re.sub(r"\s*\d+(\.\d+)?\s*(g|gm|kg|ml|l|ltr)\.?$", "", name or "", flags=re.I))
+    if (brand, name) in NICE:
+        return NICE[(brand, name)][:2]
+    b = _smart(_tidy((brand or "").split(",")[0]))
+    n = _smart(_tidy(re.sub(r"\s*\d+(\.\d+)?\s*(g|gm|kg|ml|l|ltr)\.?$", "", name or "", flags=re.I)))
     if not n:
         return "", b or "Unnamed product"
     if b and n.lower().startswith(b.lower() + " "):
@@ -318,6 +562,8 @@ def display_name(brand: str | None, name: str | None) -> tuple[str, str]:
 
 
 def full_name(brand: str | None, name: str | None) -> str:
+    if (brand, name) in NICE:
+        return NICE[(brand, name)][2]
     b, n = display_name(brand, name)
     return n if not b or b.lower() in n.lower() else f"{b} {n}"
 
@@ -326,80 +572,99 @@ def full_name(brand: str | None, name: str | None) -> str:
 # hero and picker
 # ---------------------------------------------------------------------------------------------
 
-def hero() -> str:
+def bi(en: str, hi: str) -> str:
+    """English and Hindi side by side; the page shows one (see .hi in the CSS). Both parts must already be HTML-safe."""
+    return f'<span class="en">{en}</span><span class="hi" lang="hi">{hi}</span>'
+
+
+def hero(cta: bool = False) -> str:
+    """Headline, one line, one button. `cta` adds the buttons (the static site has in-page anchors, Streamlit does not)."""
+    buttons = ('<div class="ld-ctas"><a class="ld-cta" href="#packs">Check a pack ↓</a>'
+               '<a class="ld-cta ghost" href="#how">How we know</a></div>') if cta else ""
+    pack = (
+        '<div class="ld-pack" aria-hidden="true">'
+        '<div class="ld-face front"><span class="tag">FRONT</span><div class="br">CRUNCHY OATS</div><div class="hl">HEALTHY</div>'
+        '<span class="ck">✓ High protein</span><span class="ck">✓ No added sugar</span><span class="ck">✓ Real fruit</span>'
+        '<div class="sun"></div></div>'
+        '<div class="ld-face back"><span class="tag">BACK</span><div class="h">INGREDIENTS</div>'
+        '<div class="t">Oats, <mark>sugar</mark>, <mark>glucose syrup</mark>, palm oil, <mark>maltodextrin</mark>, '
+        '<mark>invert syrup</mark>, salt</div>'
+        '<div class="cb"><i></i><i></i><i></i><i></i><i></i></div><div class="eq">= 5 spoons of sugar</div></div>'
+        '<div class="ld-pack-cap">Same pack. Two stories.</div></div>'
+    )
     return (
-        '<div class="ld-hero"><span class="ld-badge">🇮🇳 Indian Label Decoder</span>'
-        '<h1>Healthy on the front.<br><em>Sugar</em> on the back.</h1>'
-        '<p class="sub">Indian food labels are legally correct and practically useless. This app reads any pack and tells you:</p>'
-        '<ul class="ld-pts">'
-        '<li><i>🥄</i><span><b>Sugar in spoons</b>, not grams</span></li>'
-        '<li><i>🎭</i><span><b>Every secret name</b> sugar hides under</span></li>'
-        '<li><i>⚖️</i><span><b>“High protein”: true or not?</b> Checked against the law</span></li>'
-        '<li><i>🎩</i><span><b>The trick</b> on the pack, and the rule behind it</span></li>'
-        '</ul>'
-        '<div class="ld-steps" id="how">'
-        '<div class="ld-step"><div class="ic">📦</div><b>1. Pick a pack</b><span>tap, barcode or photo</span></div>'
-        '<div class="ld-arrow">→</div>'
-        '<div class="ld-step"><div class="ic">🔍</div><b>2. We read it</b><span>numbers, ingredients, claims</span></div>'
-        '<div class="ld-arrow">→</div>'
-        '<div class="ld-step"><div class="ic">✅</div><b>3. You get the truth</b><span>spoons, colours, plain words</span></div>'
-        '</div>'
-        '<div class="ld-stats">'
-        '<div class="ld-stat"><b>100</b><span>Indian packs checked</span></div>'
-        '<div class="ld-stat"><b>1 in 5</b><span>hide sugar under many names</span></div>'
-        '<div class="ld-stat"><b>60+</b><span>secret names for sugar</span></div>'
-        '<div class="ld-stat"><b>87%</b><span>accurate when reading photos</span></div>'
-        '</div></div>'
+        '<div class="ld-hero"><div class="ld-hero-grid"><div>'
+        '<span class="ld-badge">Indian Label Decoder</span>'
+        '<h1><span class="ld-ln"><span class="ld-rot">Healthy</span> on the front.</span><br><span class="ld-ln"><em class="ld-rot2">Sugar</em> on the back.</span></h1>'
+        '<p class="sub">Indian food labels are legally correct and practically useless. '
+        'Pick a pack and see what it really says, in spoons and plain words.</p>'
+        + buttons +
+        '<div class="ld-proof"><b>100</b> Indian packs checked · <b>1 in 5</b> hide sugar under many names · '
+        '<b>87%</b> accurate when reading photos</div>'
+        '</div>' + pack + '</div></div>'
     )
 
 
+def _tiles(tiles: list) -> str:
+    return "".join(f'<div class="ld-ab"><div class="ic">{i}</div><b>{esc(t)}</b><ul>'
+                   + "".join(f"<li>{p}</li>" for p in pts) + "</ul></div>" for i, t, pts in tiles)
+
+
 def about() -> str:
-    """The whole project on one screen: problem, product, method, evidence, stack, author."""
+    """The project in three boxes: problem, product, proof. Method and credits live in method(), lower down."""
     tiles = [
-        ("🎯", "The problem", [
+        (icon("target"), "The problem", [
             "“No added sugar”, but sweetened with fruit syrup",
             "“High protein” per 100 g; you eat 25 g",
             "Sugar split into 3 names so none is #1",
             "<b>All legal. All misleading.</b>"]),
-        ("📱", "What it does", [
-            "In: photo, barcode or pasted text",
-            "Out: sugar per serve, in spoons",
-            "Every hidden name for sugar",
-            "Each claim checked against the law",
-            "Traffic lights + daily sugar budget"]),
-        ("⚙️", "How it works", [
-            "AI only <b>reads</b> the pack",
-            "Verdicts come from <b>Python rules</b>, not AI",
-            "60+ sugar names · FSSAI limits · 26 tricks",
-            "Same pack = same answer, always",
-            "23 unit tests"]),
-        ("📊", "The evidence", [
+        (icon("phone"), "What it does", [
+            "Counts the sugar in one serve, in spoons",
+            "Finds every hidden name for sugar",
+            "Checks each claim against the law",
+            "Shows traffic lights and a daily sugar budget"]),
+        (icon("bars"), "The proof", [
             "100 Indian packs tested",
             "21 of 100 hide sugar under 2+ names",
-            "Photo reading: <b>87% accurate</b>",
-            "96% on clean packs; errors listed by field"]),
-        ("🧰", "Built with", [
-            "Python + Streamlit",
-            "Claude / Gemini vision",
-            "Open Food Facts API",
-            "pytest, Pillow"]),
-        ("👤", "Why I built it", [
-            "PM portfolio project by Om Rana",
-            "A real consumer problem",
-            "Domain rules turned into code",
-            "Measured, not just a demo"]),
+            "Photo reading: <b>87% accurate</b>, 96% on clean photos",
+            "Same pack, same answer, every time"]),
     ]
-    body = "".join(f'<div class="ld-ab"><div class="ic">{i}</div><b>{esc(t)}</b><ul>'
-                   + "".join(f"<li>{p}</li>" for p in pts) + "</ul></div>" for i, t, pts in tiles)
     return (f'<div class="ld-card ld-about"><div class="ld-h2">The whole project in 30 seconds</div>'
-            f'<div class="ld-h2-sub">Six boxes. Read top to bottom.</div><div class="ld-ab-grid">{body}</div></div>')
+            f'<div class="ld-h2-sub">Three boxes. Read left to right.</div><div class="ld-ab-grid">{_tiles(tiles)}</div></div>')
+
+
+def method() -> str:
+    """How we know: sources, mechanism, limits, credits. Sits at the bottom so the tool comes first."""
+    tiles = [
+        (icon("book"), "Where the rules come from", [
+            "<b>FSSAI</b>, India's food regulator: Advertising &amp; Claims Regulations 2018, Labelling &amp; Display Regulations 2020",
+            "<b>WHO</b>, the World Health Organization: under 25 g of added sugar a day (2015 guideline)",
+            "Traffic-light cut-offs: the UK Food Standards Agency scheme, because India has not finalised its own"]),
+        (icon("gear"), "How it works", [
+            "AI only <b>reads</b> the pack",
+            "The verdict comes from <b>written rules</b>, not from AI",
+            "60+ names for sugar, 26 label tricks",
+            "23 automated tests on the rules"]),
+        (icon("alert"), "What it cannot do", [
+            "Pack data comes from Open Food Facts, which anyone can edit, so it can be wrong",
+            "Photo reading is 87% right, and less on blurry photos",
+            "If a pack prints no serve size, we assume a typical one and say so",
+            "This is not medical advice"]),
+        (icon("user"), "About the project", [
+            "Built by Om Rana as a product-management project",
+            "Python, Streamlit, Claude / Gemini vision, Open Food Facts",
+            "Pack data collected in October 2026"]),
+    ]
+    return (f'<div class="ld-card ld-about" id="how" style="margin-top:26px"><div class="ld-h2">How we know</div>'
+            f'<div class="ld-h2-sub">Where the rules come from, how the tool decides, and what it cannot do</div>'
+            f'<div class="ld-ab-grid two">{_tiles(tiles)}</div></div>')
 
 
 INTROS = {
     "suspects": ("The usual suspects",
                  "Eight packs everyone buys. Tap one. Prepare to be mildly betrayed.",
                  "Start with Cadbury Shots. It is the worst of the lot.",
-                 '<div class="ld-art"><span>🍫</span><span>🥛</span><span>🧃</span><span>🍪</span></div>'),
+                 '<div class="ld-bigic">' + icon("package") + '</div>'),
     "barcode": ("Those 13 digits know everything",
                 "The number under the black bars is the pack's ID. Type it, we fetch the label.",
                 "Indian packs start with 890. Try 8901063139329 (Britannia Bourbon), or whatever is in your kitchen.",
@@ -414,12 +679,20 @@ INTROS = {
               '<div class="ld-typed">No added sugar. High protein.<br>Ingredients: Oats (40%), Dates…<br>Per 100 g: Sugars 22 g…</div>'),
     "faceoff": ("Face-off",
                 "Two packs enter. One has less sugar. Settle the kitchen argument.",
-                "Try Horlicks vs White Oats, or Mishti Doi vs Classic Dahi.",
+                "Start with Mishti Doi vs Classic Dahi. Then try Mirinda vs Paper Boat.",
                 '<div class="ld-vsbadge"><span>A</span><b>VS</b><span>B</span></div>'),
+    "bigpicture": ("The big picture",
+                   "We ran all 100 packs through the decoder. Here is what came out.",
+                   "Every number on this page is counted from the packs. Nothing is typed in by hand.",
+                   '<div class="ld-bigic">' + icon("bars") + '</div>'),
+    "airead": ("Watch the AI read a pack",
+               "Real photos, the AI's real reading, checked number by number against the database.",
+               "Recorded from the accuracy test: 300 photos, 87% of numbers right. 96% on clean photos, 66% on hard-to-read ones.",
+               '<div class="ld-frames"><div>Front</div><div>Ingredients</div><div>Nutrition</div></div>'),
     "lineup": ("The full lineup",
                "All 100 packs we tested, A to Z. Find yours.",
                "Spoiler: Horlicks is 46% sugar. Parle-G is a quarter sugar. Maggi is a third of your day's salt.",
-               '<div class="ld-art"><span>📚</span></div>'),
+               '<div class="ld-bigic">' + icon("list") + '</div>'),
 }
 
 
@@ -439,7 +712,7 @@ def marquee(items: list[tuple[str, str]]) -> str:
 def product_card(brand: str | None, name: str | None, img: str | None, sugar_100, is_liquid: bool,
                  selected: bool = False, ribbon: str | None = None) -> str:
     n = full_name(brand, name)
-    pic = f'<img src="{esc(img)}" alt="">' if img else '<span style="font-size:40px">📦</span>'
+    pic = f'<img src="{esc(img)}" alt="">' if img else '<span style="font-size:40px;color:var(--faint)">' + icon("package") + '</span>'
     if sugar_100 is None:
         chip = '<span class="ld-chip grey">sugar not declared</span>'
     else:
@@ -454,9 +727,11 @@ def product_card(brand: str | None, name: str | None, img: str | None, sugar_100
     return f'<div class="ld-pcard{" on" if selected else ""}">{rib}<div class="img">{pic}</div><div class="nm">{esc(n)}</div>{chip}</div>'
 
 
-def navbar(github: str) -> str:
-    return (f'<div class="ld-nav"><div class="logo"><i>🔍</i>Label Decoder</div>'
-            f'<div class="links"><a href="#how">How it works</a><a href="{esc(github)}" target="_blank">GitHub</a>'
+def navbar(github: str, live: str | None = None, lang_toggle: bool = False) -> str:
+    live_link = f'<a href="{esc(live)}" target="_blank">Try your own pack</a>' if live else ""
+    lang = '<button class="ld-lang" id="ld-lang" title="Show the plain-words lines in Hindi">हिंदी</button>' if lang_toggle else ""
+    return (f'<div class="ld-nav"><div class="logo"><i>{icon("search")}</i>Label Decoder</div>'
+            f'<div class="links">{lang}<a href="#how">How we know</a>{live_link}<a href="{esc(github)}" target="_blank">GitHub</a>'
             f'<a class="cta" href="https://om-rana-portfolio.netlify.app" target="_blank">Made by Om Rana</a></div></div>')
 
 
@@ -467,7 +742,7 @@ def no_key_card() -> str:
 
 def footer(github: str) -> str:
     return (f'<div class="ld-footer">Made by <b>Om Rana</b> · <a href="{esc(github)}" target="_blank">Code on GitHub</a><br>'
-            'AI only reads the pack. The verdicts come from written rules (India\'s FSSAI food law + WHO sugar advice), '
+            'AI only reads the pack. The verdicts come from written rules: FSSAI (India\'s food regulator) and WHO (World Health Organization) sugar advice, '
             'so the same pack always gets the same answer. Not medical advice.</div>')
 
 
@@ -504,26 +779,38 @@ def verdict(result: dict, lights: dict) -> tuple[str, str]:
     return "green", "Good to go"
 
 
-def _reasons(result: dict, lights: dict, unit: str) -> tuple[str, list[str]]:
+VERDICT_HI = {"Careful!": "संभलकर!", "Okay, sometimes": "कभी-कभी ठीक है", "Not enough info": "जानकारी कम है",
+              "Good to go": "बेझिझक खाइए"}
+
+
+def _sugar_headline(result: dict, lights: dict, unit: str) -> tuple[str, str] | None:
+    """The one-line sugar verdict as (English, Hindi), or None when sugar is not the story."""
     s = result["sugar"]
+    pct = s["total_sugars_per_100"]
+    if pct is None or lights["sugar"][1] == "green":
+        return None
+    pct, tsp = float(pct), s["teaspoons_total_per_serve"]
+    if unit == "g":
+        en, hi = (("Almost three-quarters of this pack is sugar.", "इस पैकेट का लगभग तीन-चौथाई हिस्सा चीनी है।") if pct >= 70 else
+                  ("About half of this pack is sugar.", "इस पैकेट का लगभग आधा हिस्सा चीनी है।") if pct >= 45 else
+                  ("A third of this pack is sugar.", "इस पैकेट का एक-तिहाई हिस्सा चीनी है।") if pct >= 30 else
+                  ("A fifth of this pack is sugar.", "इस पैकेट का पाँचवाँ हिस्सा चीनी है।") if pct >= 18 else
+                  (f"{fmt(pct)} g of sugar in every 100 g.", f"हर 100 ग्राम में {fmt(pct)} ग्राम चीनी।"))
+        if tsp:
+            en, hi = en + f" One serve = {tsp:.1f} spoons.", hi + f" एक सर्व = {tsp:.1f} चम्मच।"
+        return en, hi
+    if tsp:
+        return (f"One {fmt(s['serving_g'])} ml serve = {tsp:.1f} spoons of sugar.",
+                f"एक {fmt(s['serving_g'])} ml सर्व = {tsp:.1f} चम्मच चीनी।")
+    return f"{fmt(pct)} g of sugar in every 100 ml.", f"हर 100 ml में {fmt(pct)} ग्राम चीनी।"
+
+
+def _reasons(result: dict, lights: dict, unit: str) -> tuple[str, list[str]]:
     rank = result["consolidated_sugar"]
     names = {"sugar": "sugar", "fat": "fat", "satfat": "saturated fat", "salt": "salt"}
     out: list[str] = []
-    headline = ""
-    pct = s["total_sugars_per_100"]
-    if pct is not None and lights["sugar"][1] != "green":
-        pct = float(pct)
-        tsp = s["teaspoons_total_per_serve"]
-        if unit == "g":
-            what = ("Almost three-quarters of this pack is sugar." if pct >= 70 else
-                    "About half of this pack is sugar." if pct >= 45 else
-                    "A third of this pack is sugar." if pct >= 30 else
-                    "A fifth of this pack is sugar." if pct >= 18 else
-                    f"{fmt(pct)} g of sugar in every 100 g.")
-            headline = what + (f" One serve = {tsp:.1f} spoons." if tsp else "")
-        else:
-            headline = (f"One {fmt(s['serving_g'])} ml serve = {tsp:.1f} spoons of sugar." if tsp
-                        else f"{fmt(pct)} g of sugar in every 100 ml.")
+    pair = _sugar_headline(result, lights, unit)
+    headline = pair[0] if pair else ""
     if rank.get("n_added_sugar_lines", 0) >= 2:
         out.append(f"Sugar hides under {rank['n_added_sugar_lines']} different names.")
     for c in result["claims"]:
@@ -572,6 +859,97 @@ SIMPLE = {
     "SAT_FAT_HIGH": "A big share of the calories come from saturated fat.",
     "TRANS_FAT": "Has trans fat, the worst kind of fat.",
 }
+SIMPLE_HI = {
+    "SUGAR_SPLIT": "चीनी को टुकड़ों में बाँटा गया है ताकि वह सूची में सबसे ऊपर न दिखे।",
+    "NAS_SUBSTITUTE": "लिखा है “no added sugar”, पर फल का सिरप, शहद या गुड़ जैसी मीठी चीज़ें डाली गई हैं।",
+    "NAS_HIGH_INTRINSIC": "“No added sugar” सही है। पर फल की चीनी भी शरीर के लिए चीनी ही है।",
+    "SUGAR_FREE_POLYOL": "शुगर-फ़्री है, पर मिठास पॉलिऑल से आती है। ज़्यादा खाने से पेट ख़राब हो सकता है।",
+    "SUGAR_FREE_SWEETENER": "मिठास आर्टिफ़िशियल स्वीटनर से आती है।",
+    "SUGAR_FREE_MALTODEXTRIN": "“Sugar free” लिखा है, पर इसमें माल्टोडेक्सट्रिन है, जो ब्लड शुगर चीनी से भी तेज़ बढ़ाता है।",
+    "PER100_VS_SERVE": "दावा 100 ग्राम पर गिना गया है। आप उससे बहुत कम खाते हैं।",
+    "CLAIM_FAILS": "दावा क़ानूनी सीमा पर खरा नहीं उतरता।",
+    "HALO_OVER_SUGAR": "सामने सेहत की बातें। पीछे की सूची में चीनी सबसे ऊपर के पास।",
+    "HEALTH_DRINK_SUGAR": "हेल्दी बताकर बेचा जाता है। ज़्यादातर चीनी है।",
+    "IMMUNITY_CLAIM": "यहाँ “immunity” सिर्फ़ मार्केटिंग का शब्द है, साबित दावा नहीं।",
+    "ENERGY_GROWTH_CLAIM": "पैकेट पर “energy” का मतलब बस कैलोरी है।",
+    "NATURAL_WITH_ADDITIVES": "“Natural” लिखा है, पर रंग, फ़्लेवर या प्रिज़र्वेटिव मिलाए गए हैं।",
+    "REAL_FRUIT_TRACE": "“Real fruit” बस नाम भर का है।",
+    "REAL_FRUIT_NO_PCT": "“Real fruit” लिखा है, पर कितना? पैकेट नहीं बताता।",
+    "MULTIGRAIN_MAIDA": "मल्टीग्रेन लिखा है। पर सबसे ज़्यादा मैदा है।",
+    "BAKED_STILL_FATTY": "बेक्ड ज़रूर है। फिर भी बहुत तेल है।",
+    "CHOLESTEROL_FREE_PLANT": "“Cholesterol free” हर पौधे से बनी चीज़ के लिए सच है। इसमें कुछ ख़ास नहीं।",
+    "NO_MSG_GLUTAMATE": "“No MSG” लिखा है, पर दूसरी चीज़ें वही काम करती हैं।",
+    "AS_PREPARED": "ये आँकड़े दूध मिलाने के बाद के हैं। अकेला पाउडर ज़्यादातर चीनी है।",
+    "SERVING_TINY": "“एक सर्व” बहुत छोटा रखा गया है, इसलिए हर आँकड़ा छोटा दिखता है।",
+    "WHO_LIMIT_BLOWN": "एक सर्व = पूरे दिन की चीनी, या उससे ज़्यादा।",
+    "WHO_LIMIT_HALF": "एक सर्व = आधे दिन की चीनी।",
+    "SODIUM_HIGH": "एक सर्व में बहुत नमक है।",
+    "SAT_FAT_HIGH": "कैलोरी का बड़ा हिस्सा सैचुरेटेड फ़ैट से आता है।",
+    "TRANS_FAT": "इसमें ट्रांस फ़ैट है, जो सबसे ख़राब फ़ैट है।",
+}
+
+
+def _trick_line(result: dict) -> tuple[str, str]:
+    """The single most useful 'what is the catch' line as (English, Hindi). Inputs are escaped here."""
+    for c in result["claims"]:
+        claim = esc(c["claim_text"].strip().capitalize())
+        if c["verdict"] == "fails":
+            return f"“{claim}” is <b>not true</b>.", f"“{claim}” <b>सही नहीं है</b>।"
+        if c["verdict"] == "legal but misleading":
+            return (f"“{claim}” is <b>true on paper, not on your plate</b>.",
+                    f"“{claim}” <b>कागज़ पर सही है, थाली में नहीं</b>।")
+    n = result["consolidated_sugar"].get("n_added_sugar_lines", 0)
+    if n >= 2:
+        return f"Sugar hides under <b>{n} different names</b>.", f"चीनी <b>{n} अलग नामों</b> से छिपी है।"
+    for f in result["flags"]:                       # already sorted, most serious first
+        if f["code"] in SIMPLE and f["code"] not in ("SODIUM_HIGH", "SAT_FAT_HIGH", "WHO_LIMIT_HALF", "WHO_LIMIT_BLOWN"):
+            return esc(SIMPLE[f["code"]]), esc(SIMPLE_HI.get(f["code"], SIMPLE[f["code"]]))
+    return "<b>No label tricks</b> found.", "लेबल पर <b>कोई चालाकी नहीं</b> मिली।"
+
+
+def three_things(result: dict, lights: dict) -> str:
+    """The three facts worth knowing before anything else: sugar, the catch, fat and salt."""
+    s = result["sugar"]
+    unit = "ml" if result["product"]["is_liquid"] else "g"
+    tsp = s["teaspoons_total_per_serve"]
+    if tsp is None:
+        one = ("The pack <b>does not print its sugar</b>.", "पैकेट पर <b>चीनी की मात्रा लिखी ही नहीं</b> है।")
+    elif tsp < 0.25:
+        one = ("<b>Almost no sugar</b> in one serve.", "एक सर्व में <b>लगभग कोई चीनी नहीं</b>।")
+    else:
+        lead = s["added_sugars_per_serve"] if s["added_sugars_per_serve"] is not None else s["total_sugars_per_serve"]
+        pct = 100.0 * lead / WHO_FREE_SUGAR_5PCT_G if lead is not None else None
+        en = f"<b>{tsp:.1f} spoons of sugar</b> in one serve ({fmt(s['serving_g'])} {unit})."
+        hi = f"एक सर्व ({fmt(s['serving_g'])} {unit}) में <b>{tsp:.1f} चम्मच चीनी</b>।"
+        if pct is not None and pct >= 10:
+            en, hi = en + f" That is {pct:.0f}% of a day's limit.", hi + f" यानी दिन की सीमा का {pct:.0f}%।"
+        one = (en, hi)
+
+    en_names = {"fat": "fat", "satfat": "saturated fat", "salt": "salt"}
+    hi_names = {"fat": "फ़ैट", "satfat": "सैचुरेटेड फ़ैट", "salt": "नमक"}
+    keys = ("fat", "satfat", "salt")
+
+    def listed(ks: list, names: dict, joiner: str) -> str:
+        words = [names[k] for k in ks]
+        return words[0] if len(words) == 1 else ", ".join(words[:-1]) + joiner + words[-1]
+
+    reds = [k for k in keys if lights[k][1] == "red"]
+    ambers = [k for k in keys if lights[k][1] == "amber"]
+    if reds:
+        three = (f"<b>High in {listed(reds, en_names, ' and ')}</b> (red light).",
+                 f"<b>{listed(reds, hi_names, ' और ')} ज़्यादा</b> {'है' if len(reds) == 1 else 'हैं'} (लाल बत्ती)।")
+    elif ambers:
+        three = (f"<b>Medium on {listed(ambers, en_names, ' and ')}</b>. Fine sometimes.",
+                 f"<b>{listed(ambers, hi_names, ' और ')} मध्यम</b> {'है' if len(ambers) == 1 else 'हैं'}। कभी-कभी ठीक।")
+    elif all(lights[k][1] == "grey" for k in keys):
+        three = ("The pack <b>does not print</b> its fat or salt.", "पैकेट पर फ़ैट या नमक की मात्रा <b>नहीं लिखी</b>।")
+    else:
+        three = ("<b>Fat and salt are both low</b> (green light).", "<b>फ़ैट और नमक दोनों कम</b> हैं (हरी बत्ती)।")
+
+    rows = "".join(f'<div><i>{i}</i><span>{bi(en, hi)}</span></div>'
+                   for i, (en, hi) in enumerate((one, _trick_line(result), three), 1))
+    return (f'<div class="ld-card"><div class="ld-h2">{bi("3 things to know about this pack", "इस पैकेट की 3 ज़रूरी बातें")}</div>'
+            f'<div class="ld-3">{rows}</div></div>')
 
 
 def top_card(label: dict, result: dict, img: str | None, lights: dict) -> str:
@@ -579,23 +957,31 @@ def top_card(label: dict, result: dict, img: str | None, lights: dict) -> str:
     unit = "ml" if p["is_liquid"] else "g"
     brand, name = display_name(p.get("brand"), p.get("name"))
     color, word = verdict(result, lights)
-    icon = {"red": "🔴", "amber": "🟡", "green": "🟢"}[color]
-    headline, reasons = _reasons(result, lights, unit)
-    pic = f'<img src="{esc(img)}" alt="">' if img else '<span class="ph">📦</span>'
-    li = "".join(f"<li>{esc(r)}</li>" for r in reasons)
+    mark = icon({"red": "alert", "amber": "alert", "green": "check"}[color])
+    tsp = result["sugar"]["teaspoons_total_per_serve"]
+    spoons = (f'<b>{tsp:.1f}</b>{bi("spoons of sugar in one serve", "चम्मच चीनी, एक सर्व में")}' if tsp is not None
+              else bi("Sugar is not printed on this pack", "पैकेट पर चीनी की मात्रा नहीं लिखी"))
+    pair = _sugar_headline(result, lights, unit)
+    if pair:
+        headline = bi(esc(pair[0]), esc(pair[1]))
+    else:
+        en, hi = _trick_line(result)
+        headline = bi(en, hi) if "No label tricks" not in en else bi("Nothing sneaky on this label.", "इस लेबल पर कोई चालाकी नहीं।")
+    pic = f'<img src="{esc(img)}" alt="">' if img else '<span class="ph" style="color:var(--faint)">' + icon("package") + '</span>'
     serve = result["serving"]
-    meta = f"One serve = {fmt(serve['g'])} {unit} ({esc(serve['source'])})" if serve["g"] else "The pack gives no serve size"
+    meta = (f"One serve = {fmt(serve['g'])} {unit}, the amount eaten in one go ({esc(serve['source'])})" if serve["g"]
+            else "The pack gives no serve size")
     if label.get("barcode"):
         meta += f" · Barcode {esc(label['barcode'])}"
-    plain = {"red": "This is a treat, not food. Once in a while is fine.",
-             "amber": "Okay now and then. Not every day.",
-             "green": "Nothing sneaky here. Eat normally."}[color]
-    return (f'<div class="ld-card"><div class="ld-top"><div class="img">{pic}</div><div>'
+    plain = {"red": ("This is a treat, not food. Once in a while is fine.", "यह रोज़ का खाना नहीं, कभी-कभार की चीज़ है।"),
+             "amber": ("Okay now and then. Not every day.", "कभी-कभी ठीक है। रोज़ नहीं।"),
+             "green": ("Nothing sneaky here. Eat normally.", "इसमें कोई चालाकी नहीं। आराम से खाइए।")}[color]
+    return (f'<div class="ld-card ld-vcard"><div class="ld-vban {color}"><div class="v">{mark} {bi(word, VERDICT_HI.get(word, word))}</div>'
+            f'<div class="s">{spoons}</div></div>'
+            f'<div class="ld-top"><div class="img">{pic}</div><div>'
             f'<div class="ld-brand">{esc(brand)}</div><div class="ld-name">{esc(name)}</div>'
-            f'<span class="ld-verdict {color}">{icon} {word}</span>'
-            f'<div class="ld-headline">{esc(headline)}</div>'
-            f'{"<ul class=ld-reasons>" + li + "</ul>" if li else ""}'
-            f'<div class="ld-mean"><b>In plain words:</b> {plain}</div>'
+            f'<div class="ld-headline" style="margin-top:6px">{headline}</div>'
+            f'<div class="ld-mean"><b>{bi("In plain words:", "सीधी बात:")}</b> {bi(*plain)}</div>'
             f'<div class="ld-meta">{meta}</div></div></div></div>')
 
 
@@ -604,7 +990,7 @@ def sugar_cards(result: dict) -> str:
     unit = "ml" if result["product"]["is_liquid"] else "g"
     tsp = s["teaspoons_total_per_serve"]
     if tsp is None:
-        left = ('<div class="ld-card"><div class="ld-h2">🥄 How many spoons of sugar?</div>'
+        left = ('<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-spoon"></em> How many spoons of sugar?</div>'
                 '<div class="ld-h2-sub">The pack does not print its sugar, so we cannot count the spoons.</div></div>')
     else:
         full, part = int(tsp), tsp - int(tsp)
@@ -617,8 +1003,8 @@ def sugar_cards(result: dict) -> str:
         compare = (f"Same as drinking <b>{cola:.1f} cans of cola</b>." if cola >= 0.95
                    else f"Same as drinking <b>{cola * 100:.0f}% of a cola can</b>." if cola >= 0.1
                    else "Almost no sugar at all.")
-        left = (f'<div class="ld-card"><div class="ld-h2">🥄 Spoons of sugar in one serve</div>'
-                f'<div class="ld-h2-sub">One serve = {fmt(s["serving_g"])} {unit}. Each cube = 1 teaspoon.</div>'
+        left = (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-spoon"></em> Spoons of sugar in one serve</div>'
+                f'<div class="ld-h2-sub">One serve = {fmt(s["serving_g"])} {unit}, the amount the pack says you eat in one go. Each cube = 1 teaspoon.</div>'
                 f'<div class="ld-big">{tsp:.1f} <small>teaspoons</small></div>'
                 f'<div class="ld-cubes">{cubes or "<span class=ld-note>less than a tenth of a teaspoon</span>"}{more}</div>'
                 f'<div class="ld-mean">{compare}</div></div>')
@@ -631,7 +1017,7 @@ def sugar_cards(result: dict) -> str:
 
     total, added = s["total_sugars_per_serve"], s["added_sugars_per_serve"]
     if total is None and added is None:
-        right = ('<div class="ld-card"><div class="ld-h2">📅 Your sugar budget for today</div>'
+        right = ('<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-calendar"></em> Your sugar budget for today</div>'
                  '<div class="ld-h2-sub">Not enough numbers on the pack to work this out.</div></div>')
     else:
         lead = added if added is not None else total
@@ -658,8 +1044,8 @@ def sugar_cards(result: dict) -> str:
         bars = ""
         if total is not None and added is not None and total - added >= 0.5:
             bars = bar("With milk and fruit sugar too", total)
-        right = (f'<div class="ld-card"><div class="ld-h2">📅 Your sugar budget for today</div>'
-                 f'<div class="ld-h2-sub">Doctors say: max 6 spoons of added sugar a day. The dashed cubes are your day.</div>'
+        right = (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-calendar"></em> Your sugar budget for today</div>'
+                 f'<div class="ld-h2-sub">The World Health Organization (WHO) says: at most 6 spoons of added sugar a day. The dashed cubes are your day.</div>'
                  f'<div class="ld-ring">{ring}<div><div style="font-size:19px;font-weight:800;color:var(--ink)">{word}</div>'
                  f'<div class="ld-note" style="margin-top:2px">of today\'s budget, in one serve</div></div></div>'
                  f'<div class="ld-budget">{cubes}</div>'
@@ -683,14 +1069,16 @@ def rank_card(result: dict, all_sugar: list[float]) -> str:
                    for i, v in enumerate(vals))
     n = len(vals)
     if below >= n * 0.8:
-        line = f"Sweeter than <b>{below} of {n}</b> packs. Only {n - below - 1} are sweeter than this."
+        above = n - below - 1
+        line = (f"Sweeter than <b>{below} of {n}</b> packs. "
+                + ("Nothing we checked is sweeter." if above <= 0 else f"Only {above} {'is' if above == 1 else 'are'} sweeter than this."))
     elif below <= n * 0.2:
         line = f"One of the <b>least sugary</b> packs. {n - below - 1} of {n} have more sugar."
     else:
         line = f"Middle of the pack: sweeter than <b>{below} of {n}</b>."
     unit = "ml" if result["product"]["is_liquid"] else "g"
-    return (f'<div class="ld-card"><div class="ld-h2">🏆 Versus {n} Indian packs</div>'
-            f'<div class="ld-h2-sub">One bar = one pack. Tall = more sugar. Orange = this one.</div>'
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-bars"></em> Versus {n} Indian packs</div>'
+            f'<div class="ld-h2-sub">One bar = one pack. Tall = more sugar. The dark bar is this one.</div>'
             f'<div class="ld-dist">{bars}</div>'
             f'<div class="ld-dist-axis"><span>◀ least sugar ({fmt(vals[0])} g per 100 {unit})</span><span>most sugar ({fmt(vals[-1])} g) ▶</span></div>'
             f'<div class="ld-mean">{line}</div></div>')
@@ -715,7 +1103,7 @@ def order_card(label: dict, result: dict) -> str:
     if rank.get("n_added_sugar_lines", 0) >= 2 and rank.get("combined_rank_estimate"):
         call = (f'<div class="ld-callout">Join the {rank["n_added_sugar_lines"]} yellow pieces and sugar jumps to '
                 f'<b>#{rank["combined_rank_estimate"]}</b>. Legal, but sneaky.</div>')
-    return (f'<div class="ld-card"><div class="ld-h2">📋 What\'s inside, biggest first</div>'
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-list"></em> What\'s inside, biggest first</div>'
             f'<div class="ld-h2-sub">The law: heaviest ingredient first. #1 is most of the pack. Yellow = sugar.</div>'
             f'<div class="ld-order">{"".join(chips)}{more}</div>{call}</div>')
 
@@ -724,19 +1112,20 @@ def compare_card(label: dict, result: dict, img: str | None, lights: dict, winne
     p = result["product"]
     name = full_name(p.get("brand"), p.get("name"))
     color, word = verdict(result, lights)
-    icon = {"red": "🔴", "amber": "🟡", "green": "🟢"}[color]
+    mark = icon({"red": "alert", "amber": "alert", "green": "check"}[color])
+    win = f'<div class=win>{icon("medal")} Less sugar</div>' if winner else "<div class=win>&nbsp;</div>"
     s = result["sugar"]
     tsp = s["teaspoons_total_per_serve"]
     unit = "ml" if p["is_liquid"] else "g"
-    pic = f'<img src="{esc(img)}" alt="">' if img else '<span style="font-size:48px">📦</span>'
+    pic = f'<img src="{esc(img)}" alt="">' if img else '<span style="font-size:48px;color:var(--faint)">' + icon("package") + '</span>'
     labels = {"sugar": "Sugar", "fat": "Fat", "satfat": "Sat fat", "salt": "Salt"}
     mini = "".join(f'<div class="{lvl}"><b>{fmt(float(v)) if v is not None else "—"}</b>{labels[k]}</div>'
                    for k, (v, lvl) in lights.items())
     return (f'<div class="ld-cmp"><div class="img">{pic}</div><div class="nm">{esc(name)}</div>'
-            f'<span class="ld-verdict {color}">{icon} {word}</span>'
+            f'<span class="ld-verdict {color}">{mark} {word}</span>'
             f'<div class="big">{f"{tsp:.1f}" if tsp is not None else "—"} <small>tsp sugar per {fmt(s["serving_g"])} {unit}</small></div>'
             f'<div class="mini">{mini}</div>'
-            f'{"<div class=win>🏅 Less sugar</div>" if winner else "<div class=win>&nbsp;</div>"}</div>')
+            f'{win}</div>')
 
 
 # ---------------------------------------------------------------------------------------------
@@ -758,14 +1147,14 @@ def share_image(label: dict, result: dict, lights: dict) -> bytes:
         return ImageFont.load_default()
 
     W, H = 1080, 1080
-    im = Image.new("RGB", (W, H), "#faf7f2")
+    im = Image.new("RGB", (W, H), "#f4f6f9")
     d = ImageDraw.Draw(im)
     color, word = verdict(result, lights)
     hexes = {"red": "#dc2626", "amber": "#d97706", "green": "#16a34a"}
     d.rectangle([0, 0, W, 18], fill=hexes[color])
     p = result["product"]
     name = full_name(p.get("brand"), p.get("name"))
-    d.text((70, 70), "INDIAN LABEL DECODER", font=font(26), fill="#ea580c")
+    d.text((70, 70), "INDIAN LABEL DECODER", font=font(26), fill="#4338ca")
     # wrap the name to two lines max
     words, lines, cur = name.split(), [], ""
     for w in words:
@@ -792,10 +1181,10 @@ def share_image(label: dict, result: dict, lights: dict) -> bytes:
         full, part = int(tsp), tsp - int(tsp)
         x = 70
         for i in range(min(full, 12)):
-            d.rounded_rectangle([x, y, x + 62, y + 62], radius=12, fill="#fde68a", outline="#f59e0b", width=4); x += 76
+            d.rounded_rectangle([x, y, x + 62, y + 62], radius=12, fill="#f1f5f9", outline="#94a3b8", width=4); x += 76
         if part >= 0.1 and full < 12:
-            d.rounded_rectangle([x, y, x + 62, y + 62], radius=12, fill="#fffbeb", outline="#f59e0b", width=4)
-            d.rectangle([x + 4 + 54 * part, y + 4, x + 58, y + 58], fill="#fffbeb")
+            d.rounded_rectangle([x, y, x + 62, y + 62], radius=12, fill="#f1f5f9", outline="#94a3b8", width=4)
+            d.rectangle([x + 4 + 54 * part, y + 4, x + 58, y + 58], fill="#f4f6f9")
         y += 100
     bullets = []
     if s["total_sugars_per_100"] is not None:
@@ -823,23 +1212,26 @@ def share_image(label: dict, result: dict, lights: dict) -> bytes:
 def lights_card(lights: dict, is_liquid: bool) -> str:
     unit = "100 ml" if is_liquid else "100 g"
     labels = {"sugar": "Sugar", "fat": "Fat", "satfat": "Saturated fat", "salt": "Salt"}
-    word = {"red": "🔴 HIGH", "amber": "🟡 MEDIUM", "green": "🟢 LOW", "grey": "NOT ON PACK"}
+    word = {"red": "HIGH", "amber": "MEDIUM", "green": "LOW", "grey": "NOT ON PACK"}
     tiles = "".join(
         f'<div class="ld-light {lvl}"><div class="k">{labels[k]}</div>'
         f'<div class="v">{fmt(float(v)) + " g" if v is not None else "—"}</div><div class="l">{word[lvl]}</div></div>'
         for k, (v, lvl) in lights.items())
     reds = [labels[k].lower() for k, (_, lvl) in lights.items() if lvl == "red"]
-    meaning = ("Red = too much " + " and ".join(reds) + " in every bite."
+    red_list = reds[0] if len(reds) == 1 else ", ".join(reds[:-1]) + " and " + reds[-1] if reds else ""
+    meaning = ("Red = too much " + red_list + " in every bite."
                if reds else "No red. Nothing in the danger zone." if any(l != "grey" for _, l in lights.values())
                else "The pack does not print these numbers.")
-    return (f'<div class="ld-card"><div class="ld-h2">🚦 Traffic lights (per {unit})</div>'
-            f'<div class="ld-h2-sub">🟢 Go · 🟡 Sometimes · 🔴 Careful. Same cut-offs the UK prints on pack fronts.</div>'
-            f'<div class="ld-lights">{tiles}</div><div class="ld-mean">{meaning}</div></div>')
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-lights"></em> Traffic lights (per {unit})</div>'
+            f'<div class="ld-h2-sub">Green = go · Yellow = sometimes · Red = careful. Same cut-offs the UK prints on pack fronts.</div>'
+            f'<div class="ld-lights">{tiles}</div><div class="ld-mean">{meaning}</div>'
+            f'<div class="ld-note" style="margin-top:10px"><b>Per {unit}</b> = in every {"100 millilitres of this drink" if is_liquid else "100 grams of this food"}. '
+            f'<b>Saturated fat</b> = the kind of fat that raises cholesterol. <b>Salt</b> = too much raises blood pressure.</div></div>')
 
 
 def flags_card(flags: list[dict]) -> str:
     if not flags:
-        return ('<div class="ld-card"><div class="ld-h2">🎩 Tricks on this pack</div>'
+        return ('<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-wand"></em> Tricks on this pack</div>'
                 '<div class="ld-h2-sub">No tricks found. The numbers above are the whole story.</div></div>')
     sev = {"high": "Big trick", "medium": "Watch out", "low": "Small thing"}
     items = "".join(
@@ -847,15 +1239,15 @@ def flags_card(flags: list[dict]) -> str:
         f'{esc(f["title"])}</div><div class="d">{esc(SIMPLE.get(f["code"], f["detail"]))}</div>'
         f'<div class="r">Small print: {esc(f["detail"])}<br>The rule: {esc(f["rule_ref"])}</div></div>'
         for f in flags)
-    return (f'<div class="ld-card"><div class="ld-h2">🎩 Tricks on this pack</div>'
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-wand"></em> Tricks on this pack</div>'
             f'<div class="ld-h2-sub">{len(flags)} thing{"s" if len(flags) != 1 else ""} that {"are" if len(flags) != 1 else "is"} legal, but can fool you</div>{items}</div>')
 
 
 CLAIM_VERDICT = {
-    "holds": ("green", "✅ True"),
-    "fails": ("red", "❌ Not true"),
-    "legal but misleading": ("amber", "⚠️ True on paper, not on your plate"),
-    "unverifiable": ("grey", "🤷 Can't check: the pack skips that number"),
+    "holds": ("green", icon("check") + " True"),
+    "fails": ("red", icon("cross") + " Not true"),
+    "legal but misleading": ("amber", icon("alert") + " True on paper, not on your plate"),
+    "unverifiable": ("grey", icon("question") + " Can't check: the pack skips that number"),
 }
 
 
@@ -893,8 +1285,8 @@ def claims_card(claims: list[dict], serving_g: float | None, unit: str) -> str:
                   f'<div class="box b"><small>You eat</small><b>{fmt(serving_g)} {unit}</b>'
                   f'<span>= only {c["per_serving_pct_rda"]:.0f}% of a day\'s {esc(c["claim_type"].split()[-1])}</span></div></div>'
                   f'<div class="ld-mean"><b>The trick:</b> big number on 100 {unit}, tiny bite on your plate.</div>')
-    return (f'<div class="ld-card"><div class="ld-h2">🗣️ Pack says vs. truth</div>'
-            f'<div class="ld-h2-sub">Every claim on the front, checked against the law</div>{"".join(rows)}{vs}</div>')
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-chat"></em> Pack says vs. truth</div>'
+            f'<div class="ld-h2-sub">Every claim on the front, checked against the rules of FSSAI, India\'s food regulator</div>{"".join(rows)}{vs}</div>')
 
 
 def _highlight(text: str, needles: list[str]) -> str:
@@ -935,13 +1327,157 @@ def sugar_names_card(label: dict, result: dict) -> str:
             if text else "")
     why = ('<div class="ld-mean"><b>Why split it?</b> Ingredients go heaviest first. Cut sugar into pieces '
            'and no piece has to be #1.</div>' if n_added >= 2 else "")
-    return (f'<div class="ld-card"><div class="ld-h2">🎭 Sugar\'s disguises</div><div class="ld-h2-sub">{sub}</div>'
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-eye"></em> Sugar\'s disguises</div><div class="ld-h2-sub">{sub}</div>'
             f'{"<div class=ld-names>" + "".join(chips) + "</div>" if chips else ""}{body}{why}</div>')
 
 
 def honest_card(result: dict) -> str:
     if not result["honest_label"]:
         return ""
-    return (f'<div class="ld-card"><div class="ld-h2">✅ The honest label</div>'
+    return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-check"></em> The honest label</div>'
             f'<div class="ld-h2-sub">If the pack had nothing to sell you</div>'
             f'<div class="ld-honest">{esc(result["honest_label"])}</div></div>')
+
+
+# ---------------------------------------------------------------------------------------------
+# dashboard: what the whole test set says
+# ---------------------------------------------------------------------------------------------
+
+TRICK_NAMES = {
+    "SUGAR_SPLIT": "Sugar split into many names", "SAT_FAT_HIGH": "Heavy on saturated fat",
+    "SODIUM_HIGH": "A lot of salt in one serve", "SERVING_TINY": "A tiny “serving size”",
+    "WHO_LIMIT_HALF": "Half a day's sugar in one serve", "WHO_LIMIT_BLOWN": "A whole day's sugar in one serve",
+    "TRANS_FAT": "Contains trans fat", "PER100_VS_SERVE": "Claim true only per 100 g",
+    "NAS_SUBSTITUTE": "“No added sugar” with sweet substitutes", "NAS_HIGH_INTRINSIC": "“No added sugar” but still sugary",
+    "CHOLESTEROL_FREE_PLANT": "“Cholesterol free” on a plant food", "CLAIM_FAILS": "Claim fails the legal test",
+}
+
+
+def dashboard(packs: list[tuple[dict, dict]]) -> str:
+    """packs: (label, decoded result) for every pack in the test set. Every number is counted here, nothing typed in."""
+    n = len(packs)
+    verdicts = {"red": 0, "amber": 0, "green": 0}
+    lights_count = {k: {"red": 0, "amber": 0, "green": 0, "grey": 0} for k in ("sugar", "fat", "satfat", "salt")}
+    tricks: dict[str, int] = {}
+    split = half_day = any_trick = 0
+    sweet, most_names = [], (0, "")
+    for label, r in packs:
+        liquid = r["product"]["is_liquid"]
+        lights = _lights(label.get("per_100") or {}, liquid)
+        verdicts[verdict(r, lights)[0]] += 1
+        for k, (_, lvl) in lights.items():
+            lights_count[k][lvl] += 1
+        for f in r["flags"]:
+            tricks[f["code"]] = tricks.get(f["code"], 0) + 1
+        any_trick += bool(r["flags"])
+        names = r["consolidated_sugar"].get("n_added_sugar_lines", 0)
+        split += names >= 2
+        name = full_name(label.get("brand"), label.get("product_name"))
+        if names > most_names[0]:
+            most_names = (names, name)
+        s = r["sugar"]
+        lead = s["added_sugars_per_serve"] if s["added_sugars_per_serve"] is not None else s["total_sugars_per_serve"]
+        half_day += lead is not None and lead >= WHO_FREE_SUGAR_5PCT_G / 2
+        if s["total_sugars_per_100"] is not None and not liquid:
+            sweet.append((float(s["total_sugars_per_100"]), name))
+    declared = n - lights_count["sugar"]["grey"]
+
+    kpis = (f'<div class="ld-kpis">'
+            f'<div class="ld-kpi red"><b>{lights_count["sugar"]["red"]}<small> of {declared}</small></b><span>packs are high in sugar (red light)</span></div>'
+            f'<div class="ld-kpi amber"><b>{split}<small> of {n}</small></b><span>hide sugar under 2 or more names</span></div>'
+            f'<div class="ld-kpi red"><b>{half_day}<small> of {n}</small></b><span>use up half a day’s sugar budget in one serve</span></div>'
+            f'<div class="ld-kpi"><b>{any_trick}<small> of {n}</small></b><span>carry at least one label trick</span></div></div>')
+
+    r_, a_, g_ = verdicts["red"], verdicts["amber"], verdicts["green"]
+    p1, p2 = 100 * r_ / n, 100 * (r_ + a_) / n
+    donut = (f'<div class="ld-card"><div class="ld-h2">The verdicts</div><div class="ld-h2-sub">How the {n} packs came out</div>'
+             f'<div class="ld-donut-wrap"><div class="ld-donut" data-v="{n}" style="background:conic-gradient(var(--red) 0 {p1:.1f}%, var(--amber) {p1:.1f}% {p2:.1f}%, var(--green) {p2:.1f}% 100%)"></div>'
+             f'<div class="ld-legend"><div><i style="background:var(--red)"></i><b>{r_}</b> Careful!</div>'
+             f'<div><i style="background:var(--amber)"></i><b>{a_}</b> Okay, sometimes</div>'
+             f'<div><i style="background:var(--green)"></i><b>{g_}</b> Good to go</div></div></div>'
+             f'<div class="ld-mean">Only <b>{g_} in {n}</b> packs had nothing to flag.</div></div>')
+
+    labels = {"sugar": "Sugar", "fat": "Fat", "satfat": "Saturated fat", "salt": "Salt"}
+    rows = ""
+    for k, c in lights_count.items():
+        tot = c["red"] + c["amber"] + c["green"] or 1
+        seg = "".join(f'<i style="width:{100 * c[l] / tot:.1f}%;background:var(--{l})">{c[l] if c[l] / tot > .07 else ""}</i>'
+                      for l in ("red", "amber", "green"))
+        rows += f'<div class="ld-stackrow"><span>{labels[k]}</span><div class="ld-stack">{seg}</div></div>'
+    worst = max(lights_count, key=lambda k: lights_count[k]["red"])
+    stack = (f'<div class="ld-card"><div class="ld-h2">Traffic lights, all packs</div>'
+             f'<div class="ld-h2-sub">Red = high, yellow = medium, green = low, per 100 g</div>{rows}'
+             f'<div class="ld-mean">The biggest problem is <b>{labels[worst].lower()}</b>: {lights_count[worst]["red"]} packs are in the red.</div></div>')
+
+    sweet.sort(reverse=True)
+    bars = "".join(f'<div class="ld-hrow"><span class="n" title="{esc(nm)}">{esc(" ".join(nm.split()[:4]))}</span><div class="t"><i style="width:{v:.0f}%;background:var(--red)"></i></div>'
+                   f'<span class="v">{fmt(v)}%</span></div>' for v, nm in sweet[:10])
+    sweetest = (f'<div class="ld-card"><div class="ld-h2">The 10 sweetest packs</div>'
+                f'<div class="ld-h2-sub">Sugar as a share of the pack’s weight</div>{bars}</div>')
+
+    tr = sorted(tricks.items(), key=lambda kv: -kv[1])[:7]
+    mx = tr[0][1] if tr else 1
+    tbars = "".join(f'<div class="ld-hrow wide"><span class="n">{esc(TRICK_NAMES.get(c, c.replace("_", " ").capitalize()))}</span>'
+                    f'<div class="t"><i style="width:{100 * v / mx:.0f}%;background:var(--amber)"></i></div><span class="v">{v}</span></div>'
+                    for c, v in tr)
+    common = (f'<div class="ld-card"><div class="ld-h2">The most common tricks</div>'
+              f'<div class="ld-h2-sub">How many of the {n} packs do each one</div>{tbars}'
+              f'<div class="ld-mean">Record holder: <b>{esc(most_names[1])}</b> lists a form of sugar <b>{most_names[0]} separate times</b> in its ingredients.</div></div>')
+
+    share = r_ / n
+    frac = min(((1 / 4, "1 in 4"), (1 / 3, "1 in 3"), (1 / 2, "1 in 2"), (2 / 3, "2 in 3"), (3 / 4, "3 in 4")),
+               key=lambda f: abs(f[0] - share))
+    who = f"About {frac[1]} packs" if abs(frac[0] - share) <= 0.06 else f"{r_} of {n} packs"
+    lead = (f'<div class="ld-lead"><div class="big">{who} came out as <em>“Careful!”</em></div>'
+            f'<div class="sm">That is {r_} of the {n} packs we checked. Only {g_} had nothing to flag. The charts below show why.</div></div>')
+    return lead + kpis + f'<div class="ld-grid2">{donut}{stack}</div><div class="ld-grid2" style="margin-top:14px">{sweetest}{common}</div>'
+
+
+# ---------------------------------------------------------------------------------------------
+# AI replay: a recorded photo reading, checked field by field
+# ---------------------------------------------------------------------------------------------
+
+READ_FIELDS = [("energy_kcal", "Energy", "kcal"), ("protein_g", "Protein", "g"), ("carbohydrate_g", "Carbs", "g"),
+               ("total_sugars_g", "Sugar", "g"), ("total_fat_g", "Fat", "g"), ("saturated_fat_g", "Saturated fat", "g"),
+               ("sodium_mg", "Sodium", "mg"), ("dietary_fibre_g", "Fibre", "g")]
+
+
+def read_check(pred: dict, ref: dict) -> list[tuple]:
+    """(field, unit, AI value, database value, match?) with the eval's own tolerance: max(0.5, 10%)."""
+    pp, rp = pred.get("per_100") or {}, dict(ref.get("per_100") or {})
+    if rp.get("sodium_mg") is None and rp.get("salt_g") is not None:
+        rp["sodium_mg"] = float(rp["salt_g"]) * 400.0
+    out = []
+    for key, name, unit in READ_FIELDS:
+        a, b = pp.get(key), rp.get(key)
+        ok = None if a is None or b is None else abs(float(a) - float(b)) <= max(0.5, 0.1 * abs(float(b)))
+        out.append((name, unit, a, b, ok))
+    return out
+
+
+def replay_card(name: str, imgs: dict, checks: list, pred: dict, summary: str | None = None) -> str:
+    pics = "".join(f'<figure><img src="{esc(imgs[k])}" alt=""><figcaption>{k}</figcaption></figure>'
+                   for k in ("front", "ingredients", "nutrition") if imgs.get(k))
+    scored = [c for c in checks if c[4] is not None]
+    good = sum(1 for c in scored if c[4])
+    rows = ""
+    for field, unit, a, b, ok in checks:
+        if a is None and b is None:
+            continue
+        mark = ('<span class="ok">✓ match</span>' if ok else '<span class="no">≠ differs</span>' if ok is False
+                else '<span style="color:var(--faint)">nothing to compare</span>')
+        rows += (f'<tr class="{"bad" if ok is False else ""}"><td>{field}</td>'
+                 f'<td class="ai">{fmt(float(a)) + " " + unit if a is not None else "not found"}</td>'
+                 f'<td>{fmt(float(b)) + " " + unit if b is not None else "—"}</td><td>{mark}</td></tr>')
+    leg = {"good": "clean photos", "partial": "some glare or blur", "poor": "hard to read"}.get(pred.get("legibility"), "")
+    note = (pred.get("notes") or "").strip()
+    note = note[:260].rsplit(" ", 1)[0] + "…" if len(note) > 260 else note
+    summary = summary or (f"The AI got <b>{good} of {len(scored)}</b> numbers right on this pack." if good == len(scored)
+               else f"The AI got only <b>{good} of {len(scored)}</b> numbers right here. This is why the app warns you when a photo is hard to read.")
+    note_html = f'<div class="ld-note" style="margin-top:10px"><b>The AI’s own note:</b> {esc(note)}</div>' if note else ""
+    return (f'<div class="ld-card"><div class="ld-flow"><span>1</span>The photos it was given</div>'
+            f'<div class="ld-h2-sub">{esc(name)} · {esc(leg)}</div><div class="ld-photos">{pics}</div>'
+            f'<div class="ld-flow"><span>2</span>What the AI read, checked against the database</div>'
+            f'<table class="ld-read"><tr><th>Per 100 g</th><th>AI read</th><th>Database says</th><th></th></tr>{rows}</table>'
+            f'<div class="ld-mean">{summary}</div>{note_html}'
+            f'<div class="ld-flow"><span>3</span>The verdict, worked out from what the AI read</div></div>')

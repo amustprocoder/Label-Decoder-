@@ -26,9 +26,9 @@ from src.rules.decoder import decode_label  # noqa: E402
 
 GITHUB = "https://github.com/amustprocoder/Label-Decoder-"
 SAMPLES = ROOT / "eval" / "data" / "testset.jsonl"
-# Picked to show each kind of trick: health-drink sugar, sugar under many names, a "high protein"
+# Picked to show each kind of trick (and to have a clean front photo): sugar under many names, a "high protein"
 # claim, a drink that blows the daily limit, salt and saturated fat.
-FEATURED = ["7622201150303", "8901030807190", "8906080603938", "8901719125478",
+FEATURED = ["7622201150303", "8901063093287", "8906080603938", "8901719125478",
             "8904004400212", "8901058006292", "8906059638329", "6294017124031"]
 
 st.set_page_config(page_title="Indian Label Decoder", page_icon="🔍", layout="wide")
@@ -57,7 +57,8 @@ def render(label: dict, result: dict, img: str | None = None, key: str = "x") ->
     per100 = label.get("per_100") or {}
     liquid = result["product"]["is_liquid"]
     lights = ui._lights(per100, liquid)
-    st.html(ui.top_card(label, result, img, lights))
+    # the verdict, three facts and the spoons come first; the rest follows in the same scroll
+    st.html(ui.top_card(label, result, img, lights) + ui.three_things(result, lights))
     st.html(ui.sugar_cards(result))
     st.html(ui.rank_card(result, all_sugar_values()) + ui.lights_card(lights, liquid))
     # claim verdicts already have their own card; keep the flag list for everything else
@@ -65,11 +66,11 @@ def render(label: dict, result: dict, img: str | None = None, key: str = "x") ->
     st.html(ui.claims_card(result["claims"], result["serving"]["g"], "ml" if liquid else "g") + ui.flags_card(flags))
     st.html(ui.order_card(label, result) + ui.sugar_names_card(label, result) + ui.honest_card(result))
     c1, c2 = st.columns([1, 3], vertical_alignment="center")
-    c1.download_button("⬇ Share card (PNG)", data=ui.share_image(label, result, lights),
+    c1.download_button("Download share card (PNG)", data=ui.share_image(label, result, lights),
                        file_name=f"label-decoder-{(label.get('barcode') or 'pack')}.png", mime="image/png",
                        key=f"dl_{key}_{label.get('barcode')}", use_container_width=True)
     c2.caption("Get this as a picture. Send it on WhatsApp or post it.")
-    with st.expander("🔬 Nerd corner: the raw numbers"):
+    with st.expander("Nerd corner: the raw numbers"):
         st.caption("First the label as the rules saw it, then everything the decoder worked out.")
         st.json({k: v for k, v in label.items() if k != "images"}, expanded=False)
         st.json(result, expanded=False)
@@ -88,8 +89,9 @@ st.html(ui.marquee([
     ("Maggi", "1 pack = a third of a day's salt."),
 ]))
 
-tab_pop, tab_barcode, tab_photo, tab_text, tab_cmp, tab_all = st.tabs(
-    ["The usual suspects", "Scan a barcode", "Snap the pack", "Paste the fine print", "Face-off", "The full lineup"])
+tab_pop, tab_dash, tab_barcode, tab_photo, tab_text, tab_cmp, tab_all = st.tabs(
+    ["The usual suspects", "The big picture", "Scan a barcode", "Snap the pack", "Paste the fine print", "Face-off",
+     "The full lineup"])
 
 with tab_pop:
     st.html(ui.intro("suspects"))
@@ -122,6 +124,11 @@ with tab_pop:
                         st.rerun()
         s = samples[st.session_state.pick]
         render(s["label"], decode_label(s["label"]), s["img"], key="pop")
+
+with tab_dash:
+    st.html(ui.intro("bigpicture"))
+    if samples:
+        st.html(ui.dashboard([(s["label"], decode_label(s["label"])) for s in samples.values()]))
 
 with tab_barcode:
     st.html(ui.intro("barcode"))
@@ -198,8 +205,8 @@ with tab_cmp:
             return ui.full_name(samples[c]["label"].get("brand"), samples[c]["label"].get("product_name"))
         codes = sorted(samples, key=lambda c: _nm(c).lower())
         c1, c2 = st.columns(2)
-        a = c1.selectbox("Pack A", codes, format_func=_nm, index=codes.index("8901030807190") if "8901030807190" in codes else 0)
-        b = c2.selectbox("Pack B", codes, format_func=_nm, index=codes.index("8902710100150") if "8902710100150" in codes else 1)
+        a = c1.selectbox("Pack A", codes, format_func=_nm, index=codes.index("8906059638329") if "8906059638329" in codes else 0)
+        b = c2.selectbox("Pack B", codes, format_func=_nm, index=codes.index("8901648026167") if "8901648026167" in codes else 1)
         res = {}
         for code in (a, b):
             lab = samples[code]["label"]
@@ -214,7 +221,7 @@ with tab_cmp:
             col.html(ui.compare_card(lab, r, samples[code]["img"], lights, winner=(code == win)))
         if win and tsp[a] and tsp[b]:
             lo, hi = sorted((tsp[a], tsp[b]))
-            st.html(f'<div class="ld-card" style="text-align:center;font-size:17px">🏅 <b>{ui.esc(_nm(win))}</b> wins: '
+            st.html(f'<div class="ld-card" style="text-align:center;font-size:17px">{ui.icon("medal")} <b>{ui.esc(_nm(win))}</b> wins: '
                     f'<b>{hi / lo:.1f}× less sugar</b> per serve.</div>' if lo > 0 else "")
 
 with tab_all:
@@ -230,4 +237,5 @@ with tab_all:
                            index=codes.index(FEATURED[0]) if FEATURED[0] in codes else 0)
         render(samples[sel]["label"], decode_label(samples[sel]["label"]), samples[sel]["img"], key="all")
 
+st.html(ui.method())
 st.html(ui.footer(GITHUB))

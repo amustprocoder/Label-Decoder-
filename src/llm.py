@@ -6,7 +6,7 @@ Providers (auto-detected from the environment, first match wins):
             response is guaranteed to match the schema. Default model claude-opus-5-5.
             Server-side refusal fallback is enabled by default (betas server-side-fallback-2026-07-01).
   gemini  - GEMINI_API_KEY set. Free tier via REST (same pattern as the Investor Intelligence
-            Engine's RUN-LLM.bat). Default model gemini-2.5-flash. JSON mode, validated locally.
+            Engine's RUN-LLM.bat). Default model gemini-3.8-flash, then the GEMINI_FALLBACKS list. JSON mode, validated locally.
 
 Override with LABEL_DECODER_PROVIDER=claude|gemini and LABEL_DECODER_MODEL=<model id>.
 """
@@ -24,7 +24,10 @@ import requests
 from PIL import Image
 
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-DEFAULT_MODEL = {"claude": "claude-opus-5-5", "gemini": "gemini-2.5-flash"}
+DEFAULT_MODEL = {"claude": "claude-opus-5-5", "gemini": "gemini-3.8-flash"}
+# Google retires dated models and the newest one is often "busy" on the free tier, so one model is not enough.
+# Tried in order after the default; the last is an alias that always points at a live model.
+GEMINI_FALLBACKS = ["gemini-3.5-flash", "gemini-flash-lite-latest"]
 MAX_SIDE = 1568   # long edge in px; above this vision tokens rise with no OCR gain
 
 
@@ -122,28 +125,51 @@ def _gemini(images, prompt, schema, system, max_tokens) -> dict:
     for img in images:
         b64, mt = _prep_image(img)
         parts.append({"inline_data": {"mime_type": mt, "data": b64}})
+    if schema:
+        # Claude gets the schema through structured outputs; Gemini's JSON mode only promises "some JSON", so the
+        # field names have to be spelled out or it invents its own and the rules layer finds nothing.
+        prompt += ("\n\nReturn ONE JSON object that follows this JSON Schema exactly: the same key names, every "
+                   "required key present, null where the pack does not print a value.\n" + json.dumps(schema))
     parts.append({"text": prompt})
     body = {
         "contents": [{"parts": parts}],
-        "generationConfig": {"response_mime_type": "application/json", "maxOutputTokens": max_tokens,
-                             "temperature": 0.1},
+        # no temperature: the Gemini 3 models are tuned for their default, and a low one is not what keeps the
+        # answer on the label (the schema and the "printed numbers only" instruction do that)
+        "generationConfig": {"response_mime_type": "application/json", "maxOutputTokens": max_tokens},
     }
     if system:
         body["systemInstruction"] = {"parts": [{"text": system}]}
-    headers = {"x-goog-api-key": os.environ["GEMINI_API_KEY"], "Content-Type": "application/json"}
-    url = GEMINI_URL.format(model=model_id("gemini"))
-    for attempt in range(5):
-        r = requests.post(url, json=body, headers=headers, timeout=120)
-        if r.status_code == 429 or r.status_code >= 500:
-            wait = 2 ** attempt * 3
-            print(f"  gemini {r.status_code}, retry in {wait}s")
-            time.sleep(wait)
-            continue
-        r.raise_for_status()
-        data = r.json()
-        try:
-            text = data["candidates"][0]["content"]["parts"][0]["text"]
-        except (KeyError, IndexError):
-            raise RuntimeError(f"Gemini returned no text: {json.dumps(data)[:400]}")
-        return _extract_json(text)
-    raise RuntimeError("Gemini: gave up after 5 retries (rate limit).")
+    # a key saved with a stray space or quote (easy to do with setx) should still work
+    headers = {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip().strip('"\''), "Content-Type": "application/json"}
+    # an explicit LABEL_DECODER_MODEL means "this model only"; otherwise walk the fallback list
+    models = [model_id("gemini")] + ([] if os.environ.get("LABEL_DECODER_MODEL") else GEMINI_FALLBACKS)
+    last = "no model answered"
+    for model in models:
+        url = GEMINI_URL.format(model=model)
+        for attempt in range(2):
+            try:
+                r = requests.post(url, json=body, headers=headers, timeout=75)
+            except requests.Timeout:
+                last = f"{model}: timed out"
+                break                                   # a hung model will not get faster: next one
+            if r.status_code == 404:
+                last = f"{model}: retired"
+                break
+            if r.status_code == 429 or r.status_code >= 500:
+                last = f"{model}: HTTP {r.status_code} (busy or rate limited)"
+                print(f"  gemini {model} {r.status_code}, retry in 4s")
+                time.sleep(4)
+                continue
+            r.raise_for_status()
+            data = r.json()
+            try:
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                return _extract_json(text)
+            except (KeyError, IndexError, json.JSONDecodeError):
+                # no usable answer: the model blocked itself (finishReason RECITATION / SAFETY when asked to copy a
+                # label word for word) or wrote broken JSON. Another model usually just answers.
+                cand = (data.get("candidates") or [{}])[0]
+                last = f"{model}: no usable answer ({cand.get('finishReason', 'unknown')})"
+                print(f"  gemini {last}")
+                break
+    raise RuntimeError(f"Gemini: none of {', '.join(models)} answered ({last}). Try again in a minute.")
