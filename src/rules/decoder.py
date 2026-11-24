@@ -25,6 +25,7 @@ import re
 from dataclasses import asdict
 
 from .fssai_claims import REG, check_schedule_claim, detect_claims
+from .health import health_check
 from .serving import (WHO_FREE_SUGAR_5PCT_G, FSSAI_RDA, per_serving, pct_energy_from, pct_of_rda,
                       pick_serving, sodium_from_salt, teaspoons)
 from .sugar_aliases import POLYOL_LAXATIVE_NOTE, POLYOLS, consolidated_rank, find_sugars
@@ -72,7 +73,7 @@ def decode_label(label: dict) -> dict:
     if is_liquid and re.search(r"bread|\bbuns?\b|\bpav\b|noodle|pasta|\boats\b|chips|wafer|\bcurd\b|\bdahi\b", cat_text):
         is_liquid = False                     # "milk bread", "milk chocolate wafer": solids that mention milk
     unit = "ml" if is_liquid else "g"
-    serving_g, serving_src = pick_serving(label)
+    serving_g, serving_src = pick_serving(label, is_liquid)
     ingredients = label.get("ingredients") or []
     if not ingredients and label.get("ingredients_text"):
         ingredients = split_ingredients(label["ingredients_text"])
@@ -318,6 +319,7 @@ def decode_label(label: dict) -> dict:
         "honest_label": " ".join(honest),
         "share_line": share_line,
         "severity_score": sum({"high": 3, "medium": 2, "low": 1}[f["severity"]] for f in flags),
+        "health": health_check(per100, sugar, serving_g, is_liquid, ingredients, cat_text, rank["n_added_sugar_lines"]),
     }
 
 

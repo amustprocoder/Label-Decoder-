@@ -30,7 +30,7 @@ DEFAULT_SERVE_G = {
     "granola": 40, "health drink": 30, "malt": 30, "protein powder": 30, "juice": 200,
     "beverage": 250, "soft drink": 300, "energy drink": 250, "yogurt": 100, "curd": 100,
     "ice cream": 100, "noodles": 70, "bread": 50, "ketchup": 15, "sauce": 15, "jam": 15,
-    "spread": 15, "bar": 40, "milk": 200, "default": 30,
+    "spread": 15, "bar": 40, "milk": 200, "oil": 10, "ghee": 10, "default": 30,
 }
 
 
@@ -62,14 +62,17 @@ def sodium_from_salt(salt_g: float | None) -> float | None:
     return None if salt_g is None else salt_g * 1000.0 / SODIUM_TO_SALT
 
 
-def pick_serving(label: dict) -> tuple[float | None, str]:
-    """Return (serving_g, how we got it)."""
+def pick_serving(label: dict, is_liquid: bool | None = None) -> tuple[float | None, str]:
+    """Return (serving_g, how we got it). `is_liquid` is the decoder's corrected flag when it has one."""
     s = label.get("serving_size_g")
-    is_liquid = bool(label.get("is_liquid"))
+    if is_liquid is None:
+        is_liquid = bool(label.get("is_liquid"))
     net = label.get("net_quantity_g")
     if s:
         s = float(s)
-        implausible = (not is_liquid and s > 150) or (is_liquid and s > 1000) or (net and s > float(net) * 1.05)
+        # a drink "serve" under 5 ml is a typo (2.25 for a 2.25 L bottle); one 4 g candy is a real serve
+        implausible = ((is_liquid and s < 5) or (not is_liquid and s > 150) or (is_liquid and s > 1000)
+                       or (net and s > float(net) * 1.05))
         if not implausible:
             return s, "declared on pack"
         # e.g. a malt powder whose "serve" is 250 ml of prepared drink while nutrition is per 100 g powder
@@ -81,4 +84,6 @@ def pick_serving(label: dict) -> tuple[float | None, str]:
     for k, v in DEFAULT_SERVE_G.items():
         if k != "default" and k in cat:
             return float(v), f"assumed typical {k} portion of {v} g; {why}"
+    if is_liquid:
+        return 200.0, f"assumed one 200 ml glass; {why}"
     return float(DEFAULT_SERVE_G["default"]), f"assumed 30 g portion; {why}"

@@ -19,6 +19,7 @@ import json
 import os
 import re
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
 from PIL import Image
@@ -143,33 +144,67 @@ def _gemini(images, prompt, schema, system, max_tokens) -> dict:
     headers = {"x-goog-api-key": os.environ["GEMINI_API_KEY"].strip().strip('"\''), "Content-Type": "application/json"}
     # an explicit LABEL_DECODER_MODEL means "this model only"; otherwise walk the fallback list
     models = [model_id("gemini")] + ([] if os.environ.get("LABEL_DECODER_MODEL") else GEMINI_FALLBACKS)
-    last = "no model answered"
-    for model in models:
-        url = GEMINI_URL.format(model=model)
-        for attempt in range(2):
+    # Copying numbers off a pack needs no long reasoning. Timed on the same three Parle-G photos (20 Nov 2026):
+    # default thinking 25 s (3.8-flash) and 15 s (3.5-flash); "low" 8.5 s and 4.4 s, with identical numbers.
+    think = os.environ.get("LABEL_DECODER_THINKING", "low")
+    # The free tier is uneven: the same request took 9 s once and hung for 45 s a minute later. So the first two
+    # models are asked at the same moment and the first usable answer wins; the rest are tried only if both fail.
+    errors: list[str] = []
+    racers, rest = models[:2], models[2:]
+    pool = ThreadPoolExecutor(max_workers=len(racers))
+    try:
+        jobs = [pool.submit(_gemini_once, m, body, headers, think) for m in racers]
+        for job in as_completed(jobs):
             try:
-                r = requests.post(url, json=body, headers=headers, timeout=75)
-            except requests.Timeout:
-                last = f"{model}: timed out"
-                break                                   # a hung model will not get faster: next one
-            if r.status_code == 404:
-                last = f"{model}: retired"
-                break
-            if r.status_code == 429 or r.status_code >= 500:
-                last = f"{model}: HTTP {r.status_code} (busy or rate limited)"
-                print(f"  gemini {model} {r.status_code}, retry in 4s")
-                time.sleep(4)
-                continue
-            r.raise_for_status()
-            data = r.json()
+                return job.result()
+            except RuntimeError as e:
+                errors.append(str(e))
+                print(f"  gemini {e}")
+    finally:
+        pool.shutdown(wait=False, cancel_futures=True)
+    for sweep in range(2):                              # second sweep only if a model was busy
+        for model in rest or models:
             try:
-                text = data["candidates"][0]["content"]["parts"][0]["text"]
-                return _extract_json(text)
-            except (KeyError, IndexError, json.JSONDecodeError):
-                # no usable answer: the model blocked itself (finishReason RECITATION / SAFETY when asked to copy a
-                # label word for word) or wrote broken JSON. Another model usually just answers.
-                cand = (data.get("candidates") or [{}])[0]
-                last = f"{model}: no usable answer ({cand.get('finishReason', 'unknown')})"
-                print(f"  gemini {last}")
-                break
-    raise RuntimeError(f"Gemini: none of {', '.join(models)} answered ({last}). Try again in a minute.")
+                return _gemini_once(model, body, headers, think)
+            except RuntimeError as e:
+                errors.append(str(e))
+                print(f"  gemini {e}")
+        if not any("busy" in e or "timed out" in e for e in errors):
+            break
+        time.sleep(3)
+    raise RuntimeError(f"Gemini: none of {', '.join(models)} answered ({errors[-1]}). Try again in a minute.")
+
+
+def _gemini_once(model: str, body: dict, headers: dict, think: str, timeout: int = 30) -> dict:
+    """One model, one answer (with the model's name under "read_by"). RuntimeError with a short reason if none."""
+    url = GEMINI_URL.format(model=model)
+    cfg = dict(body["generationConfig"])
+    if think != "default":
+        cfg["thinkingConfig"] = {"thinkingLevel": think}
+    for attempt in range(2):
+        try:
+            r = requests.post(url, json={**body, "generationConfig": cfg}, headers=headers, timeout=timeout)
+        except requests.Timeout:
+            raise RuntimeError(f"{model}: timed out") from None
+        except requests.RequestException as e:
+            raise RuntimeError(f"{model}: network error ({type(e).__name__})") from None
+        if r.status_code == 400 and "thinkingConfig" in cfg:
+            cfg.pop("thinkingConfig")                   # this model has no such setting: ask again without it
+            continue
+        if r.status_code == 404:
+            raise RuntimeError(f"{model}: retired")
+        if r.status_code == 429 or r.status_code >= 500:
+            raise RuntimeError(f"{model}: HTTP {r.status_code} (busy or rate limited)")
+        if r.status_code != 200:
+            raise RuntimeError(f"{model}: HTTP {r.status_code} (check the key)")
+        data = r.json()
+        try:
+            out = _extract_json(data["candidates"][0]["content"]["parts"][0]["text"])
+            out["read_by"] = data.get("modelVersion") or model
+            return out
+        except (KeyError, IndexError, json.JSONDecodeError):
+            # no usable answer: the model blocked itself (finishReason RECITATION / SAFETY when asked to copy a
+            # label word for word) or wrote broken JSON. Another model usually just answers.
+            cand = (data.get("candidates") or [{}])[0]
+            raise RuntimeError(f"{model}: no usable answer ({cand.get('finishReason', 'unknown')})") from None
+    raise RuntimeError(f"{model}: rejected the request")

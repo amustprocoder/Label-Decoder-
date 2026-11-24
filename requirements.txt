@@ -1,4 +1,4 @@
-streamlit>=1.40
+streamlit==1.61.1     # pinned: newer releases drop use_container_width, which the app uses
 requests>=2.31
 pillow>=10.0
 pytest>=8.0

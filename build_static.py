@@ -22,24 +22,12 @@ sys.path.insert(0, str(ROOT))
 
 from src import ui  # noqa: E402
 from src.rules.decoder import decode_label  # noqa: E402
+from src.replays import replay_cards  # noqa: E402
 
 OUT = ROOT / "site"
 GITHUB = "https://github.com/amustprocoder/Label-Decoder-"
 SITE = "https://labeldecoder-omrana.netlify.app"   # where this folder is deployed; link previews need the full URL
 LIVE = None       # URL of the Streamlit app once it is deployed; None keeps the site free of dead links
-PREDS = ROOT / "eval" / "results" / "extraction_claude-subagents.jsonl"   # the AI's recorded photo readings
-# Recorded photo readings shown in "Watch the AI read": (barcode, chip label, chip is a miss?, summary override)
-REPLAYS = [
-    ("8901719125478", "clean photos", False, None),
-    ("8904004400212", "clean photos", False, None),
-    ("8908001588560", "AI vs database", True,
-     "The AI matched the database on only <b>2 of 8</b> numbers. Look at the nutrition photo: energy 317.6, fat 8.82, "
-     "sodium 250. <b>The AI read the pack correctly; the crowd database is wrong.</b> Some of the 13% “errors” in the "
-     "accuracy score are the database’s mistakes, not the AI’s."),
-    ("8901725005214", "blurry photo", True,
-     "One number differs: protein, <b>8.7 read vs 9.7 in the database</b>. The photo is too blurry to say who is right, "
-     "and the AI said so itself in its note. On hard-to-read photos accuracy drops to 66%, which is why the app warns you."),
-]
 FEATURED = ["7622201150303", "8901063093287", "8906080603938", "8901719125478",
             "8904004400212", "8901058006292", "8906059638329", "6294017124031"]
 MARQUEE = [
@@ -63,7 +51,8 @@ def result_html(label: dict, result: dict, img: str | None, all_sugar: list[floa
             + ui.claims_card(result["claims"], result["serving"]["g"], "ml" if liquid else "g") + ui.flags_card(flags)
             + ui.order_card(label, result) + ui.sugar_names_card(label, result) + ui.honest_card(result))
     # the verdict, three facts and the spoons come first; the rest follows in the same scroll
-    return (ui.top_card(label, result, img, lights) + ui.three_things(result, lights) + ui.sugar_cards(result)
+    return (ui.top_card(label, result, img, lights) + ui.health_card(result) + ui.three_things(result, lights)
+            + ui.sugar_cards(result)
             + more
             + share)
 
@@ -118,180 +107,16 @@ def own_photo_card() -> str:
 
 
 def replays(rows: dict, all_sugar: list[float]) -> tuple[str, dict]:
-    """Chip bar + {barcode: html} for the recorded photo readings: photos, field check, verdict from the reading."""
-    preds = {json.loads(line)["barcode"]: json.loads(line)["pred"] for line in PREDS.open(encoding="utf-8")}
+    """Chip bar + {barcode: html} for the recorded photo readings (the cards come from src/replays.py)."""
     chips, html = "", {}
-    for i, (code, tag, miss, summary) in enumerate(REPLAYS):
-        ref, pred = rows[code]["label"], dict(preds[code])
-        imgs = rows[code].get("image_urls") or {}
-        name = ui.full_name(ref.get("brand"), ref.get("product_name"))
-        pred["barcode"] = code
-        result = decode_label(pred)
-        lights = ui._lights(pred.get("per_100") or {}, result["product"]["is_liquid"])
-        card = ui.replay_card(name, imgs, ui.read_check(pred, ref), pred, summary)
-        html[code] = (card + ui.top_card(pred, result, imgs.get("front"), lights) + ui.three_things(result, lights)
-                      + ui.sugar_cards(result))
+    for i, (code, name, tag, miss, card) in enumerate(replay_cards(rows)):
+        html[code] = card
         chips += (f'<button data-code="{code}"{" class=on" if i == 0 else ""}>{ui.esc(name)}'
                   f'<i class="{"miss" if miss else ""}">{ui.esc(tag)}</i></button>')
     return f'<div class="ld-chips" id="rp-chips">{chips}</div>', html
 
 
-EXTRA_CSS = """
-<style>
-.ld-tabs { display:flex; flex-wrap:wrap; gap:6px; background:#fff; border:1px solid var(--line); border-radius:999px; padding:5px; width:fit-content; max-width:100%; margin:6px 0 18px; }
-.ld-tabs button { font:600 14.5px 'Inter',sans-serif; color:var(--muted); background:transparent; border:none; padding:8px 16px; border-radius:999px; cursor:pointer; transition:all .15s; }
-.ld-tabs button:hover { background:#fafaf9; color:var(--ink); }
-.ld-tabs button.on { color:#fff; background:linear-gradient(135deg,#334155,#0f172a); box-shadow:0 4px 12px rgba(15,23,42,.3); }
-.ld-panel { display:none; } .ld-panel.on { display:block; }
-.ld-grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:6px; }
-.ld-pc { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:12px; cursor:pointer; transition:transform .18s, box-shadow .18s; }
-.ld-pc:hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(28,25,23,.08); }
-.ld-pc:hover img { transform:scale(1.07); }
-.ld-pc.on { border-color:#818cf8; box-shadow:0 0 0 4px rgba(67,56,202,.15), 0 12px 28px rgba(15,23,42,.12); }
-.ld-pc .go { margin-top:10px; text-align:center; font:700 14px 'Inter',sans-serif; border:1px solid var(--line); border-radius:999px; padding:8px; color:var(--ink); background:#fff; }
-.ld-pc.on .go { background:linear-gradient(135deg,#334155,#0f172a); color:#fff; border:none; box-shadow:0 6px 16px rgba(15,23,42,.3); }
-.ld-btn { display:inline-block; text-decoration:none; font:700 14.5px 'Inter',sans-serif; color:#fff; background:linear-gradient(135deg,#334155,#0f172a);
-  border:none; border-radius:999px; padding:10px 20px; cursor:pointer; box-shadow:0 6px 16px rgba(15,23,42,.3); }
-.ld-btn:hover { box-shadow:0 8px 20px rgba(15,23,42,.4); }
-.ld-share { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:16px 0 4px; }
-.ld-share span { font-size:13.5px; color:var(--faint); }
-.ld-field { display:flex; gap:10px; align-items:flex-end; margin-bottom:8px; }
-.ld-field label { display:block; font-size:14px; color:var(--muted); margin-bottom:6px; }
-.ld-field > div { flex:1; }
-.ld-field input, .ld-field select { width:100%; box-sizing:border-box; font:15px 'Inter',sans-serif; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:12px 14px; outline:none; }
-.ld-field input:focus, .ld-field select:focus { border-color:var(--brand); box-shadow:0 0 0 4px rgba(67,56,202,.15); }
-.ld-cmp-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.ld-msg { margin:12px 0; }
-#packs, #how { scroll-margin-top:84px; }
-/* handwritten notes in the page margins: only where there is real margin to write in */
-.ld-page { position:relative; }
-.ld-scribble { display:none; position:absolute; width:176px; font:600 24px/1.05 'Caveat',cursive; color:#475569; opacity:.5; pointer-events:none; }
-.ld-scribble svg { display:block; margin-top:6px; }
-.ld-scribble.l { left:-196px; transform:rotate(-7deg); text-align:right; } .ld-scribble.l svg { margin-left:auto; }
-.ld-scribble.r { right:-200px; transform:rotate(5deg); }
-@media (min-width: 1500px) { .ld-scribble { display:block; } }
-html { scroll-behavior:smooth; }
-/* ---- hero entrance: plays once on load. Text rises in, then the pack builds: front first, back fans out ---- */
-.ld-ln { display:inline-block; }
-@keyframes ld-rise { from { opacity:0; transform:translateY(22px); } }
-.ld-hero .ld-badge, .ld-hero .ld-ln, .ld-hero p.sub, .ld-hero .ld-ctas, .ld-hero .ld-proof { animation:ld-rise .6s cubic-bezier(.2,.7,.2,1) both; }
-.ld-hero .ld-badge { animation-delay:.05s; } .ld-hero .ld-ln { animation-delay:.16s; } .ld-hero .ld-ln ~ .ld-ln { animation-delay:.32s; }
-.ld-hero p.sub { animation-delay:.52s; } .ld-hero .ld-ctas { animation-delay:.66s; } .ld-hero .ld-proof { animation-delay:.8s; }
-.ld-face.front { animation:ld-front .7s cubic-bezier(.2,.8,.2,1) .35s both; }
-@keyframes ld-front { from { opacity:0; transform:translateX(-46px) rotate(-16deg); } }
-.ld-face.back { animation:ld-back .8s cubic-bezier(.2,.8,.2,1) .9s both; }
-@keyframes ld-back { from { opacity:0; transform:translateX(-96px) rotate(-6deg) scale(.96); } }
-.ld-pack-cap { animation:ld-rise .5s ease 1.6s both; }
-.ld-live { animation:ld-rise .6s cubic-bezier(.2,.7,.2,1) 1s both; }
-/* ---- tabs: the dark pill slides to the tab you click, and the new content fades in ---- */
-.ld-tabs { position:relative; }
-.ld-tabs button { position:relative; z-index:1; }
-.ld-tabs.has-pill button.on { background:transparent; box-shadow:none; }
-.ld-pill { position:absolute; z-index:0; border-radius:999px; background:linear-gradient(135deg,#334155,#0f172a); box-shadow:0 4px 12px rgba(15,23,42,.3);
-  transition:left .34s cubic-bezier(.3,1.15,.4,1), top .34s cubic-bezier(.3,1.15,.4,1), width .34s cubic-bezier(.3,1.15,.4,1), height .34s; }
-.ld-pill.still { transition:none; }
-.ld-panel.on { animation:ld-tabin .34s ease both; }
-@keyframes ld-tabin { from { opacity:0; transform:translateY(10px); } }
-/* ---- traffic lights come on one by one, then the meaning line ---- */
-.ld-lights .ld-light { animation:ld-lamp .5s cubic-bezier(.3,1.4,.5,1) both; }
-.ld-lights .ld-light:nth-child(1) { animation-delay:.15s; } .ld-lights .ld-light:nth-child(2) { animation-delay:.42s; }
-.ld-lights .ld-light:nth-child(3) { animation-delay:.69s; } .ld-lights .ld-light:nth-child(4) { animation-delay:.96s; }
-@keyframes ld-lamp { from { opacity:0; transform:scale(.8); } }
-.ld-lights + .ld-mean { animation:ld-in .45s ease 1.35s both; }
-.rv:not(.in) .ld-mean { animation:none !important; }
-/* ---- face-off: the winner lifts with a green ring and its medal pops; the other pack steps back ---- */
-.ld-cmp.rv.in.win { transform:translateY(-6px); box-shadow:0 0 0 3px var(--green), 0 18px 36px rgba(22,163,74,.2); }
-.ld-cmp.rv.in.lose { opacity:.6; }
-.ld-cmp.win .win .ld-ic { display:inline-block; animation:ld-medal .7s cubic-bezier(.3,1.7,.5,1) .55s both; }
-@keyframes ld-medal { from { opacity:0; transform:scale(0) rotate(-40deg); } }
-@media (prefers-reduced-motion: reduce) {
-  .ld-hero *, .ld-live, .ld-panel.on, .ld-lights .ld-light, .ld-lights + .ld-mean, .ld-cmp.win .win .ld-ic { animation:none !important; }
-  .ld-pill { transition:none; }
-}
-/* ---- scroll reveal: a card stays hidden until it scrolls into view, then its own animation plays once ---- */
-.ld-sp { position:fixed; top:0; left:0; height:3px; width:0; z-index:100; background:linear-gradient(90deg,#4338ca,#dc2626); }
-.rv { animation:none !important; opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
-.rv.in { opacity:1; transform:none; }
-.ld-pc.rv.in { transition:opacity .6s ease, transform .22s ease, box-shadow .18s; }
-.ld-pc.rv.in:hover { transform:translateY(-3px); }
-/* whatever is inside a hidden card waits with it */
-.rv:not(.in) .ld-cube, .rv:not(.in) .ld-light, .rv:not(.in) .ld-bar > div, .rv:not(.in) .ld-hrow .t i, .rv:not(.in) .ld-dist i,
-.rv:not(.in) .ld-ring .r, .rv:not(.in) .ld-stack i, .rv:not(.in) .ld-3 > div, .rv:not(.in) .ld-vban, .rv:not(.in) .ld-read tr,
-.rv:not(.in) .ld-read .ok, .rv:not(.in) .ld-read .no, .rv:not(.in) .ld-ing mark, .rv:not(.in) .ld-read + .ld-mean { animation:none !important; }
-/* 1. verdict: the banner drops in (the spoon number counts up in JS) */
-.ld-vban { animation:ld-ban .6s cubic-bezier(.2,.8,.2,1) both; }
-@keyframes ld-ban { from { transform:translateY(-100%); opacity:0; } }
-/* 2. the three things arrive in reading order */
-.ld-3 > div { animation:ld-in .45s ease both; }
-.ld-3 > div:nth-child(1) { animation-delay:.25s; } .ld-3 > div:nth-child(2) { animation-delay:.5s; } .ld-3 > div:nth-child(3) { animation-delay:.75s; }
-/* 3. sugar names get marked one by one, like a highlighter */
-.ld-ing mark { background:linear-gradient(var(--sugar),var(--sugar)) no-repeat 0 50% / 0% 100%; animation:ld-mark .45s ease-out forwards; animation-delay:1.9s; }
-@keyframes ld-mark { to { background-size:100% 100%; } }
-.ld-ing mark:nth-of-type(1) { animation-delay:0.30s; } .ld-ing mark:nth-of-type(2) { animation-delay:0.55s; } .ld-ing mark:nth-of-type(3) { animation-delay:0.80s; } .ld-ing mark:nth-of-type(4) { animation-delay:1.05s; } .ld-ing mark:nth-of-type(5) { animation-delay:1.30s; } .ld-ing mark:nth-of-type(6) { animation-delay:1.55s; } .ld-ing mark:nth-of-type(7) { animation-delay:1.80s; } 
-/* 4. the AI's reading ticks in row by row, then the summary */
-.ld-read tr { animation:ld-row .32s ease-out both; }
-@keyframes ld-row { from { opacity:0; transform:translateX(-12px); } }
-.ld-read .ok, .ld-read .no { display:inline-block; animation:ld-pop .35s cubic-bezier(.3,1.5,.6,1) both; }
-.ld-read tr:nth-child(2) { animation-delay:0.25s; } .ld-read tr:nth-child(2) .ok, .ld-read tr:nth-child(2) .no { animation-delay:0.42s; }
-.ld-read tr:nth-child(3) { animation-delay:0.45s; } .ld-read tr:nth-child(3) .ok, .ld-read tr:nth-child(3) .no { animation-delay:0.62s; }
-.ld-read tr:nth-child(4) { animation-delay:0.65s; } .ld-read tr:nth-child(4) .ok, .ld-read tr:nth-child(4) .no { animation-delay:0.82s; }
-.ld-read tr:nth-child(5) { animation-delay:0.85s; } .ld-read tr:nth-child(5) .ok, .ld-read tr:nth-child(5) .no { animation-delay:1.02s; }
-.ld-read tr:nth-child(6) { animation-delay:1.05s; } .ld-read tr:nth-child(6) .ok, .ld-read tr:nth-child(6) .no { animation-delay:1.22s; }
-.ld-read tr:nth-child(7) { animation-delay:1.25s; } .ld-read tr:nth-child(7) .ok, .ld-read tr:nth-child(7) .no { animation-delay:1.42s; }
-.ld-read tr:nth-child(8) { animation-delay:1.45s; } .ld-read tr:nth-child(8) .ok, .ld-read tr:nth-child(8) .no { animation-delay:1.62s; }
-.ld-read tr:nth-child(9) { animation-delay:1.65s; } .ld-read tr:nth-child(9) .ok, .ld-read tr:nth-child(9) .no { animation-delay:1.82s; }
-.ld-read tr:nth-child(10) { animation-delay:1.85s; } .ld-read tr:nth-child(10) .ok, .ld-read tr:nth-child(10) .no { animation-delay:2.02s; }
-.ld-read + .ld-mean { animation:ld-in .45s ease both; animation-delay:2.2s; }
-@media (prefers-reduced-motion: reduce) { .rv { opacity:1; transform:none; transition:none; } .ld-ing mark { background-size:100% 100%; } }
-/* motion: rotating claim in the headline, live decode strip */
-.ld-rot, .ld-rot2 { display:inline-block; transition:opacity .28s ease, transform .28s ease; }
-.ld-rot.out, .ld-rot2.out { opacity:0; transform:translateY(10px); }
-.ld-live { position:relative; display:grid; grid-template-columns:auto 74px 1fr auto; gap:16px; align-items:center; background:#fff; border:1px solid #c7d2fe;
-  border-radius:18px; padding:14px 18px 18px; margin:-4px 0 18px; overflow:hidden; cursor:pointer; box-shadow:0 10px 26px rgba(15,23,42,.07); }
-.ld-live .tag { font:800 11px 'Inter',sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--brand); writing-mode:vertical-rl; transform:rotate(180deg); }
-.ld-live .tag::before { content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); margin-bottom:6px; animation:ld-blink 3s ease-in-out infinite; }
-@keyframes ld-blink { 50% { opacity:.45; } }
-.ld-live .im { width:74px; height:74px; display:grid; place-items:center; background:#f1f5f9; border-radius:12px; color:var(--faint); font-size:30px; }
-.ld-live .im img { max-width:66px; max-height:66px; object-fit:contain; }
-.ld-live .nm { font:800 19px 'Outfit',sans-serif; color:var(--ink); }
-.ld-live .ln { font-size:14.5px; color:var(--muted); margin-top:2px; }
-.ld-live .rt { text-align:right; }
-.ld-live .rt .n { font:800 30px 'Outfit',sans-serif; color:var(--ink); line-height:1; }
-.ld-live .rt .n small { font:600 13px 'Inter',sans-serif; color:var(--muted); }
-.ld-live .rt .ld-cubes { justify-content:flex-end; margin:8px 0 0; gap:5px; }
-.ld-live .rt .ld-cube { width:22px; height:22px; border-radius:6px; box-shadow:inset -3px -3px 0 #cbd5e1; }
-.ld-live .body { display:contents; }
-.ld-live.swap .im, .ld-live.swap .mid, .ld-live.swap .rt { opacity:0; }
-.ld-live .im, .ld-live .mid, .ld-live .rt { transition:opacity .4s ease; }
-.ld-live .ld-cube { animation:none; }
-.ld-live .dots { position:absolute; left:0; right:0; bottom:7px; display:flex; justify-content:center; gap:5px; }
-.ld-live .dots i { width:6px; height:6px; border-radius:999px; background:#cbd5e1; transition:width .3s ease, background .3s ease; }
-.ld-live .dots i.on { width:18px; background:var(--brand); }
-.ld-hrow.wide { grid-template-columns:minmax(150px,52%) 1fr 34px; }
-.ld-hrow.wide .n { white-space:normal; }
-@media (prefers-reduced-motion: reduce) { .ld-live .tag::before, .ld-marq div { animation:none; } }
-body { margin:0; }
-.ld-page { max-width:1080px; margin:0 auto; padding:10px 16px 48px; }
-@media (max-width: 720px) {
-  .ld-grid4 { grid-template-columns:repeat(2,1fr); }
-  .ld-cmp-grid, .ld-field { grid-template-columns:1fr; flex-direction:column; align-items:stretch; }
-  .ld-cmp-grid { display:grid; }
-  .ld-tabs { flex-wrap:nowrap; overflow-x:auto; width:auto; border-radius:999px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
-  .ld-tabs::-webkit-scrollbar { display:none; }
-  .ld-tabs button { white-space:nowrap; flex:none; }
-  .ld-nav .links a:not(.cta) { display:none; }
-  .ld-nav .logo, .ld-nav a.cta { white-space:nowrap; }
-  .ld-nav { padding:8px 10px; gap:8px; } .ld-nav .links { gap:6px; }
-  .ld-nav .logo { font-size:15px; gap:7px; } .ld-nav .logo i { width:30px; height:30px; font-size:16px; }
-  .ld-nav a.cta { font-size:0; padding:7px 11px; } .ld-nav a.cta::after { content:"By Om Rana"; font-size:12.5px; }
-  .ld-lang { font-size:12px; padding:6px 9px; }
-  .ld-rot, .ld-rot2 { display:block; }
-  .ld-live { grid-template-columns:60px 1fr; gap:12px; } .ld-live .tag { display:none; }
-  .ld-live .im { width:60px; height:60px; } .ld-live .rt { grid-column:1 / -1; text-align:left; display:flex; align-items:center; gap:12px; }
-  .ld-live .rt .ld-cubes { justify-content:flex-start; margin:0; }
-}
-</style>
-"""
+EXTRA_CSS = ui.SITE_CSS   # the site-only look now lives in src/ui.py, shared with the Streamlit app
 
 JS = """
 <script>
@@ -621,10 +446,10 @@ def main() -> None:
     page = (
         '<!doctype html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
-        '<title>Label Decoder</title>'
-        '<meta name="description" content="Healthy on the front, sugar on the back. Decode 100 Indian food labels: sugar in spoons, hidden sugar names, claims checked against FSSAI rules.">'
-        '<meta property="og:title" content="Label Decoder: healthy on the front, sugar on the back">'
-        '<meta property="og:description" content="Sugar in spoons, hidden sugar names and every pack claim checked against Indian food law. 100 Indian packs.">'
+        '<title>Label Decoder: is this pack healthy?</title>'
+        '<meta name="description" content="Is this pack healthy or not? Label Decoder reads the ingredient list and nutrition table on the back of Indian food packs and gives one verdict from four checks. 100 packs checked.">'
+        '<meta property="og:title" content="Label Decoder: is this pack healthy or not?">'
+        '<meta property="og:description" content="Reads the ingredient list and nutrition table on the back of the pack. Four checks, one answer: healthy or not healthy. 100 Indian packs.">'
         f'<meta property="og:type" content="website"><meta property="og:url" content="{SITE}/">'
         f'<meta property="og:image" content="{SITE}/og.png"><meta property="og:image:width" content="1200">'
         '<meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image">'

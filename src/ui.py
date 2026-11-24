@@ -11,6 +11,7 @@ from __future__ import annotations
 import html
 import re
 
+from src.rules.health import ingredient_flag
 from src.rules.serving import TEASPOON_G, WHO_FREE_SUGAR_5PCT_G
 
 # UK FSA front-of-pack thresholds per 100 g (food) / per 100 ml (drinks): (low <=, high >)
@@ -63,9 +64,10 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 [data-baseweb="select"] > div { border-radius:14px !important; border:1.5px solid var(--line) !important; background:#fff !important; }
 [data-testid="stFileUploader"] section { border:2px dashed #a5b4fc; border-radius:18px; background:#fff; }
 [data-testid="stExpander"] { border:1px solid var(--line); border-radius:14px; background:#fff; }
-[data-testid="stVerticalBlockBorderWrapper"]:has(> div > [data-testid="stVerticalBlock"] .ld-pcard) {
-  background:var(--card); border-radius:18px !important; border:1px solid var(--line) !important; }
-[data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard.on) { border-color:#818cf8 !important; box-shadow:0 0 0 4px rgba(67,56,202,.15), 0 12px 28px rgba(15,23,42,.12) !important; }
+/* product picker: a bordered st.container holding a .ld-pcard is drawn as the site's .ld-pc card (Streamlit 1.61 markup) */
+[data-testid="stVerticalBlock"]:has(> .stElementContainer > .stHtml > .ld-pcard) {
+  background:var(--card); border-radius:18px !important; border:1px solid var(--line) !important; padding:12px !important; gap:10px; }
+[data-testid="stVerticalBlock"]:has(> .stElementContainer > .stHtml > .ld-pcard.on) { border-color:#818cf8 !important; box-shadow:0 0 0 4px rgba(67,56,202,.15), 0 12px 28px rgba(15,23,42,.12) !important; }
 .ld-ribbon { position:absolute; top:10px; left:-6px; background:linear-gradient(135deg,#dc2626,#ef4444); color:#fff; font-size:11px; font-weight:800; letter-spacing:.04em; padding:4px 10px; border-radius:0 999px 999px 0; box-shadow:0 3px 8px rgba(220,38,38,.3); }
 .ld-ribbon.gold { background:linear-gradient(135deg,#d97706,#f59e0b); box-shadow:0 3px 8px rgba(217,119,6,.3); }
 .ld-ribbon.green { background:linear-gradient(135deg,#15803d,#22c55e); box-shadow:0 3px 8px rgba(21,128,61,.3); }
@@ -140,6 +142,24 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-3 > div { display:grid; grid-template-columns:34px 1fr; gap:12px; align-items:center; background:#fafaf9; border:1px solid var(--line); border-radius:14px; padding:12px 14px; font-size:16px; color:var(--muted); }
 .ld-3 > div > i { font-style:normal; display:grid; place-items:center; width:34px; height:34px; border-radius:50%; background:linear-gradient(135deg,#334155,#0f172a); color:#fff; font:800 16px 'Outfit',sans-serif; }
 .ld-3 b { color:var(--ink); }
+.ld-hc-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:6px; }
+.ld-hc-t { border:1px solid var(--line); border-top-width:5px; border-radius:14px; padding:13px 14px 14px; background:#fafaf9; }
+.ld-hc-t .top { display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:12.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); }
+.ld-hc-t .top em { font-style:normal; font-size:11px; padding:3px 9px; border-radius:999px; background:#e7e5e4; color:var(--muted); white-space:nowrap; letter-spacing:.06em; }
+.ld-hc-t .hd { font:800 17px/1.25 'Outfit','Inter',sans-serif; color:var(--ink); margin:9px 0 7px; }
+.ld-hc-t ul { list-style:none; margin:0; padding:0; display:grid; gap:5px; font-size:13.5px; line-height:1.4; color:#44403c; }
+.ld-hc-t li { position:relative; padding-left:14px; margin:0; }
+.ld-hc-t li::before { content:""; position:absolute; left:0; top:.52em; width:6px; height:6px; border-radius:50%; background:#a8a29e; }
+.ld-hc-t.red { background:var(--red-bg); border-color:#fecaca; border-top-color:var(--red); } .ld-hc-t.red .top em { background:var(--red); color:#fff; } .ld-hc-t.red li::before { background:var(--red); }
+.ld-hc-t.amber { background:#fefce8; border-color:#fde047; border-top-color:#eab308; } .ld-hc-t.amber .top em { background:#facc15; color:#422006; } .ld-hc-t.amber li::before { background:#ca8a04; }
+.ld-hc-t.green { background:var(--green-bg); border-color:#bbf7d0; border-top-color:var(--green); } .ld-hc-t.green .top em { background:var(--green); color:#fff; } .ld-hc-t.green li::before { background:var(--green); }
+.ld-hc-rule { margin-top:12px; font-size:14px; color:var(--muted); }
+.ld-hc-rule b { color:var(--ink); }
+.ld-vban .vt { font-size:13px; font-weight:600; opacity:.92; margin-top:7px; }
+.ld-order span.bad { background:var(--red-bg); border-color:#fecaca; color:#7f1d1d; font-weight:600; }
+.ld-order span.bad b { background:var(--red); color:#fff; }
+@media (max-width: 900px) { .ld-hc-grid { grid-template-columns:repeat(2, 1fr); } }
+@media (max-width: 520px) { .ld-hc-grid { grid-template-columns:1fr; } }
 /* icons: one stroke set, drawn as CSS masks so they take the text colour (see ICONS) */
 .ld-ic { display:inline-block; width:1.15em; height:1.15em; vertical-align:-.2em; font-style:normal; background:currentColor;
   -webkit-mask:var(--m) center / contain no-repeat; mask:var(--m) center / contain no-repeat; }
@@ -173,7 +193,7 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-card.ld-vcard { padding:0; overflow:hidden; }
 .ld-vcard .ld-top { padding:20px 24px 22px; }
 .ld-vban { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; padding:16px 24px; color:#fff; }
-.ld-vban.red { background:linear-gradient(135deg,#dc2626,#b91c1c); } .ld-vban.amber { background:linear-gradient(135deg,#d97706,#b45309); }
+.ld-vban.red { background:linear-gradient(135deg,#dc2626,#b91c1c); } .ld-vban.amber { background:linear-gradient(135deg,#facc15,#eab308); color:#422006; }
 .ld-vban.green { background:linear-gradient(135deg,#16a34a,#15803d); }
 .ld-vban .v { display:flex; align-items:center; gap:10px; font:900 30px 'Outfit',sans-serif; line-height:1; }
 .ld-vban .s { font-size:14.5px; font-weight:600; opacity:.95; text-align:right; }
@@ -250,12 +270,12 @@ header[data-testid="stHeader"] { background:transparent; height:0; }
 .ld-vsbadge b { font-family:'Outfit',sans-serif; font-size:22px; color:var(--brand); }
 
 /* product picker cards */
-[data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard) { transition:transform .18s ease, box-shadow .18s ease; }
-[data-testid="stVerticalBlockBorderWrapper"]:has(.ld-pcard):hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(28,25,23,.08); }
+[data-testid="stVerticalBlock"]:has(> .stElementContainer > .stHtml > .ld-pcard) { transition:transform .18s ease, box-shadow .18s ease; }
+[data-testid="stVerticalBlock"]:has(> .stElementContainer > .stHtml > .ld-pcard):hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(28,25,23,.08); }
 .ld-pcard { text-align:center; position:relative; }
 .ld-pcard .img { height:128px; display:flex; align-items:center; justify-content:center; background:#f1f5f9; border-radius:14px; padding:10px; box-sizing:border-box; overflow:hidden; }
 .ld-pcard img { transition:transform .25s ease; }
-[data-testid="stVerticalBlockBorderWrapper"]:hover .ld-pcard img { transform:scale(1.07); }
+[data-testid="stVerticalBlock"]:has(> .stElementContainer > .stHtml > .ld-pcard):hover .ld-pcard img { transform:scale(1.07); }
 .ld-pcard img { max-height:100%; max-width:100%; object-fit:contain; border-radius:8px; box-shadow:0 4px 10px rgba(15,23,42,.12); }
 .ld-pcard .nm { font-weight:700; font-size:14px; color:var(--ink); margin-top:8px; line-height:1.25; min-height:36px; }
 .ld-chip { display:inline-block; font-size:12px; font-weight:700; border-radius:999px; padding:2px 10px; margin-top:6px; }
@@ -470,16 +490,177 @@ def _paper_css() -> str:
         '.stApp { background-image:radial-gradient(circle, rgba(15,23,42,.04) 1px, transparent 1.4px), '
         'url("data:image/svg+xml,' + grain + '"); background-size:24px 24px, 220px 220px; }\n'
         # margin sketches: only where a real margin exists, starting below the handwritten notes
-        '.ld-page { --sk:clamp(56px, calc((100vw - 1170px) / 2), 150px); }\n'
-        '.ld-page::before, .ld-page::after { content:""; display:none; position:absolute; top:760px; bottom:140px; width:var(--sk); '
+        # .ld-page is the static site's column; .stMainBlockContainer is the same column in the Streamlit app
+        '.ld-page, .stMainBlockContainer { --sk:clamp(56px, calc((100vw - 1170px) / 2), 150px); }\n'
+        '.ld-page::before, .ld-page::after, .stMainBlockContainer::before, .stMainBlockContainer::after { content:""; display:none; position:absolute; top:760px; bottom:140px; width:var(--sk); '
         'pointer-events:none; background:url("data:image/svg+xml,' + sketches + '") repeat-y center top / var(--sk) auto; '
         f'-webkit-mask-image:{fade}; mask-image:{fade}; }}\n'
-        '.ld-page::before { left:calc(-12px - var(--sk)); } .ld-page::after { right:calc(-12px - var(--sk)); transform:scaleX(-1); background-position:center 560px; }\n'
-        '@media (min-width: 1260px) { .ld-page::before, .ld-page::after { display:block; } }'
+        '.ld-page::before, .stMainBlockContainer::before { left:calc(-12px - var(--sk)); } '
+        '.ld-page::after, .stMainBlockContainer::after { right:calc(-12px - var(--sk)); transform:scaleX(-1); background-position:center 560px; }\n'
+        '@media (min-width: 1260px) { .ld-page::before, .ld-page::after, .stMainBlockContainer::before, .stMainBlockContainer::after { display:block; } }'
     )
 
 
 CSS = CSS.replace("</style>", _paper_css() + "\n</style>")
+
+# The website's extra layer: tab bar, product cards, hero motion, scroll reveal, live strip. Written for the static
+# page; the Streamlit app injects it too (plus src/app_ui.py for Streamlit's own widgets), so both read the same.
+SITE_CSS = """
+<style>
+.ld-tabs { display:flex; flex-wrap:wrap; gap:6px; background:#fff; border:1px solid var(--line); border-radius:999px; padding:5px; width:fit-content; max-width:100%; margin:6px 0 18px; }
+.ld-tabs button { font:600 14.5px 'Inter',sans-serif; color:var(--muted); background:transparent; border:none; padding:8px 16px; border-radius:999px; cursor:pointer; transition:all .15s; }
+.ld-tabs button:hover { background:#fafaf9; color:var(--ink); }
+.ld-tabs button.on { color:#fff; background:linear-gradient(135deg,#334155,#0f172a); box-shadow:0 4px 12px rgba(15,23,42,.3); }
+.ld-panel { display:none; } .ld-panel.on { display:block; }
+.ld-grid4 { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:6px; }
+.ld-pc { background:var(--card); border:1px solid var(--line); border-radius:18px; padding:12px; cursor:pointer; transition:transform .18s, box-shadow .18s; }
+.ld-pc:hover { transform:translateY(-3px); box-shadow:0 10px 24px rgba(28,25,23,.08); }
+.ld-pc:hover img { transform:scale(1.07); }
+.ld-pc.on { border-color:#818cf8; box-shadow:0 0 0 4px rgba(67,56,202,.15), 0 12px 28px rgba(15,23,42,.12); }
+.ld-pc .go { margin-top:10px; text-align:center; font:700 14px 'Inter',sans-serif; border:1px solid var(--line); border-radius:999px; padding:8px; color:var(--ink); background:#fff; }
+.ld-pc.on .go { background:linear-gradient(135deg,#334155,#0f172a); color:#fff; border:none; box-shadow:0 6px 16px rgba(15,23,42,.3); }
+.ld-btn { display:inline-block; text-decoration:none; font:700 14.5px 'Inter',sans-serif; color:#fff; background:linear-gradient(135deg,#334155,#0f172a);
+  border:none; border-radius:999px; padding:10px 20px; cursor:pointer; box-shadow:0 6px 16px rgba(15,23,42,.3); }
+.ld-btn:hover { box-shadow:0 8px 20px rgba(15,23,42,.4); }
+.ld-share { display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:16px 0 4px; }
+.ld-share span { font-size:13.5px; color:var(--faint); }
+.ld-field { display:flex; gap:10px; align-items:flex-end; margin-bottom:8px; }
+.ld-field label { display:block; font-size:14px; color:var(--muted); margin-bottom:6px; }
+.ld-field > div { flex:1; }
+.ld-field input, .ld-field select { width:100%; box-sizing:border-box; font:15px 'Inter',sans-serif; color:var(--ink); background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:12px 14px; outline:none; }
+.ld-field input:focus, .ld-field select:focus { border-color:var(--brand); box-shadow:0 0 0 4px rgba(67,56,202,.15); }
+.ld-cmp-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.ld-msg { margin:12px 0; }
+#packs, #how { scroll-margin-top:84px; }
+/* handwritten notes in the page margins: only where there is real margin to write in */
+.ld-page { position:relative; }
+.ld-scribble { display:none; position:absolute; width:176px; font:600 24px/1.05 'Caveat',cursive; color:#475569; opacity:.5; pointer-events:none; }
+.ld-scribble svg { display:block; margin-top:6px; }
+.ld-scribble.l { left:-196px; transform:rotate(-7deg); text-align:right; } .ld-scribble.l svg { margin-left:auto; }
+.ld-scribble.r { right:-200px; transform:rotate(5deg); }
+@media (min-width: 1500px) { .ld-scribble { display:block; } }
+html { scroll-behavior:smooth; }
+/* ---- hero entrance: plays once on load. Text rises in, then the pack builds: front first, back fans out ---- */
+.ld-ln { display:inline-block; }
+@keyframes ld-rise { from { opacity:0; transform:translateY(22px); } }
+.ld-hero .ld-badge, .ld-hero .ld-ln, .ld-hero p.sub, .ld-hero .ld-ctas, .ld-hero .ld-proof { animation:ld-rise .6s cubic-bezier(.2,.7,.2,1) both; }
+.ld-hero .ld-badge { animation-delay:.05s; } .ld-hero .ld-ln { animation-delay:.16s; } .ld-hero .ld-ln ~ .ld-ln { animation-delay:.32s; }
+.ld-hero p.sub { animation-delay:.52s; } .ld-hero .ld-ctas { animation-delay:.66s; } .ld-hero .ld-proof { animation-delay:.8s; }
+.ld-face.front { animation:ld-front .7s cubic-bezier(.2,.8,.2,1) .35s both; }
+@keyframes ld-front { from { opacity:0; transform:translateX(-46px) rotate(-16deg); } }
+.ld-face.back { animation:ld-back .8s cubic-bezier(.2,.8,.2,1) .9s both; }
+@keyframes ld-back { from { opacity:0; transform:translateX(-96px) rotate(-6deg) scale(.96); } }
+.ld-pack-cap { animation:ld-rise .5s ease 1.6s both; }
+.ld-live { animation:ld-rise .6s cubic-bezier(.2,.7,.2,1) 1s both; }
+/* ---- tabs: the dark pill slides to the tab you click, and the new content fades in ---- */
+.ld-tabs { position:relative; }
+.ld-tabs button { position:relative; z-index:1; }
+.ld-tabs.has-pill button.on { background:transparent; box-shadow:none; }
+.ld-pill { position:absolute; z-index:0; border-radius:999px; background:linear-gradient(135deg,#334155,#0f172a); box-shadow:0 4px 12px rgba(15,23,42,.3);
+  transition:left .34s cubic-bezier(.3,1.15,.4,1), top .34s cubic-bezier(.3,1.15,.4,1), width .34s cubic-bezier(.3,1.15,.4,1), height .34s; }
+.ld-pill.still { transition:none; }
+.ld-panel.on { animation:ld-tabin .34s ease both; }
+@keyframes ld-tabin { from { opacity:0; transform:translateY(10px); } }
+/* ---- traffic lights come on one by one, then the meaning line ---- */
+.ld-lights .ld-light { animation:ld-lamp .5s cubic-bezier(.3,1.4,.5,1) both; }
+.ld-lights .ld-light:nth-child(1) { animation-delay:.15s; } .ld-lights .ld-light:nth-child(2) { animation-delay:.42s; }
+.ld-lights .ld-light:nth-child(3) { animation-delay:.69s; } .ld-lights .ld-light:nth-child(4) { animation-delay:.96s; }
+@keyframes ld-lamp { from { opacity:0; transform:scale(.8); } }
+.ld-lights + .ld-mean { animation:ld-in .45s ease 1.35s both; }
+.rv:not(.in) .ld-mean { animation:none !important; }
+/* ---- face-off: the winner lifts with a green ring and its medal pops; the other pack steps back ---- */
+.ld-cmp.rv.in.win { transform:translateY(-6px); box-shadow:0 0 0 3px var(--green), 0 18px 36px rgba(22,163,74,.2); }
+.ld-cmp.rv.in.lose { opacity:.6; }
+.ld-cmp.win .win .ld-ic { display:inline-block; animation:ld-medal .7s cubic-bezier(.3,1.7,.5,1) .55s both; }
+@keyframes ld-medal { from { opacity:0; transform:scale(0) rotate(-40deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .ld-hero *, .ld-live, .ld-panel.on, .ld-lights .ld-light, .ld-lights + .ld-mean, .ld-cmp.win .win .ld-ic { animation:none !important; }
+  .ld-pill { transition:none; }
+}
+/* ---- scroll reveal: a card stays hidden until it scrolls into view, then its own animation plays once ---- */
+.ld-sp { position:fixed; top:0; left:0; height:3px; width:0; z-index:100; background:linear-gradient(90deg,#4338ca,#dc2626); }
+.rv { animation:none !important; opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+.rv.in { opacity:1; transform:none; }
+.ld-pc.rv.in { transition:opacity .6s ease, transform .22s ease, box-shadow .18s; }
+.ld-pc.rv.in:hover { transform:translateY(-3px); }
+/* whatever is inside a hidden card waits with it */
+.rv:not(.in) .ld-cube, .rv:not(.in) .ld-light, .rv:not(.in) .ld-bar > div, .rv:not(.in) .ld-hrow .t i, .rv:not(.in) .ld-dist i,
+.rv:not(.in) .ld-ring .r, .rv:not(.in) .ld-stack i, .rv:not(.in) .ld-3 > div, .rv:not(.in) .ld-vban, .rv:not(.in) .ld-read tr,
+.rv:not(.in) .ld-read .ok, .rv:not(.in) .ld-read .no, .rv:not(.in) .ld-ing mark, .rv:not(.in) .ld-read + .ld-mean { animation:none !important; }
+/* 1. verdict: the banner drops in (the spoon number counts up in JS) */
+.ld-vban { animation:ld-ban .6s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes ld-ban { from { transform:translateY(-100%); opacity:0; } }
+/* 2. the three things arrive in reading order */
+.ld-3 > div { animation:ld-in .45s ease both; }
+.ld-3 > div:nth-child(1) { animation-delay:.25s; } .ld-3 > div:nth-child(2) { animation-delay:.5s; } .ld-3 > div:nth-child(3) { animation-delay:.75s; }
+/* 3. sugar names get marked one by one, like a highlighter */
+.ld-ing mark { background:linear-gradient(var(--sugar),var(--sugar)) no-repeat 0 50% / 0% 100%; animation:ld-mark .45s ease-out forwards; animation-delay:1.9s; }
+@keyframes ld-mark { to { background-size:100% 100%; } }
+.ld-ing mark:nth-of-type(1) { animation-delay:0.30s; } .ld-ing mark:nth-of-type(2) { animation-delay:0.55s; } .ld-ing mark:nth-of-type(3) { animation-delay:0.80s; } .ld-ing mark:nth-of-type(4) { animation-delay:1.05s; } .ld-ing mark:nth-of-type(5) { animation-delay:1.30s; } .ld-ing mark:nth-of-type(6) { animation-delay:1.55s; } .ld-ing mark:nth-of-type(7) { animation-delay:1.80s; } 
+/* 4. the AI's reading ticks in row by row, then the summary */
+.ld-read tr { animation:ld-row .32s ease-out both; }
+@keyframes ld-row { from { opacity:0; transform:translateX(-12px); } }
+.ld-read .ok, .ld-read .no { display:inline-block; animation:ld-pop .35s cubic-bezier(.3,1.5,.6,1) both; }
+.ld-read tr:nth-child(2) { animation-delay:0.25s; } .ld-read tr:nth-child(2) .ok, .ld-read tr:nth-child(2) .no { animation-delay:0.42s; }
+.ld-read tr:nth-child(3) { animation-delay:0.45s; } .ld-read tr:nth-child(3) .ok, .ld-read tr:nth-child(3) .no { animation-delay:0.62s; }
+.ld-read tr:nth-child(4) { animation-delay:0.65s; } .ld-read tr:nth-child(4) .ok, .ld-read tr:nth-child(4) .no { animation-delay:0.82s; }
+.ld-read tr:nth-child(5) { animation-delay:0.85s; } .ld-read tr:nth-child(5) .ok, .ld-read tr:nth-child(5) .no { animation-delay:1.02s; }
+.ld-read tr:nth-child(6) { animation-delay:1.05s; } .ld-read tr:nth-child(6) .ok, .ld-read tr:nth-child(6) .no { animation-delay:1.22s; }
+.ld-read tr:nth-child(7) { animation-delay:1.25s; } .ld-read tr:nth-child(7) .ok, .ld-read tr:nth-child(7) .no { animation-delay:1.42s; }
+.ld-read tr:nth-child(8) { animation-delay:1.45s; } .ld-read tr:nth-child(8) .ok, .ld-read tr:nth-child(8) .no { animation-delay:1.62s; }
+.ld-read tr:nth-child(9) { animation-delay:1.65s; } .ld-read tr:nth-child(9) .ok, .ld-read tr:nth-child(9) .no { animation-delay:1.82s; }
+.ld-read tr:nth-child(10) { animation-delay:1.85s; } .ld-read tr:nth-child(10) .ok, .ld-read tr:nth-child(10) .no { animation-delay:2.02s; }
+.ld-read + .ld-mean { animation:ld-in .45s ease both; animation-delay:2.2s; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity:1; transform:none; transition:none; } .ld-ing mark { background-size:100% 100%; } }
+/* motion: rotating claim in the headline, live decode strip */
+.ld-rot, .ld-rot2 { display:inline-block; transition:opacity .28s ease, transform .28s ease; }
+.ld-rot.out, .ld-rot2.out { opacity:0; transform:translateY(10px); }
+.ld-live { position:relative; display:grid; grid-template-columns:auto 74px 1fr auto; gap:16px; align-items:center; background:#fff; border:1px solid #c7d2fe;
+  border-radius:18px; padding:14px 18px 18px; margin:-4px 0 18px; overflow:hidden; cursor:pointer; box-shadow:0 10px 26px rgba(15,23,42,.07); }
+.ld-live .tag { font:800 11px 'Inter',sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--brand); writing-mode:vertical-rl; transform:rotate(180deg); }
+.ld-live .tag::before { content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); margin-bottom:6px; animation:ld-blink 3s ease-in-out infinite; }
+@keyframes ld-blink { 50% { opacity:.45; } }
+.ld-live .im { width:74px; height:74px; display:grid; place-items:center; background:#f1f5f9; border-radius:12px; color:var(--faint); font-size:30px; }
+.ld-live .im img { max-width:66px; max-height:66px; object-fit:contain; }
+.ld-live .nm { font:800 19px 'Outfit',sans-serif; color:var(--ink); }
+.ld-live .ln { font-size:14.5px; color:var(--muted); margin-top:2px; }
+.ld-live .rt { text-align:right; }
+.ld-live .rt .n { font:800 30px 'Outfit',sans-serif; color:var(--ink); line-height:1; }
+.ld-live .rt .n small { font:600 13px 'Inter',sans-serif; color:var(--muted); }
+.ld-live .rt .ld-cubes { justify-content:flex-end; margin:8px 0 0; gap:5px; }
+.ld-live .rt .ld-cube { width:22px; height:22px; border-radius:6px; box-shadow:inset -3px -3px 0 #cbd5e1; }
+.ld-live .body { display:contents; }
+.ld-live.swap .im, .ld-live.swap .mid, .ld-live.swap .rt { opacity:0; }
+.ld-live .im, .ld-live .mid, .ld-live .rt { transition:opacity .4s ease; }
+.ld-live .ld-cube { animation:none; }
+.ld-live .dots { position:absolute; left:0; right:0; bottom:7px; display:flex; justify-content:center; gap:5px; }
+.ld-live .dots i { width:6px; height:6px; border-radius:999px; background:#cbd5e1; transition:width .3s ease, background .3s ease; }
+.ld-live .dots i.on { width:18px; background:var(--brand); }
+.ld-hrow.wide { grid-template-columns:minmax(150px,52%) 1fr 34px; }
+.ld-hrow.wide .n { white-space:normal; }
+@media (prefers-reduced-motion: reduce) { .ld-live .tag::before, .ld-marq div { animation:none; } }
+body { margin:0; }
+.ld-page { max-width:1080px; margin:0 auto; padding:10px 16px 48px; }
+@media (max-width: 720px) {
+  .ld-grid4 { grid-template-columns:repeat(2,1fr); }
+  .ld-cmp-grid, .ld-field { grid-template-columns:1fr; flex-direction:column; align-items:stretch; }
+  .ld-cmp-grid { display:grid; }
+  .ld-tabs { flex-wrap:nowrap; overflow-x:auto; width:auto; border-radius:999px; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+  .ld-tabs::-webkit-scrollbar { display:none; }
+  .ld-tabs button { white-space:nowrap; flex:none; }
+  .ld-nav .links a:not(.cta) { display:none; }
+  .ld-nav .logo, .ld-nav a.cta { white-space:nowrap; }
+  .ld-nav { padding:8px 10px; gap:8px; } .ld-nav .links { gap:6px; }
+  .ld-nav .logo { font-size:15px; gap:7px; } .ld-nav .logo i { width:30px; height:30px; font-size:16px; }
+  .ld-nav a.cta { font-size:0; padding:7px 11px; } .ld-nav a.cta::after { content:"By Om Rana"; font-size:12.5px; }
+  .ld-lang { font-size:12px; padding:6px 9px; }
+  .ld-rot, .ld-rot2 { display:block; }
+  .ld-live { grid-template-columns:60px 1fr; gap:12px; } .ld-live .tag { display:none; }
+  .ld-live .im { width:60px; height:60px; } .ld-live .rt { grid-column:1 / -1; text-align:left; display:flex; align-items:center; gap:12px; }
+  .ld-live .rt .ld-cubes { justify-content:flex-start; margin:0; }
+}
+</style>
+"""
 
 
 def icon(name: str) -> str:
@@ -594,12 +775,12 @@ def hero(cta: bool = False) -> str:
     )
     return (
         '<div class="ld-hero"><div class="ld-hero-grid"><div>'
-        '<span class="ld-badge">Indian Label Decoder</span>'
+        '<span class="ld-badge">Is this pack healthy?</span>'
         '<h1><span class="ld-ln"><span class="ld-rot">Healthy</span> on the front.</span><br><span class="ld-ln"><em class="ld-rot2">Sugar</em> on the back.</span></h1>'
-        '<p class="sub">Indian food labels are legally correct and practically useless. '
-        'Pick a pack and see what it really says, in spoons and plain words.</p>'
+        '<p class="sub">Turn the pack over. This reads the <b>ingredient list</b> and the nutrition table on the back '
+        'and gives one answer: <b>healthy, or not healthy</b>.</p>'
         + buttons +
-        '<div class="ld-proof"><b>100</b> Indian packs checked · <b>1 in 5</b> hide sugar under many names · '
+        '<div class="ld-proof"><b>100</b> Indian packs checked · only <b>11</b> came out healthy · '
         '<b>87%</b> accurate when reading photos</div>'
         '</div>' + pack + '</div></div>'
     )
@@ -614,18 +795,18 @@ def about() -> str:
     """The project in three boxes: problem, product, proof. Method and credits live in method(), lower down."""
     tiles = [
         (icon("target"), "The problem", [
-            "“No added sugar”, but sweetened with fruit syrup",
-            "“High protein” per 100 g; you eat 25 g",
-            "Sugar split into 3 names so none is #1",
-            "<b>All legal. All misleading.</b>"]),
+            "The front says “healthy”, “multigrain”, “no added sugar”",
+            "The back says maida, palm oil and sugar under 3 names",
+            "Nobody has time to read the back in a shop",
+            "<b>So nobody knows if the pack is healthy.</b>"]),
         (icon("phone"), "What it does", [
-            "Counts the sugar in one serve, in spoons",
-            "Finds every hidden name for sugar",
-            "Checks each claim against the law",
-            "Shows traffic lights and a daily sugar budget"]),
+            "Reads the back of the pack: ingredient list and nutrition table",
+            "Runs 4 checks: sugar, fat and salt, ingredients, good stuff",
+            "Each check gets a green, yellow or red light",
+            "<b>One answer: healthy, okay sometimes, or not healthy</b>"]),
         (icon("bars"), "The proof", [
-            "100 Indian packs tested",
-            "21 of 100 hide sugar under 2+ names",
+            "100 Indian packs checked",
+            "Only <b>11 came out healthy</b>; 42 are not healthy",
             "Photo reading: <b>87% accurate</b>, 96% on clean photos",
             "Same pack, same answer, every time"]),
     ]
@@ -639,12 +820,14 @@ def method() -> str:
         (icon("book"), "Where the rules come from", [
             "<b>FSSAI</b>, India's food regulator: Advertising &amp; Claims Regulations 2018, Labelling &amp; Display Regulations 2020",
             "<b>WHO</b>, the World Health Organization: under 25 g of added sugar a day (2015 guideline)",
-            "Traffic-light cut-offs: the UK Food Standards Agency scheme, because India has not finalised its own"]),
+            "Traffic-light cut-offs: the UK Food Standards Agency scheme, because India has not finalised its own",
+            "Ingredient check: the NOVA markers of ultra-processed food; protein and fibre levels as FSSAI defines them"]),
         (icon("gear"), "How it works", [
             "AI only <b>reads</b> the pack",
             "The verdict comes from <b>written rules</b>, not from AI",
+            "Four checks (sugar, fat and salt, ingredients, good stuff), each a light; the verdict <b>counts the lights</b>",
             "60+ names for sugar, 26 label tricks",
-            "23 automated tests on the rules"]),
+            "39 automated tests on the rules"]),
         (icon("alert"), "What it cannot do", [
             "Pack data comes from Open Food Facts, which anyone can edit, so it can be wrong",
             "Photo reading is 87% right, and less on blurry photos",
@@ -662,15 +845,15 @@ def method() -> str:
 
 INTROS = {
     "suspects": ("The usual suspects",
-                 "Eight packs everyone buys. Tap one. Prepare to be mildly betrayed.",
+                 "Eight packs everyone buys. Tap one to see if it is healthy.",
                  "Start with Cadbury Shots. It is the worst of the lot.",
                  '<div class="ld-bigic">' + icon("package") + '</div>'),
     "barcode": ("Those 13 digits know everything",
                 "The number under the black bars is the pack's ID. Type it, we fetch the label.",
                 "Indian packs start with 890. Try 8901063139329 (Britannia Bourbon), or whatever is in your kitchen.",
                 '<div class="ld-barcode"><div class="bars"></div><div class="num">8 901063 139329</div></div>'),
-    "photo": ("Show us the pack",
-              "Front, ingredients, nutrition table. Three photos, one truth.",
+    "photo": ("Show us the back of the pack",
+              "The ingredient list and the nutrition table. The AI reads them, the rules say healthy or not.",
               "Flat and bright works best. Crumpled packs and glare are our weak spot: 66% accuracy there, 96% on clean shots.",
               '<div class="ld-frames"><div>Front</div><div>Ingredients</div><div>Nutrition</div></div>'),
     "paste": ("No camera? Type it",
@@ -682,7 +865,7 @@ INTROS = {
                 "Start with Mishti Doi vs Classic Dahi. Then try Mirinda vs Paper Boat.",
                 '<div class="ld-vsbadge"><span>A</span><b>VS</b><span>B</span></div>'),
     "bigpicture": ("The big picture",
-                   "We ran all 100 packs through the decoder. Here is what came out.",
+                   "We ran all 100 packs through the four health checks. Here is what came out.",
                    "Every number on this page is counted from the packs. Nothing is typed in by hand.",
                    '<div class="ld-bigic">' + icon("bars") + '</div>'),
     "airead": ("Watch the AI read a pack",
@@ -710,7 +893,8 @@ def marquee(items: list[tuple[str, str]]) -> str:
 
 
 def product_card(brand: str | None, name: str | None, img: str | None, sugar_100, is_liquid: bool,
-                 selected: bool = False, ribbon: str | None = None) -> str:
+                 selected: bool = False, ribbon: str | None = None, code: str | None = None) -> str:
+    """`code` is written as data-code, so a script can find the card for a barcode (the live strip opens it)."""
     n = full_name(brand, name)
     pic = f'<img src="{esc(img)}" alt="">' if img else '<span style="font-size:40px;color:var(--faint)">' + icon("package") + '</span>'
     if sugar_100 is None:
@@ -724,7 +908,8 @@ def product_card(brand: str | None, name: str | None, img: str | None, sugar_100
     if ribbon:
         cls = {"MOST SUGAR": "", "BIGGEST TRICK": "gold", "LEAST SUGAR": "green"}.get(ribbon, "")
         rib = f'<span class="ld-ribbon {cls}">{esc(ribbon)}</span>'
-    return f'<div class="ld-pcard{" on" if selected else ""}">{rib}<div class="img">{pic}</div><div class="nm">{esc(n)}</div>{chip}</div>'
+    data = f' data-code="{esc(code)}"' if code else ""
+    return f'<div class="ld-pcard{" on" if selected else ""}"{data}>{rib}<div class="img">{pic}</div><div class="nm">{esc(n)}</div>{chip}</div>'
 
 
 def navbar(github: str, live: str | None = None, lang_toggle: bool = False) -> str:
@@ -768,6 +953,10 @@ def _lights(per100: dict, is_liquid: bool) -> dict:
 
 
 def verdict(result: dict, lights: dict) -> tuple[str, str]:
+    """The banner colour and word. It is the health verdict: four lights, counted (src/rules/health.py)."""
+    h = result.get("health")
+    if h:
+        return ("amber" if h["color"] == "grey" else h["color"]), h["word"]
     high_flags = [f for f in result["flags"] if f["severity"] == "high"]
     reds = [k for k, (_, lvl) in lights.items() if lvl == "red"]
     if high_flags or lights["sugar"][1] == "red" or len(reds) >= 2:
@@ -780,7 +969,7 @@ def verdict(result: dict, lights: dict) -> tuple[str, str]:
 
 
 VERDICT_HI = {"Careful!": "संभलकर!", "Okay, sometimes": "कभी-कभी ठीक है", "Not enough info": "जानकारी कम है",
-              "Good to go": "बेझिझक खाइए"}
+              "Good to go": "बेझिझक खाइए", "Not healthy": "सेहतमंद नहीं", "Healthy": "सेहतमंद"}
 
 
 def _sugar_headline(result: dict, lights: dict, unit: str) -> tuple[str, str] | None:
@@ -952,6 +1141,53 @@ def three_things(result: dict, lights: dict) -> str:
             f'<div class="ld-3">{rows}</div></div>')
 
 
+def health_card(result: dict) -> str:
+    """The four health checks as four tiles (light, headline, reasons as points), how the verdict was counted,
+    and how far one serve goes."""
+    h = result.get("health")
+    if not h:
+        return ""
+    pill = {"red": ("RED", "लाल"), "amber": ("YELLOW", "पीला"), "green": ("GREEN", "हरा"), "grey": ("NO DATA", "जानकारी नहीं")}
+    tiles = ""
+    for c in h["checks"]:
+        pts = "".join(f"<li>{bi(esc(en), esc(hi))}</li>" for en, hi in c.get("points") or [])
+        tiles += (f'<div class="ld-hc-t {c["color"]}"><div class="top"><span>{bi(esc(c["name"]), esc(c["name_hi"]))}</span>'
+                  f'<em>{bi(*pill[c["color"]])}</em></div>'
+                  f'<div class="hd">{bi(esc(c["head"]), esc(c["head_hi"]))}</div>{f"<ul>{pts}</ul>" if pts else ""}</div>')
+    seen = [c["color"] for c in h["checks"] if c["color"] != "grey"]
+    tally_en = ", ".join(f"{seen.count(k)} {w}" for k, w in (("red", "red"), ("amber", "yellow"), ("green", "green")) if seen.count(k))
+    tally_hi = ", ".join(f"{seen.count(k)} {w}" for k, w in (("red", "लाल"), ("amber", "पीला"), ("green", "हरा")) if seen.count(k))
+    rule = {"red": ("Two or more reds = <b>Not healthy</b>.", "दो या ज़्यादा लाल = <b>सेहतमंद नहीं</b>।"),
+            "amber": ("One red, or two or more yellows = <b>Okay, sometimes</b>.", "एक लाल, या दो या ज़्यादा पीले = <b>कभी-कभी ठीक है</b>।"),
+            "green": ("No red and at most one yellow = <b>Healthy</b>.", "कोई लाल नहीं और ज़्यादा से ज़्यादा एक पीला = <b>सेहतमंद</b>।"),
+            "grey": ("Too little is printed on the pack to give a verdict.", "पैकेट पर इतना कम लिखा है कि फ़ैसला नहीं हो सकता।")}[h["color"]]
+    count = bi(f"This pack: {tally_en}. {rule[0]}", f"यह पैकेट: {tally_hi}। {rule[1]}") if seen else bi(rule[0], rule[1])
+    return (f'<div class="ld-card ld-hc"><div class="ld-h2">{icon("lights")} {bi("Is it healthy? Four checks on the back of the pack", "क्या यह सेहतमंद है? पैकेट के पीछे की चार जाँच")}</div>'
+            f'<div class="ld-h2-sub">{bi("Read from the ingredient list and the nutrition table. Each check gets a light, and the verdict only counts the lights.", "सामग्री की सूची और न्यूट्रिशन टेबल से पढ़ा गया। हर जाँच को एक बत्ती मिलती है, और फ़ैसला सिर्फ़ बत्तियाँ गिनकर होता है।")}</div>'
+            f'<div class="ld-hc-grid">{tiles}</div><div class="ld-hc-rule">{count}</div>'
+            f'<div class="ld-mean"><b>{bi("How much is fine:", "कितना ठीक है:")}</b> {bi(esc(h["how_much"]), esc(h["how_much_hi"]))}</div></div>')
+
+
+def _ing_chips(label: dict, sugar_lines: set, flag: bool, limit: int = 14) -> tuple[str, int]:
+    """The ingredient list as numbered chips, biggest first. Returns (html, how many top-level ingredients)."""
+    groups: list[tuple[dict, list[str]]] = []          # each ingredient with whatever its brackets hold
+    for it in label.get("ingredients") or []:
+        if it.get("nested") and groups:
+            groups[-1][1].append(it.get("name") or "")
+        elif not it.get("nested") and (it.get("name") or "").strip():
+            groups.append((it, [it.get("name") or ""]))
+    chips = []
+    for n, (it, texts) in enumerate(groups[:limit], 1):
+        nm = _tidy(it.get("name") or "")
+        nm = nm[:30].rstrip() + "…" if len(nm) > 32 else nm
+        cls = ("sug" if (it.get("name") or "").strip().lower() in sugar_lines
+               else "bad" if flag and ingredient_flag(" ; ".join(texts)) else "")
+        pct = f' · {fmt(float(it["percent"]))}%' if it.get("percent") is not None else ""
+        chips.append(f'<span class="{cls}"><b>{n}</b>{esc(nm)}{esc(pct)}</span>')
+    more = f'<span><b>…</b>{len(groups) - limit} more</span>' if len(groups) > limit else ""
+    return "".join(chips) + more, len(groups)
+
+
 def top_card(label: dict, result: dict, img: str | None, lights: dict) -> str:
     p = result["product"]
     unit = "ml" if p["is_liquid"] else "g"
@@ -975,8 +1211,16 @@ def top_card(label: dict, result: dict, img: str | None, lights: dict) -> str:
         meta += f" · Barcode {esc(label['barcode'])}"
     plain = {"red": ("This is a treat, not food. Once in a while is fine.", "यह रोज़ का खाना नहीं, कभी-कभार की चीज़ है।"),
              "amber": ("Okay now and then. Not every day.", "कभी-कभी ठीक है। रोज़ नहीं।"),
-             "green": ("Nothing sneaky here. Eat normally.", "इसमें कोई चालाकी नहीं। आराम से खाइए।")}[color]
-    return (f'<div class="ld-card ld-vcard"><div class="ld-vban {color}"><div class="v">{mark} {bi(word, VERDICT_HI.get(word, word))}</div>'
+             "green": ("Fine for every day.", "रोज़ खाने के लिए ठीक है।")}[color]
+    if word == "Not enough info":
+        plain = ("The pack prints too little to judge.", "पैकेट पर इतना कम लिखा है कि तय नहीं हो सकता।")
+    seen = [c["color"] for c in (result.get("health") or {}).get("checks", []) if c["color"] != "grey"]
+    tally = ""
+    if seen:
+        t_en = " · ".join(f"{seen.count(k)} {w}" for k, w in (("red", "red"), ("amber", "yellow"), ("green", "green")) if seen.count(k))
+        t_hi = " · ".join(f"{seen.count(k)} {w}" for k, w in (("red", "लाल"), ("amber", "पीला"), ("green", "हरा")) if seen.count(k))
+        tally = f'<div class="vt">{bi("4 health checks: " + t_en, "4 जाँच: " + t_hi)}</div>'
+    return (f'<div class="ld-card ld-vcard"><div class="ld-vban {color}"><div><div class="v">{mark} {bi(word, VERDICT_HI.get(word, word))}</div>{tally}</div>'
             f'<div class="s">{spoons}</div></div>'
             f'<div class="ld-top"><div class="img">{pic}</div><div>'
             f'<div class="ld-brand">{esc(brand)}</div><div class="ld-name">{esc(name)}</div>'
@@ -1086,26 +1330,19 @@ def rank_card(result: dict, all_sugar: list[float]) -> str:
 
 def order_card(label: dict, result: dict) -> str:
     """The ingredient list as numbered chips: sugar lines lit up, combined-rank callout when split."""
-    items = [i for i in (label.get("ingredients") or []) if not i.get("nested")]
-    if len(items) < 3:
-        return ""
     sugar_lines = {h["ingredient_line"].strip().lower() for h in result["sugar_lines"] if h["tier"] == "added"}
-    chips = []
-    for n, it in enumerate(items[:14], 1):
-        nm = _tidy(it.get("name") or "")
-        nm = nm[:30].rstrip() + "…" if len(nm) > 32 else nm
-        cls = "sug" if (it.get("name") or "").strip().lower() in sugar_lines else ""
-        pct = f' · {fmt(float(it["percent"]))}%' if it.get("percent") is not None else ""
-        chips.append(f'<span class="{cls}"><b>{n}</b>{esc(nm)}{esc(pct)}</span>')
-    more = f'<span><b>…</b>{len(items) - 14} more</span>' if len(items) > 14 else ""
+    chips, n_items = _ing_chips(label, sugar_lines, flag=True)
+    if n_items < 3:
+        return ""
     rank = result["consolidated_sugar"]
     call = ""
     if rank.get("n_added_sugar_lines", 0) >= 2 and rank.get("combined_rank_estimate"):
         call = (f'<div class="ld-callout">Join the {rank["n_added_sugar_lines"]} yellow pieces and sugar jumps to '
                 f'<b>#{rank["combined_rank_estimate"]}</b>. Legal, but sneaky.</div>')
     return (f'<div class="ld-card"><div class="ld-h2"><em class="ld-ic ld-ic-list"></em> What\'s inside, biggest first</div>'
-            f'<div class="ld-h2-sub">The law: heaviest ingredient first. #1 is most of the pack. Yellow = sugar.</div>'
-            f'<div class="ld-order">{"".join(chips)}{more}</div>{call}</div>')
+            f'<div class="ld-h2-sub">The law: heaviest ingredient first. #1 is most of the pack. '
+            f'<b style="color:#b45309">Yellow</b> = sugar. <b style="color:var(--red)">Red</b> = flagged by the ingredient check.</div>'
+            f'<div class="ld-order">{chips}</div>{call}</div>')
 
 
 def compare_card(label: dict, result: dict, img: str | None, lights: dict, winner: bool) -> str:
@@ -1358,6 +1595,7 @@ def dashboard(packs: list[tuple[dict, dict]]) -> str:
     n = len(packs)
     verdicts = {"red": 0, "amber": 0, "green": 0}
     lights_count = {k: {"red": 0, "amber": 0, "green": 0, "grey": 0} for k in ("sugar", "fat", "satfat", "salt")}
+    checks_count = {k: {"red": 0, "amber": 0, "green": 0, "grey": 0} for k in ("sugar", "fat_salt", "ingredients", "good")}
     tricks: dict[str, int] = {}
     split = half_day = any_trick = 0
     sweet, most_names = [], (0, "")
@@ -1367,6 +1605,8 @@ def dashboard(packs: list[tuple[dict, dict]]) -> str:
         verdicts[verdict(r, lights)[0]] += 1
         for k, (_, lvl) in lights.items():
             lights_count[k][lvl] += 1
+        for c in (r.get("health") or {}).get("checks", []):
+            checks_count[c["key"]][c["color"]] += 1
         for f in r["flags"]:
             tricks[f["code"]] = tricks.get(f["code"], 0) + 1
         any_trick += bool(r["flags"])
@@ -1381,9 +1621,10 @@ def dashboard(packs: list[tuple[dict, dict]]) -> str:
         if s["total_sugars_per_100"] is not None and not liquid:
             sweet.append((float(s["total_sugars_per_100"]), name))
     declared = n - lights_count["sugar"]["grey"]
+    sugar_red = lights_count["sugar"]["red"]
 
     kpis = (f'<div class="ld-kpis">'
-            f'<div class="ld-kpi red"><b>{lights_count["sugar"]["red"]}<small> of {declared}</small></b><span>packs are high in sugar (red light)</span></div>'
+            f'<div class="ld-kpi red"><b>{sugar_red}<small> of {declared}</small></b><span>packs are high in sugar (red light)</span></div>'
             f'<div class="ld-kpi amber"><b>{split}<small> of {n}</small></b><span>hide sugar under 2 or more names</span></div>'
             f'<div class="ld-kpi red"><b>{half_day}<small> of {n}</small></b><span>use up half a day’s sugar budget in one serve</span></div>'
             f'<div class="ld-kpi"><b>{any_trick}<small> of {n}</small></b><span>carry at least one label trick</span></div></div>')
@@ -1392,21 +1633,22 @@ def dashboard(packs: list[tuple[dict, dict]]) -> str:
     p1, p2 = 100 * r_ / n, 100 * (r_ + a_) / n
     donut = (f'<div class="ld-card"><div class="ld-h2">The verdicts</div><div class="ld-h2-sub">How the {n} packs came out</div>'
              f'<div class="ld-donut-wrap"><div class="ld-donut" data-v="{n}" style="background:conic-gradient(var(--red) 0 {p1:.1f}%, var(--amber) {p1:.1f}% {p2:.1f}%, var(--green) {p2:.1f}% 100%)"></div>'
-             f'<div class="ld-legend"><div><i style="background:var(--red)"></i><b>{r_}</b> Careful!</div>'
+             f'<div class="ld-legend"><div><i style="background:var(--red)"></i><b>{r_}</b> Not healthy</div>'
              f'<div><i style="background:var(--amber)"></i><b>{a_}</b> Okay, sometimes</div>'
-             f'<div><i style="background:var(--green)"></i><b>{g_}</b> Good to go</div></div></div>'
-             f'<div class="ld-mean">Only <b>{g_} in {n}</b> packs had nothing to flag.</div></div>')
+             f'<div><i style="background:var(--green)"></i><b>{g_}</b> Healthy</div></div></div>'
+             f'<div class="ld-mean">Only <b>{g_} in {n}</b> packs came out healthy.</div></div>')
 
-    labels = {"sugar": "Sugar", "fat": "Fat", "satfat": "Saturated fat", "salt": "Salt"}
+    labels = {"sugar": "Sugar", "fat_salt": "Fat and salt", "ingredients": "Ingredients", "good": "Good stuff"}
     rows = ""
+    lights_count = checks_count
     for k, c in lights_count.items():
         tot = c["red"] + c["amber"] + c["green"] or 1
         seg = "".join(f'<i style="width:{100 * c[l] / tot:.1f}%;background:var(--{l})">{c[l] if c[l] / tot > .07 else ""}</i>'
                       for l in ("red", "amber", "green"))
         rows += f'<div class="ld-stackrow"><span>{labels[k]}</span><div class="ld-stack">{seg}</div></div>'
     worst = max(lights_count, key=lambda k: lights_count[k]["red"])
-    stack = (f'<div class="ld-card"><div class="ld-h2">Traffic lights, all packs</div>'
-             f'<div class="ld-h2-sub">Red = high, yellow = medium, green = low, per 100 g</div>{rows}'
+    stack = (f'<div class="ld-card"><div class="ld-h2">The four health checks, all packs</div>'
+             f'<div class="ld-h2-sub">How many packs got red, yellow or green on each check</div>{rows}'
              f'<div class="ld-mean">The biggest problem is <b>{labels[worst].lower()}</b>: {lights_count[worst]["red"]} packs are in the red.</div></div>')
 
     sweet.sort(reverse=True)
@@ -1428,8 +1670,8 @@ def dashboard(packs: list[tuple[dict, dict]]) -> str:
     frac = min(((1 / 4, "1 in 4"), (1 / 3, "1 in 3"), (1 / 2, "1 in 2"), (2 / 3, "2 in 3"), (3 / 4, "3 in 4")),
                key=lambda f: abs(f[0] - share))
     who = f"About {frac[1]} packs" if abs(frac[0] - share) <= 0.06 else f"{r_} of {n} packs"
-    lead = (f'<div class="ld-lead"><div class="big">{who} came out as <em>“Careful!”</em></div>'
-            f'<div class="sm">That is {r_} of the {n} packs we checked. Only {g_} had nothing to flag. The charts below show why.</div></div>')
+    lead = (f'<div class="ld-lead"><div class="big">{who} came out as <em>“Not healthy”</em></div>'
+            f'<div class="sm">That is {r_} of the {n} packs we checked. Only {g_} came out healthy. The charts below show why.</div></div>')
     return lead + kpis + f'<div class="ld-grid2">{donut}{stack}</div><div class="ld-grid2" style="margin-top:14px">{sweetest}{common}</div>'
 
 
